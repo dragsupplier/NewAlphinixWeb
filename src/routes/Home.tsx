@@ -5,8 +5,6 @@ import { TrustStrip } from '@/components/sections/TrustStrip';
 import { AudienceTabs } from '@/components/sections/AudienceTabs';
 import { SignatureBlocks } from '@/components/sections/SignatureBlocks';
 import { ProcessSteps } from '@/components/sections/ProcessSteps';
-import { Resources } from '@/components/sections/Resources';
-import { Standards } from '@/components/sections/Standards';
 import { ContactBand } from '@/components/sections/ContactBand';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 
@@ -21,8 +19,6 @@ export function Home() {
         <AudienceTabs />
         <SignatureBlocks />
         <ProcessSteps />
-        <Resources />
-        <Standards />
         <ContactBand />
       </main>
       <Footer />
