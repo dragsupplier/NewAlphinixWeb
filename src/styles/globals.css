@@ -338,66 +338,7 @@
     animation: word-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
-  /* ─── Plaque card — for Standards section ───────────────────── */
-  .plaque {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    background: var(--color-bg);
-    border: 1px solid var(--color-line);
-    border-radius: 10px;
-    transition: transform 380ms cubic-bezier(0.2, 0.7, 0.2, 1),
-                border-color 280ms ease,
-                box-shadow 380ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .plaque::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: var(--color-brand-900);
-    background-image:
-      radial-gradient(at 16% 18%, hsla(225, 70%, 38%, 0.55) 0px, transparent 55%),
-      radial-gradient(at 84% 84%, hsla(220, 80%, 22%, 0.65) 0px, transparent 55%);
-    transform: translateY(101%);
-    transition: transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
-    z-index: -1;
-  }
-  .plaque:hover {
-    border-color: var(--color-brand-900);
-    transform: translateY(-3px);
-    box-shadow: 0 28px 60px -32px rgba(15, 31, 77, 0.45);
-  }
-  .plaque:hover::before { transform: translateY(0); }
-  .plaque .plaque-fg { transition: color 320ms ease; }
-  .plaque:hover .plaque-fg-code   { color: #ffffff; }
-  .plaque:hover .plaque-fg-name   { color: var(--color-brand-200); }
-  .plaque:hover .plaque-fg-body   { color: rgba(255,255,255,0.78); }
-  .plaque:hover .plaque-fg-rule   { color: rgba(255,255,255,0.28); }
-  .plaque:hover .plaque-fg-meta   { color: rgba(255,255,255,0.55); }
-
-  /* ─── Bento featured tile (brand-mesh with subtle dot lattice) ── */
-  .bento-feature {
-    position: relative;
-    isolation: isolate;
-    background-color: var(--color-brand-900);
-    background-image:
-      radial-gradient(at 12% 14%, hsla(225, 70%, 38%, 0.55) 0px, transparent 55%),
-      radial-gradient(at 86% 86%, hsla(220, 80%, 22%, 0.7) 0px, transparent 55%),
-      radial-gradient(at 80% 12%, hsla(220, 60%, 50%, 0.32) 0px, transparent 55%);
-    overflow: hidden;
-  }
-  .bento-feature::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
-    background-size: 22px 22px;
-    background-position: 0 0;
-    mask-image: radial-gradient(circle at 30% 100%, black, transparent 70%);
-    pointer-events: none;
-  }
-
-  /* Giant index numeral used in bento + plaque */
+  /* Giant index numeral (display) */
   .index-display {
     font-family: var(--font-display);
     font-weight: 600;
@@ -405,58 +346,47 @@
     line-height: 0.85;
   }
 
-  /* ─── Editorial featured card (Resources) ──────────────────── */
-  .feature-card {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    border-radius: 14px;
-    background: var(--color-fg);
-    color: white;
+  /* Outlined numeral — fills with brand-700 on group hover */
+  .outline-numeral {
+    color: transparent;
+    -webkit-text-stroke: 1.4px var(--color-brand-700);
+    transition: color 480ms cubic-bezier(0.2, 0.7, 0.2, 1),
+                transform 480ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .feature-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(at 8% 18%, hsla(225, 70%, 40%, 0.55) 0px, transparent 50%),
-      radial-gradient(at 92% 90%, hsla(220, 80%, 22%, 0.6) 0px, transparent 55%);
-    z-index: -1;
-  }
-  .feature-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(currentColor 1px, transparent 1px);
-    background-size: 100% 28px;
-    opacity: 0.05;
-    pointer-events: none;
-    mask-image: linear-gradient(to right, black, transparent 70%);
-  }
-
-  /* ─── Mini ruled card (Resources tile) ─────────────────────── */
-  .tile-rule {
-    position: relative;
-    background: var(--color-bg);
-    border: 1px solid var(--color-line);
-    border-radius: 10px;
-    transition: border-color 280ms ease, transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .tile-rule::after {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 0;
-    height: 2px;
-    background: var(--color-brand-700);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .tile-rule:hover {
-    border-color: var(--color-line-2);
+  .group:hover .outline-numeral,
+  .group:focus-visible .outline-numeral {
+    color: var(--color-brand-700);
     transform: translateY(-2px);
   }
-  .tile-rule:hover::after { transform: scaleX(1); }
+
+  /* Magazine TOC leader (the row of dots between title and meta) */
+  .toc-leader {
+    flex: 1;
+    align-self: end;
+    height: 1px;
+    margin-bottom: 0.55em;
+    background-image: radial-gradient(circle, var(--color-line-2) 1px, transparent 1.2px);
+    background-size: 7px 2px;
+    background-repeat: repeat-x;
+    background-position: 0 50%;
+    opacity: 0.85;
+  }
+
+  /* Section row wrapper with side-margin index number */
+  .editorial-row {
+    transition: background-color 320ms ease;
+  }
+  .editorial-row:hover { background-color: rgba(29, 58, 165, 0.025); }
+
+  /* Heavy-rule (used at top of editorial sections) */
+  .heavy-rule { background: var(--color-fg); height: 2px; }
+
+  /* Vertical hairline divider used between Standards columns */
+  .v-rule {
+    background: var(--color-line);
+    width: 1px;
+    align-self: stretch;
+  }
 
   /* ─── Footer giant wordmark ────────────────────────────────── */
   .footer-wordmark {
@@ -514,6 +444,13 @@
     to   { transform: translateY(0) scale(1); opacity: 1; letter-spacing: -0.05em; }
   }
   .count-in { animation: count-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+  /* Footer wordmark drift */
+  @keyframes wordmark-drift {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+  .wordmark-drift { animation: wordmark-drift 14s ease-in-out infinite; }
 }
 
 @media (prefers-reduced-motion: reduce) {
