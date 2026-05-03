@@ -44,7 +44,7 @@ export function AudienceTabs() {
             <p className="eyebrow">Where you sit</p>
             <h2
               className="mt-5 font-display font-bold tracking-[-0.02em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(2rem, 4.6vw, 3.5rem)', lineHeight: 1.02 }}
+              style={{ fontSize: 'clamp(2.25rem, 4.6vw, 3.75rem)', lineHeight: 1 }}
             >
               Five audiences. <br />
               One operating practice.
