@@ -2,7 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
 import { TrustStrip } from '@/components/sections/TrustStrip';
-import { AudienceTiles } from '@/components/sections/AudienceTiles';
+import { AudienceTabs } from '@/components/sections/AudienceTabs';
 import { SignatureBlocks } from '@/components/sections/SignatureBlocks';
 import { ProcessSteps } from '@/components/sections/ProcessSteps';
 import { Resources } from '@/components/sections/Resources';
@@ -16,7 +16,7 @@ export function Home() {
       <main className="flex-1">
         <Hero />
         <TrustStrip />
-        <AudienceTiles />
+        <AudienceTabs />
         <SignatureBlocks />
         <ProcessSteps />
         <Resources />
