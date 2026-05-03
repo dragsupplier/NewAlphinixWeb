@@ -7,7 +7,7 @@ export function Stub({ title, kicker }: { title: string; kicker?: string }) {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 py-32">
+      <main className="flex-1 pt-40 md:pt-44 pb-32">
         <Container>
           {kicker && (
             <p className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-[var(--color-muted)]">
