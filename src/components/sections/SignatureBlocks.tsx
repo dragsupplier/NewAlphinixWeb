@@ -46,8 +46,8 @@ export function SignatureBlocks() {
     <section id="approach" className="section-y bg-[var(--color-canvas)]">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-16">
-          {/* Sticky left rail — context that stays in view */}
-          <aside className="lg:col-span-5 lg:sticky lg:top-24 lg:self-start mb-12 lg:mb-0">
+          {/* Sticky left rail */}
+          <aside className="lg:col-span-5 lg:sticky lg:top-24 lg:self-start mb-14 lg:mb-0">
             <p className="kicker">Why Alphinix</p>
             <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
               Six reasons institutions choose to work with us.
@@ -63,26 +63,21 @@ export function SignatureBlocks() {
             </div>
           </aside>
 
-          {/* Scrolling right column — full-width statement rows */}
-          <div className="lg:col-span-7">
-            <div className="border-t border-[var(--color-fg)]">
-              {differentiators.map((d, i) => (
-                <Reveal
-                  as="article"
-                  key={d.index}
-                  delay={i * 50}
-                  className="border-b border-[var(--color-line)] py-10 md:py-12 lg:py-14"
-                >
-                  <span className="item-index">{d.index}</span>
-                  <h3 className="mt-4 font-display text-[22px] md:text-[26px] lg:text-[28px] font-semibold leading-[1.15] tracking-[-0.02em] text-[var(--color-fg)] text-balance">
-                    {d.heading}
-                  </h3>
-                  <p className="mt-4 max-w-[58ch] text-[14.5px] md:text-[15.5px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
-                    {d.body}
-                  </p>
-                </Reveal>
-              ))}
-            </div>
+          {/* Right essay chapters — numerals create rhythm, no hairlines */}
+          <div className="lg:col-span-7 space-y-14 md:space-y-20 lg:space-y-24">
+            {differentiators.map((d, i) => (
+              <Reveal as="article" key={d.index} delay={i * 50}>
+                <p className="font-display text-[44px] md:text-[60px] lg:text-[72px] font-semibold leading-[0.85] tracking-[-0.04em] text-[var(--color-brand-700)]">
+                  {d.index}
+                </p>
+                <h3 className="mt-5 font-display text-[24px] md:text-[28px] lg:text-[30px] font-semibold leading-[1.12] tracking-[-0.02em] text-[var(--color-fg)] text-balance">
+                  {d.heading}
+                </h3>
+                <p className="mt-4 max-w-[58ch] text-[15px] md:text-[15.5px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
+                  {d.body}
+                </p>
+              </Reveal>
+            ))}
           </div>
         </div>
       </Container>
