@@ -2,26 +2,26 @@
 
 /* ─────────────────────────────────────────────────────────────
    Alphinix Design Tokens
-   Brand blue is the anchor. ONE warm accent (coral) for emphasis.
-   No glassmorphism. Editorial discipline + architectural detail.
+   Clean white surface · brand blue as primary accent · ink for type.
+   Visual depth comes from imagery and layout, not from page texture.
    ───────────────────────────────────────────────────────────── */
 @theme {
   --font-display: 'Cabinet Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Satoshi', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
 
-  /* Ink + Paper — the foundation */
+  /* Surface */
+  --color-paper: #ffffff;
+  --color-paper-soft: #f6f7fb;
+  --color-paper-warm: #f3eee4;
   --color-ink: #0a0e27;
-  --color-ink-soft: #161b3c;
+  --color-ink-soft: #1a1f3a;
   --color-ink-deep: #060920;
-  --color-paper: #fafaf7;
-  --color-paper-warm: #f3efe6;
-  --color-paper-elev: #ffffff;
 
-  /* Brand blue scale */
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #dde5ff;
-  --color-brand-200: #bccaff;
+  /* Brand blue scale — primary accent */
+  --color-brand-50: #eef3ff;
+  --color-brand-100: #dbe5ff;
+  --color-brand-200: #b8c9ff;
   --color-brand-300: #8ea4ff;
   --color-brand-400: #5d77f5;
   --color-brand-500: #3a52e6;
@@ -29,44 +29,37 @@
   --color-brand-700: #1f2c9e;
   --color-brand-800: #1a2474;
   --color-brand-900: #131a4f;
-  --color-brand-950: #0a0e27;
 
-  /* Single warm accent — used sparingly for emphasis */
-  --color-accent-50: #fff3ed;
+  /* Single warm accent — used only for the primary CTA on the dark band */
   --color-accent-300: #ffaa8a;
   --color-accent-500: #ff6b3d;
   --color-accent-600: #e8511f;
 
-  /* Per-segment accent tones — restrained, all in the same family */
-  --color-seg-students: #ff6b3d;   /* warm coral — energy */
-  --color-seg-colleges: #2546ff;   /* deep brand blue */
-  --color-seg-schools: #1a8d6b;    /* muted teal-green */
-  --color-seg-businesses: #6b4ce8; /* deep indigo-purple */
-  --color-seg-hiring: #d4a017;     /* warm ochre */
+  /* Per-segment accent tones (subtle, used in colour pills + hovers) */
+  --color-seg-students: #ff6b3d;
+  --color-seg-colleges: #2546ff;
+  --color-seg-schools: #1a8d6b;
+  --color-seg-businesses: #6b4ce8;
+  --color-seg-hiring: #d4a017;
 
   /* Neutrals */
-  --color-line: #e6e2d6;
-  --color-line-strong: #c9c2af;
+  --color-line: #e6e8ef;
+  --color-line-strong: #cbcfd9;
   --color-muted: #6b6f80;
+  --color-muted-strong: #4a4f60;
 
-  /* Spacing additions */
-  --spacing-section: 7rem;
-
-  /* Radius — restrained */
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+  /* Radius — soft, contemporary */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
 }
 
 /* ─────────────────────────────────────────────────────────────
    Base
    ───────────────────────────────────────────────────────────── */
 @layer base {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+  *, *::before, *::after { box-sizing: border-box; }
 
   html {
     -webkit-text-size-adjust: 100%;
@@ -78,52 +71,31 @@
 
   body {
     background-color: var(--color-paper);
-    /* Substrate — engineering-paper dot grid (extremely subtle) */
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      rgba(10, 14, 39, 0.07) 1px,
-      transparent 0
-    );
-    background-size: 22px 22px;
-    background-attachment: fixed;
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-feature-settings: 'ss01', 'ss02', 'cv11';
     line-height: 1.5;
     margin: 0;
   }
 
-  ::selection {
-    background: var(--color-ink);
-    color: var(--color-paper);
-  }
+  ::selection { background: var(--color-ink); color: var(--color-paper); }
 
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.02em;
-    line-height: 0.98;
+    line-height: 1;
     margin: 0;
   }
 
-  p {
-    margin: 0;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  button {
-    font-family: inherit;
-    cursor: pointer;
-  }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+  img { display: block; max-width: 100%; }
 
   :focus-visible {
     outline: 2px solid var(--color-brand-500);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 
@@ -135,29 +107,52 @@
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
-  /* Architectural hairline — used as section dividers */
-  .rule       { height: 1px; background: var(--color-ink); opacity: 0.12; }
-  .rule-light { height: 1px; background: currentColor; opacity: 0.18; }
-
-  /* Hairline rule with measurement marks (architectural drawing feel) */
-  .measure-rule {
-    position: relative;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.18;
+  /* Eyebrow chip — small label seen above section headlines */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-brand-700);
   }
-  .measure-rule::before,
-  .measure-rule::after {
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--color-brand-600);
+  }
+
+  /* Image plate — the standard surface for placeholder photos */
+  .image-plate {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-paper-soft);
+    border-radius: var(--radius-lg);
+    isolation: isolate;
+  }
+  .image-plate img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .group:hover .image-plate img { transform: scale(1.02); }
+
+  /* Soft subtle gradient on image bottom for legibility of overlay text */
+  .image-plate::after {
     content: '';
     position: absolute;
-    top: -3px;
-    width: 1px;
-    height: 7px;
-    background: currentColor;
-    opacity: 0.7;
+    inset: auto 0 0 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(10, 14, 39, 0.65), transparent);
+    pointer-events: none;
   }
-  .measure-rule::before { left: 0; }
-  .measure-rule::after  { right: 0; }
 
   /* Underline that draws on hover */
   .link-draw {
@@ -176,78 +171,31 @@
   }
   .link-draw:hover::after { transform: scaleX(1); }
 
-  /* A small accent dot — coral marker before kickers */
-  .dot-accent::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin-right: 10px;
-    border-radius: 9999px;
-    background: var(--color-accent-500);
-    transform: translateY(-2px);
-  }
-
-  /* Marquee — pure CSS, GPU-accelerated */
+  /* Marquee — pure CSS */
   .marquee-track {
     display: flex;
     gap: 4rem;
     width: max-content;
     animation: marquee var(--marquee-duration, 40s) linear infinite;
   }
-  .marquee-track-reverse { animation-direction: reverse; }
-
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
 
-  /* Subtle grain — applied to ink panels for tactile feel */
+  /* Subtle grain — applied to dark CTA section */
   .grain-ink { position: relative; isolation: isolate; }
   .grain-ink::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.06;
+    opacity: 0.05;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
   }
 
-  /* Engineering-grid pattern overlay — sits on top of dark sections */
-  .grid-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
-  }
-
-  /* Subtle blue mesh — for the dark capability section */
-  .mesh-blue {
-    background:
-      radial-gradient(900px 480px at 8% 0%, rgba(58, 82, 230, 0.18), transparent 60%),
-      radial-gradient(700px 480px at 92% 100%, rgba(255, 107, 61, 0.10), transparent 60%),
-      var(--color-ink);
-  }
-
-  /* Corner brackets — architectural composition mark */
-  .bracket-tl, .bracket-tr, .bracket-bl, .bracket-br {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border: 1px solid currentColor;
-    opacity: 0.4;
-  }
-  .bracket-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
-  .bracket-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
-  .bracket-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
-  .bracket-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-
-  /* Mount-in fade-up — for headlines on first paint */
+  /* Mount-in fade-up — for hero on first paint */
   .mount-up {
     animation: mountUp 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -256,7 +204,7 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Reveal on scroll — hooked by useReveal */
+  /* Reveal on scroll */
   [data-reveal] {
     opacity: 0;
     transform: translateY(18px);
@@ -268,37 +216,21 @@
     transform: translateY(0);
   }
 
-  /* SVG diagram — stroke-draw for hub/spoke lines */
-  .draw-line {
-    stroke-dasharray: 320;
-    stroke-dashoffset: 320;
-    animation: drawLine 1400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  /* Mobile horizontal scroll-snap utilities */
+  .snap-strip {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 1.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
-  @keyframes drawLine { to { stroke-dashoffset: 0; } }
-
-  /* Pulse dot traveling along a line */
-  .pulse-travel {
-    animation: pulseTravel 4s linear infinite;
+  .snap-strip::-webkit-scrollbar { display: none; }
+  .snap-strip > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
   }
-  @keyframes pulseTravel {
-    0%   { offset-distance: 0%;   opacity: 0; }
-    8%   { opacity: 1; }
-    92%  { opacity: 1; }
-    100% { offset-distance: 100%; opacity: 0; }
-  }
-
-  /* A vertical accent bar used on segment rows */
-  .seg-bar {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .group:hover .seg-bar { transform: scaleY(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
