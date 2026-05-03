@@ -1,7 +1,6 @@
 import { Container } from '@/components/ui/Container';
 import { ButtonLink } from '@/components/ui/Button';
 import { Reveal } from '@/components/Reveal';
-import { ArrowUpRight } from 'lucide-react';
 
 type Differentiator = {
   index: string;
@@ -66,48 +65,20 @@ export function SignatureBlocks() {
           </div>
         </div>
 
-        {/* Editorial rows — heavy rule on top, hairlines between, no enclosures */}
-        <div className="border-t-2 border-[var(--color-fg)]">
+        {/* Information grid — 3 cols × 2 rows on desktop, no enclosures */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 lg:gap-x-14 gap-y-12 md:gap-y-14">
           {differentiators.map((d, i) => (
-            <Reveal
-              as="article"
-              key={d.index}
-              delay={i * 50}
-              className="editorial-row group relative grid grid-cols-12 gap-x-6 gap-y-6 py-10 md:py-14 border-b border-[var(--color-line)]"
-            >
-              {/* Drop-cap outlined numeral */}
-              <div className="col-span-12 md:col-span-3 lg:col-span-3 flex items-start gap-4">
-                <span
-                  aria-hidden="true"
-                  className="outline-numeral index-display block text-[96px] md:text-[120px] lg:text-[148px] -mt-2 md:-mt-3"
-                >
-                  {d.index}
-                </span>
-                <span className="hidden md:block font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-5)] mt-3">
-                  Reason
-                </span>
+            <Reveal as="article" key={d.index} delay={i * 50}>
+              <div className="flex items-center gap-4">
+                <span className="item-index">{d.index}</span>
+                <span aria-hidden="true" className="h-px flex-1 bg-[var(--color-line-2)]" />
               </div>
-
-              {/* Headline */}
-              <h3 className="col-span-12 md:col-span-9 lg:col-span-5 self-center font-display text-[24px] md:text-[28px] lg:text-[34px] font-semibold leading-[1.08] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
+              <h3 className="mt-5 font-display text-[19px] md:text-[20px] lg:text-[22px] font-semibold leading-[1.22] tracking-[-0.018em] text-[var(--color-fg)] text-balance">
                 {d.heading}
               </h3>
-
-              {/* Body + footer rail */}
-              <div className="col-span-12 md:col-span-9 md:col-start-4 lg:col-span-4 lg:col-start-9 self-center">
-                <p className="text-[14.5px] md:text-[15.5px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
-                  {d.body}
-                </p>
-                <div className="mt-5 flex items-center justify-between text-[var(--color-fg-5)]">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.16em]">
-                    {String(i + 1).padStart(2, '0')} / 06
-                  </span>
-                  <ArrowUpRight
-                    className="h-4 w-4 transition-all duration-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[var(--color-brand-700)]"
-                    strokeWidth={2}
-                  />
-                </div>
-              </div>
+              <p className="mt-4 text-[14.5px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
+                {d.body}
+              </p>
             </Reveal>
           ))}
         </div>

@@ -305,17 +305,15 @@ export function Footer() {
 
       {/* Marquee credit strip */}
       <div className="border-t border-white/10 overflow-hidden">
-        <div className="marquee-slow py-3 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/35">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <span key={i} className="inline-flex items-center gap-3 whitespace-nowrap">
-              Alphinix Technologies
-              <span className="h-1 w-1 rounded-full bg-white/25" />
-              Pune · Maharashtra · India
-              <span className="h-1 w-1 rounded-full bg-white/25" />
-              Built around published standards
-              <span className="h-1 w-1 rounded-full bg-white/25" />
-              One platform · five audiences
-              <span className="h-1 w-1 rounded-full bg-white/25" />
+        <div className="marquee-slow py-3 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/30">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <span key={i} className="inline-flex items-center gap-4 whitespace-nowrap">
+              Alphinix Technologies Private Limited
+              <span className="h-1 w-1 rounded-full bg-white/20" />
+              Pune · India
+              <span className="h-1 w-1 rounded-full bg-white/20" />
+              Est. {year}
+              <span className="h-1 w-1 rounded-full bg-white/20" />
             </span>
           ))}
         </div>
