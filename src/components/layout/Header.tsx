@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Menu, X, ArrowUpRight, Search } from 'lucide-react';
+import { ChevronDown, Menu, X, ArrowUpRight, Search, ArrowRight } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { Container } from '@/components/ui/Container';
 import { ButtonLink } from '@/components/ui/Button';
@@ -47,8 +47,7 @@ export function Header() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // When over the dark hero (not scrolled), header is transparent with white text.
-  // When scrolled past the hero, header becomes solid white with ink text.
+  // Light header when scrolled (over light content); transparent when over the dark hero.
   const isLight = scrolled;
 
   return (
@@ -61,7 +60,6 @@ export function Header() {
       )}
       onMouseLeave={scheduleClose}
     >
-      {/* Main bar */}
       <Container className="flex h-16 md:h-[72px] items-center justify-between gap-6">
         <Wordmark tone={isLight ? 'ink' : 'paper'} />
 
@@ -87,7 +85,7 @@ export function Header() {
             aria-label="Search"
             className={cn(
               'inline-flex h-10 w-10 items-center justify-center rounded-[8px] transition-colors',
-              isLight ? 'hover:bg-[var(--color-paper-soft)]' : 'hover:bg-white/10',
+              isLight ? 'hover:bg-[var(--color-paper-blue)]' : 'hover:bg-white/10',
             )}
           >
             <Search className="h-4 w-4" strokeWidth={1.75} />
@@ -195,6 +193,11 @@ function NavTrigger({
 }
 
 /* ─────────────────────────────────────────── */
+/* Services mega menu — 4 cols, hover-driven content swap                    */
+/* Col 1: hover-able audience list                                           */
+/* Cols 2–3: services for the hovered audience                               */
+/* Col 4: featured CTA card                                                  */
+/* ─────────────────────────────────────────── */
 
 function ServicesPanel({
   open,
@@ -203,6 +206,9 @@ function ServicesPanel({
   open: boolean;
   onMouseEnter: () => void;
 }) {
+  const [active, setActive] = useState(0);
+  const seg = segments[active]!;
+
   return (
     <div
       onMouseEnter={onMouseEnter}
@@ -213,65 +219,120 @@ function ServicesPanel({
     >
       <div className="min-h-0">
         <Container>
-          <div className="grid grid-cols-12 gap-x-8">
-            {/* Left — 5-column directory of segments */}
-            <div className="col-span-12 lg:col-span-9 py-10">
-              <div className="mb-7 flex items-end justify-between">
-                <p className="eyebrow">Services directory</p>
-                <a
-                  href="/services"
-                  className="link-draw inline-flex items-center gap-1.5 text-[0.875rem] font-medium"
-                >
-                  See full directory <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                </a>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-8">
-                {segments.map((s) => (
-                  <div key={s.slug}>
-                    <a
-                      href={`/${s.slug}`}
-                      className="group block"
+          <div className="grid grid-cols-12 gap-x-8 py-10">
+            {/* Col 1 — audience list */}
+            <div className="col-span-12 md:col-span-4 lg:col-span-3">
+              <p className="eyebrow">Audiences</p>
+              <ul className="mt-5 -ml-2">
+                {segments.map((s, i) => (
+                  <li key={s.slug}>
+                    <button
+                      type="button"
+                      onMouseEnter={() => setActive(i)}
+                      onFocus={() => setActive(i)}
+                      onClick={() => { window.location.href = `/${s.slug}`; }}
+                      className={cn(
+                        'group flex w-full items-center justify-between gap-3 rounded-[8px] px-3 py-3 text-left transition-colors',
+                        i === active
+                          ? 'bg-[var(--color-paper-blue)]'
+                          : 'hover:bg-[var(--color-paper-blue)]',
+                      )}
                     >
-                      <p className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">
-                        {s.index}
-                      </p>
-                      <p className="mt-1 font-display text-[1.125rem] font-bold tracking-[-0.01em] text-[var(--color-ink)] group-hover:text-[var(--color-brand-700)] transition-colors">
-                        {s.name}
-                      </p>
-                    </a>
-                    <ul className="mt-4 space-y-1.5">
-                      {s.services.map((srv) => (
-                        <li key={srv}>
-                          <a
-                            href={`/${s.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                            className="block text-[0.875rem] leading-snug text-[var(--color-ink)]/70 hover:text-[var(--color-brand-700)]"
-                          >
-                            {srv}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                      <span className="flex items-baseline gap-3">
+                        <span
+                          aria-hidden="true"
+                          className="inline-block h-1.5 w-1.5 rounded-full mt-2"
+                          style={{ backgroundColor: `var(${s.colorVar})` }}
+                        />
+                        <span>
+                          <span className="block font-display text-[1.0625rem] font-bold tracking-[-0.01em]">
+                            {s.name}
+                          </span>
+                          <span className="block text-[0.8125rem] text-[var(--color-muted)] mt-0.5">
+                            {s.audience}
+                          </span>
+                        </span>
+                      </span>
+                      <ArrowRight
+                        className={cn(
+                          'h-4 w-4 transition-all',
+                          i === active
+                            ? 'text-[var(--color-brand-700)] translate-x-0.5'
+                            : 'text-[var(--color-muted)] opacity-0 group-hover:opacity-100',
+                        )}
+                        strokeWidth={1.75}
+                      />
+                    </button>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
-            {/* Right — featured CTA panel */}
-            <div className="hidden lg:flex lg:col-span-3 py-10 pl-8 border-l border-[var(--color-line)] flex-col justify-between">
-              <div>
-                <p className="eyebrow">Not sure where to start?</p>
-                <p className="mt-4 font-display text-[1.5rem] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--color-ink)]">
-                  Tell us the outcome you need. We will route the right team.
-                </p>
-                <p className="mt-3 text-[0.875rem] leading-relaxed text-[var(--color-ink)]/70">
-                  One conversation, one named owner, scoped plan within a week.
-                </p>
+            {/* Cols 2–3 — services for active audience */}
+            <div className="col-span-12 md:col-span-8 lg:col-span-6 md:border-l md:border-[var(--color-line)] md:pl-8">
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="eyebrow">Services</p>
+                  <p className="mt-2 font-display text-[1.5rem] md:text-[1.75rem] font-bold tracking-[-0.015em] text-[var(--color-ink)]">
+                    {seg.name} <span className="text-[var(--color-muted)]">— {seg.outcome.replace(/\.$/, '')}</span>
+                  </p>
+                </div>
               </div>
-              <div className="mt-6">
-                <ButtonLink href="/contact" variant="ink" size="md" trailingArrow>
-                  Schedule a call
-                </ButtonLink>
-                <p className="mt-3 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                {seg.services.map((srv) => (
+                  <li key={srv}>
+                    <a
+                      href={`/${seg.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                      className="group flex items-baseline justify-between rounded-[6px] px-3 py-2.5 text-[0.9375rem] hover:bg-[var(--color-paper-blue)] transition-colors"
+                    >
+                      <span className="text-[var(--color-ink)]">{srv}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5 text-[var(--color-muted)] opacity-0 transition-opacity group-hover:opacity-100" strokeWidth={2} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={`/${seg.slug}`}
+                className="mt-6 inline-flex items-center gap-1.5 text-[0.875rem] font-medium text-[var(--color-brand-700)] link-draw"
+              >
+                Visit the {seg.name.toLowerCase()} hub
+                <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
+              </a>
+            </div>
+
+            {/* Col 4 — featured CTA card */}
+            <div className="hidden lg:block lg:col-span-3">
+              <div
+                className="relative overflow-hidden rounded-[var(--radius-lg)] p-6 text-white"
+                style={{
+                  background:
+                    'linear-gradient(155deg, var(--color-brand-700) 0%, var(--color-brand-900) 70%, var(--color-ink-deep) 100%)',
+                }}
+              >
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full bg-white/10 blur-2xl"
+                />
+                <p className="relative font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-[var(--color-brand-300)]">
+                  Not sure where to start?
+                </p>
+                <p
+                  className="relative mt-4 font-display font-bold tracking-[-0.015em] text-balance"
+                  style={{ fontSize: 'clamp(1.25rem, 1.4vw, 1.5rem)', lineHeight: 1.18 }}
+                >
+                  Tell us the outcome you need. We will route the right team within a working day.
+                </p>
+                <div className="relative mt-6">
+                  <ButtonLink
+                    href="/contact"
+                    size="md"
+                    trailingArrow
+                    className="!bg-white !text-[var(--color-ink)] hover:!bg-white/90"
+                  >
+                    Schedule a call
+                  </ButtonLink>
+                </div>
+                <p className="relative mt-5 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-white/55">
                   Pune · Maharashtra · India
                 </p>
               </div>
@@ -306,7 +367,7 @@ function PortalPanel({
           <a
             key={l.label}
             href={l.href}
-            className="flex items-center justify-between px-3 py-2.5 text-[0.9375rem] rounded-[6px] transition-colors hover:bg-[var(--color-paper-soft)]"
+            className="flex items-center justify-between px-3 py-2.5 text-[0.9375rem] rounded-[6px] transition-colors hover:bg-[var(--color-paper-blue)]"
           >
             <span>{l.label}</span>
             <ArrowUpRight className="h-3.5 w-3.5 text-[var(--color-muted)]" strokeWidth={2} />
@@ -323,6 +384,9 @@ function PortalPanel({
 /* ─────────────────────────────────────────── */
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
+  const [open, setOpen] = useState<string | null>(null);
+  const toggle = (slug: string) => setOpen(open === slug ? null : slug);
+
   return (
     <div className="fixed inset-0 z-[60] flex flex-col bg-[var(--color-paper)] text-[var(--color-ink)] lg:hidden">
       <div className="flex h-16 items-center justify-between px-6 border-b border-[var(--color-line)]">
@@ -335,21 +399,62 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
         <div className="px-6 py-7">
           <p className="eyebrow">Services</p>
           <ul className="mt-5 divide-y divide-[var(--color-line)]">
-            {segments.map((s) => (
-              <li key={s.slug}>
-                <a
-                  href={`/${s.slug}`}
-                  className="flex items-baseline justify-between py-4"
-                  onClick={onClose}
-                >
-                  <span className="flex items-baseline gap-3">
-                    <span className="font-mono text-[0.6875rem] text-[var(--color-muted)]">{s.index}</span>
-                    <span className="font-display text-[1.375rem] font-bold tracking-[-0.01em]">{s.name}</span>
-                  </span>
-                  <ArrowUpRight className="h-4 w-4 text-[var(--color-muted)]" strokeWidth={2} />
-                </a>
-              </li>
-            ))}
+            {segments.map((s) => {
+              const expanded = open === s.slug;
+              return (
+                <li key={s.slug}>
+                  <button
+                    type="button"
+                    className="flex w-full items-baseline justify-between py-4 text-left"
+                    onClick={() => toggle(s.slug)}
+                    aria-expanded={expanded}
+                  >
+                    <span className="flex items-baseline gap-3">
+                      <span
+                        aria-hidden="true"
+                        className="inline-block h-1.5 w-1.5 rounded-full"
+                        style={{ backgroundColor: `var(${s.colorVar})` }}
+                      />
+                      <span className="font-mono text-[0.6875rem] text-[var(--color-muted)]">{s.index}</span>
+                      <span className="font-display text-[1.375rem] font-bold tracking-[-0.01em]">{s.name}</span>
+                    </span>
+                    <ChevronDown
+                      className={cn('h-4 w-4 text-[var(--color-muted)] transition-transform', expanded && 'rotate-180')}
+                      strokeWidth={2}
+                    />
+                  </button>
+                  <div
+                    className={cn(
+                      'overflow-hidden transition-[grid-template-rows] duration-300 grid',
+                      expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+                    )}
+                  >
+                    <ul className="min-h-0 pb-3 space-y-1">
+                      {s.services.map((srv) => (
+                        <li key={srv}>
+                          <a
+                            href={`/${s.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                            className="block py-1.5 text-[0.9375rem] text-[var(--color-ink)]/80"
+                            onClick={onClose}
+                          >
+                            {srv}
+                          </a>
+                        </li>
+                      ))}
+                      <li>
+                        <a
+                          href={`/${s.slug}`}
+                          className="link-draw mt-1 inline-flex items-center gap-1.5 py-1 text-[0.875rem] font-medium text-[var(--color-brand-700)]"
+                          onClick={onClose}
+                        >
+                          Visit hub <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

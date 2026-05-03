@@ -5,36 +5,8 @@ import { ArrowUpRight } from 'lucide-react';
 
 export function ContactBand() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Brand-blue gradient surface */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            'linear-gradient(135deg, var(--color-brand-700) 0%, var(--color-brand-900) 60%, var(--color-ink-deep) 100%)',
-        }}
-      />
-      {/* Soft glow accents */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-32 right-[10%] h-[420px] w-[420px] rounded-full bg-white/8 blur-[120px]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 -left-32 h-[380px] w-[380px] rounded-full bg-[var(--color-accent-500)]/15 blur-[120px]"
-      />
-      {/* Faint blueprint grid */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
-          maskImage: 'radial-gradient(ellipse 80% 60% at 50% 50%, #000 35%, transparent 100%)',
-        }}
-      />
+    <section className="relative overflow-hidden mesh-brand grain-ink text-white">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 blueprint-grid" />
 
       <Container className="relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-12 py-24 md:py-32">

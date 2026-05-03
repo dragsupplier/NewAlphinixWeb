@@ -2,23 +2,24 @@
 
 /* ─────────────────────────────────────────────────────────────
    Alphinix Design Tokens
-   Clean white surface · brand blue as primary accent · ink for type.
-   Visual depth comes from imagery and layout, not from page texture.
+   Blue-dominant. Dark navy for emphasis, medium blue for accents,
+   light blue tints for surfaces. White used sparingly.
    ───────────────────────────────────────────────────────────── */
 @theme {
   --font-display: 'Cabinet Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Satoshi', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
 
-  /* Surface */
+  /* Surface scale */
   --color-paper: #ffffff;
+  --color-paper-blue: #f3f6fc;       /* very light blue tint */
   --color-paper-soft: #f6f7fb;
   --color-paper-warm: #f3eee4;
   --color-ink: #0a0e27;
-  --color-ink-soft: #1a1f3a;
+  --color-ink-soft: #161b3c;
   --color-ink-deep: #060920;
 
-  /* Brand blue scale — primary accent */
+  /* Brand blue scale */
   --color-brand-50: #eef3ff;
   --color-brand-100: #dbe5ff;
   --color-brand-200: #b8c9ff;
@@ -28,14 +29,15 @@
   --color-brand-600: #2839c7;
   --color-brand-700: #1f2c9e;
   --color-brand-800: #1a2474;
-  --color-brand-900: #131a4f;
+  --color-brand-900: #0f1655;
+  --color-brand-950: #08103a;
 
-  /* Single warm accent — used only for the primary CTA on the dark band */
+  /* Single warm accent — used sparingly */
   --color-accent-300: #ffaa8a;
   --color-accent-500: #ff6b3d;
   --color-accent-600: #e8511f;
 
-  /* Per-segment accent tones (subtle, used in colour pills + hovers) */
+  /* Per-segment accent tones */
   --color-seg-students: #ff6b3d;
   --color-seg-colleges: #2546ff;
   --color-seg-schools: #1a8d6b;
@@ -43,12 +45,13 @@
   --color-seg-hiring: #d4a017;
 
   /* Neutrals */
-  --color-line: #e6e8ef;
+  --color-line: #e3e7ef;
+  --color-line-soft: #eef0f7;
   --color-line-strong: #cbcfd9;
   --color-muted: #6b6f80;
   --color-muted-strong: #4a4f60;
 
-  /* Radius — soft, contemporary */
+  /* Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 14px;
@@ -77,7 +80,7 @@
     margin: 0;
   }
 
-  ::selection { background: var(--color-ink); color: var(--color-paper); }
+  ::selection { background: var(--color-brand-700); color: var(--color-paper); }
 
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
@@ -90,7 +93,6 @@
   p { margin: 0; }
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; }
-  img { display: block; max-width: 100%; }
 
   :focus-visible {
     outline: 2px solid var(--color-brand-500);
@@ -107,14 +109,14 @@
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
-  /* Eyebrow chip — small label seen above section headlines */
+  /* Eyebrow chip */
   .eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-brand-700);
@@ -127,31 +129,11 @@
     border-radius: 9999px;
     background: var(--color-brand-600);
   }
-
-  /* Image plate — the standard surface for placeholder photos */
-  .image-plate {
-    position: relative;
-    overflow: hidden;
-    background: var(--color-paper-soft);
-    border-radius: var(--radius-lg);
-    isolation: isolate;
+  .eyebrow-light {
+    color: var(--color-brand-300);
   }
-  .image-plate img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .group:hover .image-plate img { transform: scale(1.02); }
-
-  /* Soft subtle gradient on image bottom for legibility of overlay text */
-  .image-plate::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 50%;
-    background: linear-gradient(to top, rgba(10, 14, 39, 0.65), transparent);
-    pointer-events: none;
+  .eyebrow-light::before {
+    background: var(--color-brand-300);
   }
 
   /* Underline that draws on hover */
@@ -171,6 +153,49 @@
   }
   .link-draw:hover::after { transform: scaleX(1); }
 
+  /* Mesh — deep blue gradient surface for hero/CTA */
+  .mesh-deep {
+    background:
+      radial-gradient(900px 580px at 12% -10%, rgba(58, 82, 230, 0.45), transparent 60%),
+      radial-gradient(700px 480px at 92% 110%, rgba(255, 107, 61, 0.18), transparent 60%),
+      linear-gradient(160deg, var(--color-ink-deep) 0%, var(--color-brand-950) 60%, var(--color-ink-deep) 100%);
+  }
+
+  /* Mesh — medium brand-blue gradient for ContactBand */
+  .mesh-brand {
+    background:
+      radial-gradient(800px 480px at 0% 0%, rgba(255, 255, 255, 0.10), transparent 50%),
+      radial-gradient(720px 480px at 100% 100%, rgba(255, 107, 61, 0.18), transparent 55%),
+      linear-gradient(135deg, var(--color-brand-700) 0%, var(--color-brand-900) 60%, var(--color-ink-deep) 100%);
+  }
+
+  /* Faint blueprint grid */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, #000 35%, transparent 100%);
+  }
+
+  /* Bordered grid container — for tile rooms */
+  .grid-room {
+    border-top: 1px solid var(--color-line);
+    border-left: 1px solid var(--color-line);
+  }
+  .grid-room > * {
+    border-right: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .grid-room-dark {
+    border-top: 1px solid rgba(255,255,255,0.10);
+    border-left: 1px solid rgba(255,255,255,0.10);
+  }
+  .grid-room-dark > * {
+    border-right: 1px solid rgba(255,255,255,0.10);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+  }
+
   /* Marquee — pure CSS */
   .marquee-track {
     display: flex;
@@ -183,7 +208,7 @@
     to   { transform: translateX(-50%); }
   }
 
-  /* Subtle grain — applied to dark CTA section */
+  /* Subtle grain — for dark sections */
   .grain-ink { position: relative; isolation: isolate; }
   .grain-ink::after {
     content: '';
@@ -195,7 +220,7 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
   }
 
-  /* Mount-in fade-up — for hero on first paint */
+  /* Mount-in fade-up */
   .mount-up {
     animation: mountUp 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -216,7 +241,17 @@
     transform: translateY(0);
   }
 
-  /* Mobile horizontal scroll-snap utilities */
+  /* Tab indicator */
+  .tab-indicator {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background: var(--color-brand-600);
+    transition: left 360ms cubic-bezier(0.22, 1, 0.36, 1),
+                width 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Mobile horizontal scroll-snap */
   .snap-strip {
     display: flex;
     gap: 1rem;
@@ -230,42 +265,6 @@
   .snap-strip > * {
     scroll-snap-align: start;
     flex-shrink: 0;
-  }
-
-  /* Full-bleed escape hatch — for hero sections that extend edge-to-edge */
-  .full-bleed {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-  }
-
-  /* Hero gradient overlay — drops legibility-grade tint over a hero image */
-  .hero-overlay::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(180deg, rgba(10, 14, 39, 0.10) 0%, rgba(10, 14, 39, 0.45) 50%, rgba(10, 14, 39, 0.85) 100%),
-      linear-gradient(90deg, rgba(10, 14, 39, 0.65) 0%, rgba(10, 14, 39, 0.20) 60%, rgba(10, 14, 39, 0.0) 100%);
-    pointer-events: none;
-  }
-
-  /* Tab indicator — animated underline that slides */
-  .tab-indicator {
-    position: absolute;
-    bottom: -1px;
-    height: 2px;
-    background: var(--color-brand-600);
-    transition: left 360ms cubic-bezier(0.22, 1, 0.36, 1),
-                width 360ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  /* Ticker — slower marquee for the bottom hero strip */
-  .ticker-track {
-    display: flex;
-    gap: 3rem;
-    width: max-content;
-    animation: marquee 90s linear infinite;
   }
 }
 
