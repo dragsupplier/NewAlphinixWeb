@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Container } from '@/components/ui/Container';
-import { ButtonLink } from '@/components/ui/Button';
 import { segments } from '@/data/segments';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function AudienceTabs() {
@@ -22,39 +21,23 @@ export function AudienceTabs() {
     return () => window.removeEventListener('resize', recompute);
   }, [active]);
 
-  useEffect(() => {
-    const onHash = () => {
-      const hash = window.location.hash;
-      if (!hash.startsWith('#audiences-')) return;
-      const slug = hash.replace('#audiences-', '');
-      const idx = segments.findIndex((s) => s.slug === slug);
-      if (idx >= 0) setActive(idx);
-    };
-    onHash();
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
-
   const seg = segments[active]!;
 
   return (
-    <section id="audiences" className="relative py-24 md:py-32 bg-[var(--color-paper)]">
+    <section id="audiences" className="section-y bg-[var(--color-bg)]">
       <Container>
-        {/* Section masthead */}
-        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-12 md:mb-16">
+        {/* Section opener */}
+        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-10 md:mb-14">
           <div className="lg:col-span-7">
-            <p className="kicker">Where you sit</p>
-            <h2
-              className="mt-5 font-display font-bold tracking-[-0.02em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)', lineHeight: 1 }}
-            >
-              Five audiences. One operating practice.
+            <p className="kicker">Audiences</p>
+            <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
+              Five doors to the same platform.
             </h2>
           </div>
           <div className="lg:col-span-5 lg:self-end">
-            <p className="text-[1rem] md:text-[1.0625rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
-              Alphinix is organised by who you are, not by what we sell. Pick the audience you belong to.
-              Every other page on this site is built around it.
+            <p className="text-[15px] md:text-[16px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
+              Alphinix is organised by who you are, not by what we sell. Pick the audience you belong to —
+              the platform, the team, and the deliverables shift accordingly.
             </p>
           </div>
         </div>
@@ -73,19 +56,18 @@ export function AudienceTabs() {
                 data-tab
                 role="tab"
                 aria-selected={i === active}
-                aria-controls={`audience-panel-${s.slug}`}
                 onClick={() => setActive(i)}
                 className={cn(
-                  'group relative flex shrink-0 items-baseline gap-3 px-5 py-4 md:px-6 md:py-5 transition-colors',
+                  'group relative flex shrink-0 items-baseline gap-2.5 px-4 py-3.5 md:px-5 md:py-4 transition-colors',
                   i === active
-                    ? 'text-[var(--color-ink)]'
-                    : 'text-[var(--color-ink-muted)] hover:text-[var(--color-ink)]',
+                    ? 'text-[var(--color-fg)]'
+                    : 'text-[var(--color-fg-3)] hover:text-[var(--color-fg)]',
                 )}
               >
-                <span className="font-mono text-[0.75rem] uppercase tracking-[0.16em] opacity-70">
-                  {s.index}
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-fg-5)]">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className="font-display text-[1rem] md:text-[1.125rem] font-bold tracking-[-0.01em]">
+                <span className="font-display text-[15px] md:text-[16.5px] font-semibold tracking-tight">
                   {s.name}
                 </span>
               </button>
@@ -101,56 +83,44 @@ export function AudienceTabs() {
         {/* Active panel */}
         <div
           key={seg.slug}
-          id={`audience-panel-${seg.slug}`}
           role="tabpanel"
-          className="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12 mount-up"
+          className="mt-12 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12 wipe-in"
         >
-          {/* Left — heading + intent */}
           <div className="lg:col-span-5">
-            <p className="kicker">Segment {seg.index} — {seg.audience}</p>
-            <h3
-              className="mt-4 font-display font-bold tracking-[-0.025em] text-[var(--color-ink)]"
-              style={{ fontSize: 'clamp(2.25rem, 4.4vw, 3.5rem)', lineHeight: 1 }}
-            >
+            <p className="kicker">Segment {seg.index} · {seg.audience}</p>
+            <h3 className="mt-4 font-display text-[36px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.04] tracking-[-0.025em] text-[var(--color-fg)]">
               {seg.name}
             </h3>
-            <p
-              className="mt-6 max-w-xl font-display font-medium tracking-[-0.015em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.5rem)', lineHeight: 1.22 }}
-            >
+            <p className="mt-5 max-w-[40ch] text-[18px] md:text-[20px] font-medium leading-[1.3] tracking-tight text-[var(--color-fg-2)]">
               {seg.outcome}
             </p>
-            <p className="mt-5 max-w-xl text-[1rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
+            <p className="mt-5 max-w-[52ch] text-[15px] md:text-[16px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
               {seg.intent}
             </p>
-            <div className="mt-8">
-              <ButtonLink
-                href={`/${seg.slug}`}
-                size="md"
-                trailingArrow
-                className="!bg-[var(--color-navy-900)] !text-white hover:!bg-[var(--color-navy-800)]"
-              >
-                Visit the {seg.name.toLowerCase()} hub
-              </ButtonLink>
-            </div>
+            <a
+              href={`/${seg.slug}`}
+              className="link-rule mt-7 text-[14px]"
+            >
+              Visit the {seg.name.toLowerCase()} hub
+              <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+            </a>
           </div>
 
-          {/* Right — service list with hairline rows */}
           <div className="lg:col-span-7">
             <p className="kicker">Services for {seg.name.toLowerCase()}</p>
-            <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-8 border-t border-[var(--color-line)]">
-              {seg.services.map((srv) => (
-                <li key={srv} className="border-b border-[var(--color-line)]">
+            <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+              {seg.services.map((srv, i) => (
+                <li key={srv} className={cn('cap-row', i === 0 && 'sm:[&]:cap-row')}>
                   <a
                     href={`/${seg.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                    className="group flex items-baseline justify-between gap-3 py-4 transition-colors"
+                    className="group flex items-center justify-between py-3.5"
                   >
-                    <span className="text-[0.9375rem] md:text-[1rem] text-[var(--color-ink)] group-hover:text-[var(--color-navy-700)]">
+                    <span className="under-slide text-[14.5px] font-medium text-[var(--color-fg)] group-hover:text-[var(--color-brand-700)]">
                       {srv}
                     </span>
                     <ArrowUpRight
-                      className="h-4 w-4 text-[var(--color-muted)] transition-all group-hover:text-[var(--color-navy-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      strokeWidth={1.75}
+                      className="h-3.5 w-3.5 text-[var(--color-fg-5)] transition-all group-hover:text-[var(--color-brand-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      strokeWidth={2.25}
                     />
                   </a>
                 </li>

@@ -6,9 +6,13 @@ type WordmarkProps = {
 };
 
 export function Wordmark({ className, tone = 'ink' }: WordmarkProps) {
-  const color = tone === 'ink' ? 'text-[var(--color-ink)]' : 'text-[var(--color-paper)]';
+  const color = tone === 'ink' ? 'text-[var(--color-fg)]' : 'text-white';
   return (
-    <a href="/" className={cn('group inline-flex items-center gap-2.5', className)} aria-label="Alphinix — home">
+    <a
+      href="/"
+      className={cn('group inline-flex items-center gap-2.5', className)}
+      aria-label="Alphinix — home"
+    >
       <svg
         viewBox="0 0 32 32"
         className={cn('h-6 w-6', color)}
@@ -20,12 +24,12 @@ export function Wordmark({ className, tone = 'ink' }: WordmarkProps) {
           stroke="currentColor"
           strokeWidth="2.4"
           strokeLinecap="square"
+          strokeLinejoin="miter"
         />
-        <circle cx="27" cy="6" r="2.5" fill="var(--color-accent-500)" />
       </svg>
       <span
         className={cn(
-          'font-display text-[1.0625rem] font-bold tracking-[-0.02em]',
+          'font-display text-[17px] font-semibold tracking-[-0.018em]',
           color,
         )}
       >

@@ -10,20 +10,17 @@ const frameworks = [
 
 export function Standards() {
   return (
-    <section className="bg-[var(--color-paper-blue)] py-24 md:py-32">
+    <section className="section-y bg-[var(--color-canvas)]">
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12 mb-14 md:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12 mb-12 md:mb-16">
           <div className="lg:col-span-7">
             <p className="kicker">Built around standards</p>
-            <h2
-              className="mt-5 font-display font-bold tracking-[-0.025em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)', lineHeight: 1 }}
-            >
+            <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
               Aligned with the frameworks institutions answer to.
             </h2>
           </div>
           <div className="lg:col-span-5 lg:self-end">
-            <p className="text-[1rem] md:text-[1.0625rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
+            <p className="text-[15px] md:text-[16px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
               Every program and every infrastructure setup is designed against the published guidelines of
               India&apos;s education and technical-education bodies. Credible at audit, accreditation, and
               policy-level conversations.
@@ -31,22 +28,16 @@ export function Standards() {
           </div>
         </div>
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border-t border-[var(--color-line-strong)]">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
           {frameworks.map((f) => (
-            <li
-              key={f.code}
-              className="border-b border-[var(--color-line-strong)] lg:border-r lg:last:border-r-0 sm:[&:nth-child(odd)]:border-r p-6 md:p-7 lg:p-8 lg:first:pl-0"
-            >
-              <p
-                className="font-display font-bold tracking-[-0.025em] text-[var(--color-navy-900)]"
-                style={{ fontSize: 'clamp(1.875rem, 2.6vw, 2.5rem)', lineHeight: 0.98 }}
-              >
+            <li key={f.code} className="card glow-card p-6 md:p-7">
+              <p className="font-display text-[28px] md:text-[32px] font-semibold leading-[0.98] tracking-[-0.025em] text-[var(--color-brand-700)]">
                 {f.code}
               </p>
-              <p className="mt-3 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+              <p className="mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-fg-5)]">
                 {f.name}
               </p>
-              <p className="mt-3 text-[0.875rem] leading-relaxed text-[var(--color-ink-muted)]">
+              <p className="mt-3 text-[13.5px] leading-[1.6] text-[var(--color-fg-3)]">
                 {f.note}
               </p>
             </li>

@@ -10,12 +10,12 @@ const categories = [
 
 export function TrustStrip() {
   return (
-    <section className="bg-[var(--color-paper-blue)] py-12 md:py-14 border-b border-[var(--color-line)]">
-      <Container>
+    <section className="bg-[var(--color-canvas)] border-y border-[var(--color-line)]">
+      <Container className="py-10 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-12 items-center">
           <div className="lg:col-span-3">
             <p className="kicker">Working with</p>
-            <p className="mt-3 font-display text-[1.375rem] md:text-[1.5rem] font-bold tracking-[-0.015em] text-[var(--color-ink)]">
+            <p className="mt-3 font-display text-[20px] md:text-[22px] font-semibold tracking-[-0.018em] leading-[1.18] text-[var(--color-fg)]">
               Institutions and teams across India
             </p>
           </div>
@@ -23,7 +23,7 @@ export function TrustStrip() {
             {categories.map((c) => (
               <li
                 key={c}
-                className="font-display text-[0.9375rem] md:text-[1rem] font-medium tracking-[-0.005em] text-[var(--color-ink)]"
+                className="text-[14.5px] md:text-[15px] font-semibold tracking-tight text-[var(--color-fg-2)]"
               >
                 {c}
               </li>
