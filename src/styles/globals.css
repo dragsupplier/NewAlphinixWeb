@@ -2,8 +2,8 @@
 
 /* ─────────────────────────────────────────────────────────────
    Alphinix Design Tokens
-   Brand blue is the anchor. ONE warm accent (coral) for CTA pop.
-   No gradients. No glassmorphism. Editorial discipline.
+   Brand blue is the anchor. ONE warm accent (coral) for emphasis.
+   No glassmorphism. Editorial discipline + architectural detail.
    ───────────────────────────────────────────────────────────── */
 @theme {
   --font-display: 'Cabinet Grotesk', ui-sans-serif, system-ui, sans-serif;
@@ -12,9 +12,11 @@
 
   /* Ink + Paper — the foundation */
   --color-ink: #0a0e27;
-  --color-ink-soft: #1a1f3a;
+  --color-ink-soft: #161b3c;
+  --color-ink-deep: #060920;
   --color-paper: #fafaf7;
   --color-paper-warm: #f3efe6;
+  --color-paper-elev: #ffffff;
 
   /* Brand blue scale */
   --color-brand-50: #eef2ff;
@@ -29,10 +31,18 @@
   --color-brand-900: #131a4f;
   --color-brand-950: #0a0e27;
 
-  /* Single warm accent — used sparingly for CTA + emphasis */
+  /* Single warm accent — used sparingly for emphasis */
   --color-accent-50: #fff3ed;
+  --color-accent-300: #ffaa8a;
   --color-accent-500: #ff6b3d;
   --color-accent-600: #e8511f;
+
+  /* Per-segment accent tones — restrained, all in the same family */
+  --color-seg-students: #ff6b3d;   /* warm coral — energy */
+  --color-seg-colleges: #2546ff;   /* deep brand blue */
+  --color-seg-schools: #1a8d6b;    /* muted teal-green */
+  --color-seg-businesses: #6b4ce8; /* deep indigo-purple */
+  --color-seg-hiring: #d4a017;     /* warm ochre */
 
   /* Neutrals */
   --color-line: #e6e2d6;
@@ -67,7 +77,15 @@
   }
 
   body {
-    background: var(--color-paper);
+    background-color: var(--color-paper);
+    /* Substrate — engineering-paper dot grid (extremely subtle) */
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(10, 14, 39, 0.07) 1px,
+      transparent 0
+    );
+    background-size: 22px 22px;
+    background-attachment: fixed;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-feature-settings: 'ss01', 'ss02', 'cv11';
@@ -113,52 +131,61 @@
    Utilities
    ───────────────────────────────────────────────────────────── */
 @layer utilities {
-  .font-display {
-    font-family: var(--font-display);
-  }
+  .font-display { font-family: var(--font-display); }
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
 
-  .text-balance {
-    text-wrap: balance;
-  }
+  /* Architectural hairline — used as section dividers */
+  .rule       { height: 1px; background: var(--color-ink); opacity: 0.12; }
+  .rule-light { height: 1px; background: currentColor; opacity: 0.18; }
 
-  .text-pretty {
-    text-wrap: pretty;
-  }
-
-  /* Hairline rule — used as section dividers in editorial layout */
-  .rule {
-    height: 1px;
-    background: var(--color-ink);
-    opacity: 0.12;
-  }
-
-  .rule-light {
+  /* Hairline rule with measurement marks (architectural drawing feel) */
+  .measure-rule {
+    position: relative;
     height: 1px;
     background: currentColor;
     opacity: 0.18;
   }
+  .measure-rule::before,
+  .measure-rule::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    width: 1px;
+    height: 7px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+  .measure-rule::before { left: 0; }
+  .measure-rule::after  { right: 0; }
 
   /* Underline that draws on hover */
   .link-draw {
     position: relative;
     display: inline-block;
   }
-
   .link-draw::after {
     content: '';
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
+    left: 0; right: 0; bottom: -2px;
     height: 1px;
     background: currentColor;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
   }
+  .link-draw:hover::after { transform: scaleX(1); }
 
-  .link-draw:hover::after {
-    transform: scaleX(1);
+  /* A small accent dot — coral marker before kickers */
+  .dot-accent::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 10px;
+    border-radius: 9999px;
+    background: var(--color-accent-500);
+    transform: translateY(-2px);
   }
 
   /* Marquee — pure CSS, GPU-accelerated */
@@ -168,10 +195,7 @@
     width: max-content;
     animation: marquee var(--marquee-duration, 40s) linear infinite;
   }
-
-  .marquee-track-reverse {
-    animation-direction: reverse;
-  }
+  .marquee-track-reverse { animation-direction: reverse; }
 
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -179,25 +203,106 @@
   }
 
   /* Subtle grain — applied to ink panels for tactile feel */
-  .grain-ink {
-    position: relative;
-    isolation: isolate;
-  }
+  .grain-ink { position: relative; isolation: isolate; }
   .grain-ink::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.04;
+    opacity: 0.06;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
   }
+
+  /* Engineering-grid pattern overlay — sits on top of dark sections */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /* Subtle blue mesh — for the dark capability section */
+  .mesh-blue {
+    background:
+      radial-gradient(900px 480px at 8% 0%, rgba(58, 82, 230, 0.18), transparent 60%),
+      radial-gradient(700px 480px at 92% 100%, rgba(255, 107, 61, 0.10), transparent 60%),
+      var(--color-ink);
+  }
+
+  /* Corner brackets — architectural composition mark */
+  .bracket-tl, .bracket-tr, .bracket-bl, .bracket-br {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid currentColor;
+    opacity: 0.4;
+  }
+  .bracket-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+  .bracket-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+  .bracket-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+  .bracket-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+  /* Mount-in fade-up — for headlines on first paint */
+  .mount-up {
+    animation: mountUp 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes mountUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Reveal on scroll — hooked by useReveal */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [data-reveal][data-reveal-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SVG diagram — stroke-draw for hub/spoke lines */
+  .draw-line {
+    stroke-dasharray: 320;
+    stroke-dashoffset: 320;
+    animation: drawLine 1400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+  /* Pulse dot traveling along a line */
+  .pulse-travel {
+    animation: pulseTravel 4s linear infinite;
+  }
+  @keyframes pulseTravel {
+    0%   { offset-distance: 0%;   opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+
+  /* A vertical accent bar used on segment rows */
+  .seg-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .group:hover .seg-bar { transform: scaleY(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

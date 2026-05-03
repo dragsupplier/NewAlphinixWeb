@@ -6,6 +6,8 @@ export type Segment = {
   outcome: string;
   intent: string;
   services: string[];
+  /** CSS variable name for the segment accent colour. */
+  colorVar: string;
 };
 
 export const segments: Segment[] = [
@@ -26,6 +28,7 @@ export const segments: Segment[] = [
       'Coding programs',
       'Skill development',
     ],
+    colorVar: '--color-seg-students',
   },
   {
     index: '02',
@@ -45,6 +48,7 @@ export const segments: Segment[] = [
       'AI, IoT, and Cloud labs',
       'Curriculum consulting',
     ],
+    colorVar: '--color-seg-colleges',
   },
   {
     index: '03',
@@ -62,6 +66,7 @@ export const segments: Segment[] = [
       'Hardware kits (Arduino, Raspberry Pi, drones)',
       'Teacher training',
     ],
+    colorVar: '--color-seg-schools',
   },
   {
     index: '04',
@@ -80,6 +85,7 @@ export const segments: Segment[] = [
       'Digital marketing',
       'Technology consulting',
     ],
+    colorVar: '--color-seg-businesses',
   },
   {
     index: '05',
@@ -97,5 +103,6 @@ export const segments: Segment[] = [
       'Recruitment process outsourcing',
       'Bulk hiring drives',
     ],
+    colorVar: '--color-seg-hiring',
   },
 ];

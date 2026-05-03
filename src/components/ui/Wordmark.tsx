@@ -21,6 +21,7 @@ export function Wordmark({ className, tone = 'ink' }: WordmarkProps) {
           strokeWidth="2.4"
           strokeLinecap="square"
         />
+        <circle cx="27" cy="6" r="2.5" fill="var(--color-accent-500)" />
       </svg>
       <span
         className={cn(
