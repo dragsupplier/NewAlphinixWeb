@@ -1,9 +1,19 @@
+import { useEffect, useState } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { ButtonLink } from '@/components/ui/Button';
 import { segments } from '@/data/segments';
 import { portalLinks } from '@/data/nav';
-import { ArrowUpRight, Mail, Phone, MapPin, Linkedin, Instagram, Twitter, Youtube } from 'lucide-react';
+import {
+  ArrowUpRight,
+  Mail,
+  Phone,
+  MapPin,
+  Linkedin,
+  Instagram,
+  Twitter,
+  Youtube,
+} from 'lucide-react';
 
 const companyLinks = [
   { label: 'About', href: '/about' },
@@ -43,12 +53,34 @@ const socials = [
   { label: 'YouTube', href: '#', Icon: Youtube },
 ];
 
+function useIstClock() {
+  const [time, setTime] = useState(() => formatIst(new Date()));
+  useEffect(() => {
+    const id = window.setInterval(() => setTime(formatIst(new Date())), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+  return time;
+}
+
+function formatIst(date: Date) {
+  return new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  })
+    .format(date)
+    .replace(/ /g, ' ');
+}
+
 export function Footer() {
   const year = new Date().getFullYear();
   const totalServices = segments.reduce((n, s) => n + s.services.length, 0);
+  const ist = useIstClock();
 
   return (
-    <footer className="bg-[var(--color-fg)] text-white">
+    <footer className="relative overflow-hidden bg-[var(--color-fg)] text-white">
       {/* Pre-footer CTA strip */}
       <Container>
         <div className="border-b border-white/10 py-14 md:py-20">
@@ -56,7 +88,8 @@ export function Footer() {
             <div className="lg:col-span-8">
               <p className="kicker kicker-on-dark">Let&apos;s build something</p>
               <h3 className="mt-4 font-display text-[30px] md:text-[42px] lg:text-[52px] font-semibold leading-[1.04] tracking-[-0.022em] text-balance">
-                One conversation. One named owner.<br />
+                One conversation. One named owner.
+                <br />
                 <span className="text-[var(--color-brand-200)]">A scoped plan within a week.</span>
               </h3>
             </div>
@@ -166,13 +199,20 @@ export function Footer() {
                 </li>
               </ul>
 
+              {/* Live status row — IST clock + response window */}
               <div className="mt-8 grid grid-cols-2 gap-6 max-w-md border-t border-white/10 pt-6">
                 <div>
-                  <p className="kicker kicker-on-dark">Office hours</p>
-                  <p className="mt-2 font-display text-[15px] font-semibold tracking-[-0.018em] text-white">
-                    Mon — Sat
+                  <p className="kicker kicker-on-dark inline-flex items-center gap-2">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-brand-300)] opacity-75 pulse-dot" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-brand-300)]" />
+                    </span>
+                    Pune time
                   </p>
-                  <p className="text-[12.5px] text-white/65">10:00 — 19:00 IST</p>
+                  <p className="mt-2 font-mono text-[18px] font-semibold tabular-nums text-white">
+                    {ist}
+                  </p>
+                  <p className="text-[12px] text-white/55">IST · UTC+5:30</p>
                 </div>
                 <div>
                   <p className="kicker kicker-on-dark">Response within</p>
@@ -191,9 +231,14 @@ export function Footer() {
                       <a
                         href={href}
                         aria-label={label}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-white/15 text-white/75 transition-colors hover:border-white/40 hover:text-white"
+                        className="social-icon relative inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-white/15 text-white/75 transition-colors hover:border-white/40 hover:text-white"
                       >
-                        <Icon className="h-4 w-4" strokeWidth={1.75} />
+                        <span className="ic-base inline-flex">
+                          <Icon className="h-4 w-4" strokeWidth={1.75} />
+                        </span>
+                        <span className="ic-hover">
+                          <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+                        </span>
                       </a>
                     </li>
                   ))}
@@ -232,7 +277,7 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Bottom utility */}
+      {/* Bottom utility row */}
       <Container>
         <div className="border-t border-white/10 py-5">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-[11.5px] text-white/55">
@@ -245,14 +290,46 @@ export function Footer() {
               <button
                 type="button"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="inline-flex items-center gap-1 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-1 hover:text-white transition-colors"
               >
-                Back to top <ArrowUpRight className="h-3 w-3 -rotate-45" strokeWidth={2} />
+                Back to top
+                <ArrowUpRight
+                  className="h-3 w-3 -rotate-45 transition-transform group-hover:-translate-y-0.5"
+                  strokeWidth={2}
+                />
               </button>
             </div>
           </div>
         </div>
       </Container>
+
+      {/* Marquee credit strip */}
+      <div className="border-t border-white/10 overflow-hidden">
+        <div className="marquee-slow py-3 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/35">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <span key={i} className="inline-flex items-center gap-3 whitespace-nowrap">
+              Alphinix Technologies
+              <span className="h-1 w-1 rounded-full bg-white/25" />
+              Pune · Maharashtra · India
+              <span className="h-1 w-1 rounded-full bg-white/25" />
+              Built around published standards
+              <span className="h-1 w-1 rounded-full bg-white/25" />
+              One platform · five audiences
+              <span className="h-1 w-1 rounded-full bg-white/25" />
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Giant outlined wordmark — sits behind everything */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none select-none flex justify-center px-4 pb-3 md:pb-6"
+      >
+        <span className="footer-wordmark text-[clamp(80px,18vw,260px)] leading-none">
+          ALPHINIX
+        </span>
+      </div>
     </footer>
   );
 }

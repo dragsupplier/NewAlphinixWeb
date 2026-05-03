@@ -337,6 +337,183 @@
     display: inline-block;
     animation: word-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
+
+  /* ─── Plaque card — for Standards section ───────────────────── */
+  .plaque {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    transition: transform 380ms cubic-bezier(0.2, 0.7, 0.2, 1),
+                border-color 280ms ease,
+                box-shadow 380ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .plaque::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-brand-900);
+    background-image:
+      radial-gradient(at 16% 18%, hsla(225, 70%, 38%, 0.55) 0px, transparent 55%),
+      radial-gradient(at 84% 84%, hsla(220, 80%, 22%, 0.65) 0px, transparent 55%);
+    transform: translateY(101%);
+    transition: transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    z-index: -1;
+  }
+  .plaque:hover {
+    border-color: var(--color-brand-900);
+    transform: translateY(-3px);
+    box-shadow: 0 28px 60px -32px rgba(15, 31, 77, 0.45);
+  }
+  .plaque:hover::before { transform: translateY(0); }
+  .plaque .plaque-fg { transition: color 320ms ease; }
+  .plaque:hover .plaque-fg-code   { color: #ffffff; }
+  .plaque:hover .plaque-fg-name   { color: var(--color-brand-200); }
+  .plaque:hover .plaque-fg-body   { color: rgba(255,255,255,0.78); }
+  .plaque:hover .plaque-fg-rule   { color: rgba(255,255,255,0.28); }
+  .plaque:hover .plaque-fg-meta   { color: rgba(255,255,255,0.55); }
+
+  /* ─── Bento featured tile (brand-mesh with subtle dot lattice) ── */
+  .bento-feature {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--color-brand-900);
+    background-image:
+      radial-gradient(at 12% 14%, hsla(225, 70%, 38%, 0.55) 0px, transparent 55%),
+      radial-gradient(at 86% 86%, hsla(220, 80%, 22%, 0.7) 0px, transparent 55%),
+      radial-gradient(at 80% 12%, hsla(220, 60%, 50%, 0.32) 0px, transparent 55%);
+    overflow: hidden;
+  }
+  .bento-feature::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: 0 0;
+    mask-image: radial-gradient(circle at 30% 100%, black, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Giant index numeral used in bento + plaque */
+  .index-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 0.85;
+  }
+
+  /* ─── Editorial featured card (Resources) ──────────────────── */
+  .feature-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--color-fg);
+    color: white;
+  }
+  .feature-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(at 8% 18%, hsla(225, 70%, 40%, 0.55) 0px, transparent 50%),
+      radial-gradient(at 92% 90%, hsla(220, 80%, 22%, 0.6) 0px, transparent 55%);
+    z-index: -1;
+  }
+  .feature-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(currentColor 1px, transparent 1px);
+    background-size: 100% 28px;
+    opacity: 0.05;
+    pointer-events: none;
+    mask-image: linear-gradient(to right, black, transparent 70%);
+  }
+
+  /* ─── Mini ruled card (Resources tile) ─────────────────────── */
+  .tile-rule {
+    position: relative;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    transition: border-color 280ms ease, transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tile-rule::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 2px;
+    background: var(--color-brand-700);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tile-rule:hover {
+    border-color: var(--color-line-2);
+    transform: translateY(-2px);
+  }
+  .tile-rule:hover::after { transform: scaleX(1); }
+
+  /* ─── Footer giant wordmark ────────────────────────────────── */
+  .footer-wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    line-height: 0.82;
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.02) 70%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    user-select: none;
+  }
+
+  /* Marquee for footer credit strip */
+  .marquee-slow {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: marquee 80s linear infinite;
+  }
+
+  /* Footer rule that draws on reveal */
+  @keyframes rule-draw {
+    from { transform: scaleX(0); transform-origin: left; }
+    to   { transform: scaleX(1); transform-origin: left; }
+  }
+  .rule-draw { animation: rule-draw 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+  /* Social icon hover — arrow swap */
+  .social-icon {
+    position: relative;
+    overflow: hidden;
+  }
+  .social-icon > .ic-base,
+  .social-icon > .ic-hover {
+    transition: transform 340ms cubic-bezier(0.2, 0.7, 0.2, 1),
+                opacity 240ms ease;
+  }
+  .social-icon > .ic-hover {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  .social-icon:hover > .ic-base  { transform: translateY(-110%); opacity: 0; }
+  .social-icon:hover > .ic-hover { transform: translateY(0); opacity: 1; }
+
+  /* Bento number that scales-in on enter */
+  @keyframes count-in {
+    from { transform: translateY(40%) scale(0.92); opacity: 0; letter-spacing: -0.02em; }
+    to   { transform: translateY(0) scale(1); opacity: 1; letter-spacing: -0.05em; }
+  }
+  .count-in { animation: count-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 }
 
 @media (prefers-reduced-motion: reduce) {
