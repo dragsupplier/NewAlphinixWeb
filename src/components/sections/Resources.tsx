@@ -87,65 +87,60 @@ export function Resources() {
           </a>
         </div>
 
-        <div className="border-t border-[var(--color-fg)]">
-          {/* Featured row */}
-          <Reveal>
-            <a
-              href={featured.href}
-              className="row-hover group block border-b border-[var(--color-line)] py-8 md:py-10"
-            >
-              <div className="grid grid-cols-12 gap-x-6 gap-y-4 items-baseline">
-                <span className="col-span-12 md:col-span-2 item-index">
-                  {featured.tag}
+        {/* Magazine cover (left, 7-col) + index list (right, 5-col) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-[var(--color-fg)]">
+          {/* Featured cover */}
+          <Reveal className="lg:col-span-7 lg:border-r lg:border-[var(--color-line)] py-10 md:py-12 lg:pr-12 xl:pr-16">
+            <a href={featured.href} className="group block">
+              <span className="item-index">{featured.tag}</span>
+              <h3 className="mt-6 font-display text-[30px] md:text-[40px] lg:text-[52px] font-semibold leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)] text-balance">
+                <span className="under-slide">{featured.title}</span>
+              </h3>
+              <p className="mt-6 max-w-[60ch] text-[15px] md:text-[16px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
+                {featured.excerpt}
+              </p>
+              <div className="mt-10 flex items-baseline justify-between border-t border-[var(--color-line)] pt-5 text-[var(--color-fg-5)]">
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em]">
+                  {featured.meta}
                 </span>
-                <div className="col-span-12 md:col-span-7">
-                  <h3 className="font-display text-[22px] md:text-[26px] lg:text-[30px] font-semibold leading-[1.15] tracking-[-0.02em] text-[var(--color-fg)] text-balance">
-                    <span className="under-slide">{featured.title}</span>
-                  </h3>
-                  <p className="mt-3 max-w-[60ch] text-[14.5px] md:text-[15px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
-                    {featured.excerpt}
-                  </p>
-                </div>
-                <div className="col-span-12 md:col-span-3 md:text-right flex md:flex-col md:items-end items-baseline gap-3 md:gap-2">
-                  <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-fg-5)] tabular-nums">
-                    {featured.meta}
-                  </span>
+                <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[var(--color-fg)]">
+                  Read in full
                   <ArrowUpRight
-                    className="ml-auto md:ml-0 h-4 w-4 text-[var(--color-fg-5)] transition-all group-hover:text-[var(--color-brand-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    strokeWidth={2}
+                    className="h-3.5 w-3.5 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--color-brand-700)]"
+                    strokeWidth={2.25}
                   />
-                </div>
+                </span>
               </div>
             </a>
           </Reveal>
 
-          {/* Standard rows */}
-          {rest.map((r, i) => (
-            <Reveal key={r.serial} delay={i * 50}>
-              <a
-                href={r.href}
-                className="row-hover group block border-b border-[var(--color-line)] py-6 md:py-7"
+          {/* Index list of remaining articles */}
+          <ol className="lg:col-span-5 lg:pl-12 xl:pl-16">
+            {rest.map((r, i) => (
+              <Reveal
+                as="li"
+                key={r.serial}
+                delay={i * 60}
+                className="border-t border-[var(--color-line)] first:border-t-0 lg:first:border-t-0"
               >
-                <div className="grid grid-cols-12 gap-x-6 gap-y-2 items-baseline">
-                  <span className="col-span-6 md:col-span-2 item-index">
-                    {r.tag}
-                  </span>
-                  <h3 className="col-span-12 md:col-span-7 font-display text-[16px] md:text-[18px] font-semibold leading-[1.25] tracking-[-0.015em] text-[var(--color-fg)] order-3 md:order-none">
+                <a href={r.href} className="row-hover group block py-6 md:py-7">
+                  <span className="item-index">{r.tag}</span>
+                  <h3 className="mt-2.5 font-display text-[16px] md:text-[18px] font-semibold leading-[1.28] tracking-[-0.015em] text-[var(--color-fg)] text-balance">
                     <span className="under-slide">{r.title}</span>
                   </h3>
-                  <div className="col-span-6 md:col-span-3 md:text-right flex md:items-baseline md:justify-end items-baseline gap-3">
-                    <span className="ml-auto md:ml-0 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-fg-5)] tabular-nums">
+                  <div className="mt-4 flex items-center justify-between text-[var(--color-fg-5)]">
+                    <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] tabular-nums">
                       {r.meta}
                     </span>
                     <ArrowUpRight
-                      className="h-3.5 w-3.5 text-[var(--color-fg-5)] transition-all group-hover:text-[var(--color-brand-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      className="h-3.5 w-3.5 transition-all group-hover:text-[var(--color-brand-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       strokeWidth={2.25}
                     />
                   </div>
-                </div>
-              </a>
-            </Reveal>
-          ))}
+                </a>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </Container>
     </section>

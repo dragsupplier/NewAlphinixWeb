@@ -45,42 +45,45 @@ export function SignatureBlocks() {
   return (
     <section id="approach" className="section-y bg-[var(--color-canvas)]">
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12 mb-14 md:mb-20">
-          <div className="lg:col-span-7">
+        <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-16">
+          {/* Sticky left rail — context that stays in view */}
+          <aside className="lg:col-span-5 lg:sticky lg:top-24 lg:self-start mb-12 lg:mb-0">
             <p className="kicker">Why Alphinix</p>
             <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
               Six reasons institutions choose to work with us.
             </h2>
-          </div>
-          <div className="lg:col-span-5 lg:self-end">
-            <p className="text-[15px] md:text-[16px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
+            <p className="mt-6 max-w-md text-[15px] md:text-[16px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
               The reason Alphinix exists as one company instead of five is structural. The economics, the
               relationships, and the documentation are easier to run when the same team owns every part.
             </p>
-            <div className="mt-6">
+            <div className="mt-8">
               <ButtonLink href="/about" variant="brand" size="md" trailingArrow>
                 Read our approach
               </ButtonLink>
             </div>
-          </div>
-        </div>
+          </aside>
 
-        {/* Information grid — 3 cols × 2 rows on desktop, no enclosures */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 lg:gap-x-14 gap-y-12 md:gap-y-14">
-          {differentiators.map((d, i) => (
-            <Reveal as="article" key={d.index} delay={i * 50}>
-              <div className="flex items-center gap-4">
-                <span className="item-index">{d.index}</span>
-                <span aria-hidden="true" className="h-px flex-1 bg-[var(--color-line-2)]" />
-              </div>
-              <h3 className="mt-5 font-display text-[19px] md:text-[20px] lg:text-[22px] font-semibold leading-[1.22] tracking-[-0.018em] text-[var(--color-fg)] text-balance">
-                {d.heading}
-              </h3>
-              <p className="mt-4 text-[14.5px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
-                {d.body}
-              </p>
-            </Reveal>
-          ))}
+          {/* Scrolling right column — full-width statement rows */}
+          <div className="lg:col-span-7">
+            <div className="border-t border-[var(--color-fg)]">
+              {differentiators.map((d, i) => (
+                <Reveal
+                  as="article"
+                  key={d.index}
+                  delay={i * 50}
+                  className="border-b border-[var(--color-line)] py-10 md:py-12 lg:py-14"
+                >
+                  <span className="item-index">{d.index}</span>
+                  <h3 className="mt-4 font-display text-[22px] md:text-[26px] lg:text-[28px] font-semibold leading-[1.15] tracking-[-0.02em] text-[var(--color-fg)] text-balance">
+                    {d.heading}
+                  </h3>
+                  <p className="mt-4 max-w-[58ch] text-[14.5px] md:text-[15.5px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
+                    {d.body}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </div>
       </Container>
     </section>
