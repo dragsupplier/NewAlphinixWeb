@@ -49,43 +49,50 @@ export function Standards() {
           </div>
         </div>
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
-          {frameworks.map((f, i) => (
-            <Reveal as="li" key={f.code} delay={i * 80}>
-              <a
-                href="#"
-                className="plaque group flex h-full min-h-[260px] flex-col justify-between p-6 md:p-7"
+        {/* Masthead — heavy rule top + bottom, vertical hairlines between columns on desktop */}
+        <div className="border-y-2 border-[var(--color-fg)]">
+          <div className="grid grid-cols-1 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-[var(--color-line)]">
+            {frameworks.map((f, i) => (
+              <Reveal
+                key={f.code}
+                delay={i * 80}
+                className="editorial-row group relative flex flex-col py-9 md:py-12 lg:px-6 lg:first:pl-0 lg:last:pr-0"
               >
-                {/* Top: rotated index + status */}
-                <div className="flex items-start justify-between">
-                  <span className="plaque-fg plaque-fg-meta font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-5)]">
-                    Framework / {String(i + 1).padStart(2, '0')}
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-5)]">
+                    {String(i + 1).padStart(2, '0')} / {String(frameworks.length).padStart(2, '0')}
                   </span>
-                  <span className="plaque-fg plaque-fg-meta inline-flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-[var(--color-fg-5)]">
-                    <span className="block h-1.5 w-1.5 rounded-full bg-[var(--color-brand-700)] group-hover:bg-[var(--color-brand-200)]" />
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-[var(--color-fg-5)]">
+                    <span className="block h-1.5 w-1.5 rounded-full bg-[var(--color-brand-700)]" />
                     Active
                   </span>
                 </div>
 
-                {/* Middle: framework code (hero typography) */}
-                <div className="mt-8 md:mt-10">
-                  <p className="plaque-fg plaque-fg-code font-display text-[30px] md:text-[34px] lg:text-[36px] font-semibold leading-[0.96] tracking-[-0.028em] text-[var(--color-brand-700)]">
+                {/* Framework code as the logo/masthead */}
+                <div className="mt-10 md:mt-14">
+                  <p className="index-display font-display text-[40px] md:text-[44px] lg:text-[44px] font-semibold leading-[0.92] tracking-[-0.03em] text-[var(--color-brand-700)] transition-transform duration-500 group-hover:-translate-y-1">
                     {f.code}
                   </p>
-                  <div className="plaque-fg plaque-fg-rule mt-4 h-px w-12 bg-[var(--color-line-2)]" />
-                  <p className="plaque-fg plaque-fg-name mt-4 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-brand-700)]">
+                  {/* Stamp rule — the "seal" line under the code */}
+                  <div className="mt-3 h-px w-12 bg-[var(--color-fg)] origin-left transition-transform duration-500 group-hover:scale-x-[2.2]" />
+                  <p className="mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-fg-3)]">
                     {f.name}
                   </p>
                 </div>
 
-                {/* Bottom: body note */}
-                <p className="plaque-fg plaque-fg-body mt-6 text-[13px] leading-[1.6] text-[var(--color-fg-3)]">
+                <p className="mt-8 text-[13px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
                   {f.note}
                 </p>
-              </a>
-            </Reveal>
-          ))}
-        </ul>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        {/* Underline caption — small footer note for the masthead */}
+        <div className="mt-5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-fg-5)]">
+          <span>Five frameworks · India</span>
+          <span>Reviewed annually</span>
+        </div>
       </Container>
     </section>
   );

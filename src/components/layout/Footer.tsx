@@ -321,12 +321,12 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Giant outlined wordmark — sits behind everything */}
+      {/* Giant outlined wordmark — sits behind everything, drifts slowly */}
       <div
         aria-hidden="true"
         className="pointer-events-none select-none flex justify-center px-4 pb-3 md:pb-6"
       >
-        <span className="footer-wordmark text-[clamp(80px,18vw,260px)] leading-none">
+        <span className="footer-wordmark wordmark-drift text-[clamp(80px,18vw,260px)] leading-none">
           ALPHINIX
         </span>
       </div>
