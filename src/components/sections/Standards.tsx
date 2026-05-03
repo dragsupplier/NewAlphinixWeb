@@ -34,8 +34,8 @@ export function Standards() {
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12">
           <div className="lg:col-span-5">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-[var(--color-muted)]">
-              Section 05 — Built around standards
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-[var(--color-muted)] dot-accent">
+              Section 05 / Built around standards
             </p>
             <h2
               className="mt-4 font-display font-bold tracking-[-0.02em] text-[var(--color-ink)]"
@@ -62,7 +62,8 @@ export function Standards() {
               key={f.code}
               className="grid grid-cols-12 items-baseline gap-x-6 gap-y-2 border-b border-[var(--color-ink)]/15 py-5 md:py-6"
             >
-              <div className="col-span-12 sm:col-span-3 lg:col-span-2">
+              <div className="col-span-12 sm:col-span-3 lg:col-span-2 flex items-center gap-3">
+                <span className="inline-block h-1 w-6 bg-[var(--color-accent-500)]" aria-hidden="true" />
                 <p className="font-display text-[1.5rem] font-bold tracking-[-0.02em] text-[var(--color-ink)]">
                   {f.code}
                 </p>

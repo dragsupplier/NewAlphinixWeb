@@ -5,7 +5,9 @@ import { footerColumns } from '@/data/nav';
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="grain-ink bg-[var(--color-ink)] text-[var(--color-paper)]">
+    <footer className="relative grain-ink bg-[var(--color-ink-deep)] text-[var(--color-paper)]">
+      {/* Hairline accent separating the contact band from the footer */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-[var(--color-paper)]/10" />
       <Container className="py-20">
         {/* Top row — large editorial statement */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
