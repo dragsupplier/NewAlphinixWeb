@@ -1,116 +1,109 @@
-import { ButtonLink } from '@/components/ui/Button';
+import {
+  ArrowRight,
+  Phone,
+  GraduationCap,
+  Building2,
+  School,
+  Rocket,
+  Users,
+  ArrowUpRight,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
-import { ArrowRight } from 'lucide-react';
-import { segments } from '@/data/segments';
+import { TextReveal } from '@/components/ui/TextReveal';
+
+type AudienceCell = { label: string; sub: string; icon: LucideIcon; href: string };
+
+const AUDIENCE: AudienceCell[] = [
+  { label: 'Students',     sub: 'Training and placement',    icon: GraduationCap, href: '/students' },
+  { label: 'Colleges',     sub: 'Academic operations',       icon: Building2,     href: '/colleges' },
+  { label: 'Schools',      sub: 'STEM, ATL, and AI labs',    icon: School,        href: '/schools' },
+  { label: 'Businesses',   sub: 'Engineering and AI',        icon: Rocket,        href: '/businesses' },
+  { label: 'Hiring Teams', sub: 'Recruitment services',      icon: Users,         href: '/hiring' },
+];
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-[var(--color-navy-950)] text-white">
-      {/* Vertical light beam — single soft column running behind the text */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-[42%] max-w-[640px]"
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(58, 88, 150, 0.18) 0%, rgba(58, 88, 150, 0.34) 35%, rgba(58, 88, 150, 0.34) 65%, rgba(58, 88, 150, 0.18) 100%)',
-          filter: 'blur(48px)',
-        }}
-      />
+    <section id="hero" className="relative bg-[var(--color-bg)]">
+      <Container className="!max-w-5xl !px-5 md:!px-8 pt-20 pb-12 md:pt-32 md:pb-16 text-center">
+        {/* Headline — two-line color split, word-by-word reveal */}
+        <h1 className="mx-auto max-w-[20ch] font-display text-[44px] font-semibold leading-[1.04] tracking-[-0.025em] text-[var(--color-fg)] sm:text-[56px] md:text-[68px] lg:text-[76px]">
+          <TextReveal text="One partner." stagger={70} delay={0.05} />{' '}
+          <span className="text-[var(--color-brand-700)]">
+            <TextReveal text="One platform." stagger={70} delay={0.35} />
+          </span>
+        </h1>
 
-      {/* Sharper inner column — gives the beam a defined edge */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-[18%] max-w-[260px]"
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(91, 120, 179, 0.0) 0%, rgba(91, 120, 179, 0.20) 30%, rgba(91, 120, 179, 0.20) 70%, rgba(91, 120, 179, 0.0) 100%)',
-          filter: 'blur(20px)',
-        }}
-      />
-
-      <Container className="relative">
-        <div
-          className="flex flex-col items-center justify-center text-center"
-          style={{ minHeight: 'min(760px, 88vh)', paddingTop: '8.5rem', paddingBottom: '6rem' }}
+        <p
+          className="mx-auto mt-7 max-w-[58ch] text-[16px] leading-[1.65] text-[var(--color-fg-3)] md:text-[17.5px] mount-up"
+          style={{ animationDelay: '700ms' }}
         >
-          {/* Announcement pill */}
+          Alphinix combines campus training, in-house engineering, and recruitment services under a single
+          accountable team — replacing the four or five vendors institutions and businesses were juggling.
+        </p>
+
+        <div
+          className="mt-9 flex flex-wrap items-center justify-center gap-3 mount-up"
+          style={{ animationDelay: '850ms' }}
+        >
           <a
-            href="/students/industrial-training"
-            className="mount-up group inline-flex items-center gap-2 sm:gap-3 rounded-full border border-white/10 bg-white/[0.04] px-2 py-1.5 text-[0.8125rem] backdrop-blur-sm hover:bg-white/[0.08] transition-colors"
+            href="/contact"
+            className="group inline-flex items-center gap-1.5 rounded-[6px] bg-[var(--color-brand-700)] px-5 py-3 text-[14.5px] font-semibold text-white shadow-[0_8px_24px_-8px_rgba(29,58,165,0.45)] transition-colors hover:bg-[var(--color-brand-800)]"
           >
-            <span className="rounded-full bg-[var(--color-navy-500)] px-3 py-1 text-[0.75rem] font-semibold text-white">
-              New cohort
-            </span>
-            <span className="text-white/80 hidden sm:inline">
-              Industrial training — July 2026 batch open
-            </span>
-            <span className="text-white/80 sm:hidden">July 2026 batch open</span>
-            <span className="inline-flex items-center gap-1 pr-2 text-white">
-              Learn more
-              <ArrowRight
-                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
-                strokeWidth={2}
-              />
-            </span>
+            Request a proposal
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
+              strokeWidth={2.5}
+            />
           </a>
-
-          {/* Headline */}
-          <h1
-            className="mt-10 md:mt-12 mount-up font-display font-bold tracking-[-0.03em] text-white text-balance"
-            style={{ fontSize: 'clamp(3rem, 9vw, 7.5rem)', lineHeight: 0.96, animationDelay: '80ms' }}
+          <a
+            href="tel:+910000000000"
+            className="inline-flex items-center gap-2 rounded-[6px] bg-[var(--color-bg)] px-5 py-3 text-[14.5px] font-semibold text-[var(--color-fg)] ring-1 ring-[var(--color-line-2)] transition-colors hover:bg-[var(--color-canvas)]"
           >
-            Education, technology, <br className="hidden sm:block" />
-            and hiring. Done right.
-          </h1>
-
-          {/* Subhead */}
-          <p
-            className="mt-7 max-w-2xl mount-up text-[1rem] md:text-[1.1875rem] leading-relaxed text-white/70 text-pretty"
-            style={{ animationDelay: '180ms' }}
-          >
-            Alphinix delivers programs, infrastructure, software, and recruitment services to colleges,
-            schools, businesses, and hiring teams across India — from a single Pune-based practice.
-          </p>
-
-          {/* Single CTA */}
-          <div
-            className="mt-10 mount-up"
-            style={{ animationDelay: '280ms' }}
-          >
-            <ButtonLink
-              href="/services"
-              size="lg"
-              trailingArrow
-              className="!bg-[var(--color-navy-800)] !text-white !ring-1 !ring-inset !ring-white/15 hover:!bg-[var(--color-navy-700)] hover:!ring-white/30"
-            >
-              Explore the platform
-            </ButtonLink>
-          </div>
+            <Phone className="h-3.5 w-3.5 text-[var(--color-brand-700)]" strokeWidth={2.5} />
+            Speak to a consultant
+          </a>
         </div>
       </Container>
 
-      {/* Bottom audience strip */}
-      <div className="relative border-t border-white/10">
-        <Container>
-          <ul className="flex items-stretch divide-x divide-white/10">
-            {segments.map((s) => (
-              <li key={s.slug} className="flex-1">
-                <a
-                  href={`#audiences-${s.slug}`}
-                  className="group flex h-full flex-col gap-1 px-3 py-4 sm:px-5 md:px-6 md:py-5 transition-colors hover:bg-white/[0.04]"
-                >
-                  <span className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-white/55">
-                    Segment {s.index}
+      {/* Audience strip — 5 columns with icon-rounded-squares */}
+      <Container className="!max-w-7xl !px-5 md:!px-8 pb-16 md:pb-20">
+        <div className="border-t border-[var(--color-line)]">
+          <div className="grid grid-cols-2 lg:grid-cols-5">
+            {AUDIENCE.map((m, i) => (
+              <a
+                key={m.label}
+                href={m.href}
+                className={`group block px-4 py-6 md:px-6 md:py-7 transition-colors hover:bg-[var(--color-canvas)] ${
+                  i !== 0 ? 'border-t border-[var(--color-line)] lg:border-l lg:border-t-0' : ''
+                } ${i === 1 ? 'sm:border-t-0' : ''}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="grid h-9 w-9 place-items-center rounded-[6px] bg-[var(--color-brand-50)] text-[var(--color-brand-700)] ring-1 ring-[var(--color-brand-100)] transition-colors group-hover:bg-[var(--color-brand-700)] group-hover:text-white">
+                    <m.icon className="h-4 w-4" strokeWidth={2} />
                   </span>
-                  <span className="font-display text-[0.9375rem] sm:text-[1.0625rem] md:text-[1.125rem] font-bold tracking-[-0.01em] text-white">
-                    {s.name}
+                  <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-fg-5)]">
+                    {String(i + 1).padStart(2, '0')}
                   </span>
-                </a>
-              </li>
+                </div>
+                <p className="under-slide mt-5 inline-block font-display text-[18px] font-semibold leading-tight tracking-tight text-[var(--color-fg)] group-hover:text-[var(--color-brand-700)] md:text-[19px]">
+                  {m.label}
+                </p>
+                <p className="mt-1 text-[12.5px] text-[var(--color-fg-4)]">{m.sub}</p>
+                <div className="mt-5 flex items-center justify-between border-t border-[var(--color-line)] pt-3">
+                  <span className="text-[11.5px] font-medium text-[var(--color-fg-3)] group-hover:text-[var(--color-brand-700)]">
+                    Explore
+                  </span>
+                  <ArrowUpRight
+                    className="h-3.5 w-3.5 text-[var(--color-fg-4)] transition-all duration-300 group-hover:translate-x-0.5 group-hover:rotate-12 group-hover:text-[var(--color-brand-700)]"
+                    strokeWidth={2.25}
+                  />
+                </div>
+              </a>
             ))}
-          </ul>
-        </Container>
-      </div>
+          </div>
+        </div>
+      </Container>
     </section>
   );
 }

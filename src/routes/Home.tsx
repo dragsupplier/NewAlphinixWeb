@@ -8,10 +8,12 @@ import { ProcessSteps } from '@/components/sections/ProcessSteps';
 import { Resources } from '@/components/sections/Resources';
 import { Standards } from '@/components/sections/Standards';
 import { ContactBand } from '@/components/sections/ContactBand';
+import { ScrollProgress } from '@/components/ui/ScrollProgress';
 
 export function Home() {
   return (
     <div className="min-h-screen flex flex-col">
+      <ScrollProgress />
       <Header />
       <main className="flex-1">
         <Hero />

@@ -18,7 +18,7 @@ const resources: Resource[] = [
     tag: 'Field note',
     title: 'What an industry-ready engineer looks like in 2026',
     excerpt: 'A breakdown of the gap between graduate skills and what hiring managers screen for — and the seven shifts in how we run our training programs because of it.',
-    meta: 'Field note · 8 min read',
+    meta: '8 min read',
     href: '/blog',
     featured: true,
   },
@@ -27,7 +27,7 @@ const resources: Resource[] = [
     tag: 'Practice paper',
     title: 'Setting up an ATL lab that survives audit and gets used daily',
     excerpt: 'A working playbook for usage cadence, teacher ownership, and the procurement choices that pay back over time.',
-    meta: 'Practice paper · 11 min read',
+    meta: '11 min read',
     href: '/blog',
   },
   {
@@ -35,7 +35,7 @@ const resources: Resource[] = [
     tag: 'Hiring brief',
     title: 'Why pre-trained intern supply changes the unit economics of hiring',
     excerpt: 'Three months of pre-training compresses time-to-productivity by half. The arithmetic on cost per confirmed hire when the candidate pool is already screened.',
-    meta: 'Hiring brief · 6 min read',
+    meta: '6 min read',
     href: '/blog',
   },
   {
@@ -43,7 +43,7 @@ const resources: Resource[] = [
     tag: 'Accreditation',
     title: 'NAAC documentation gaps that cost colleges their grade',
     excerpt: 'A pattern audit across recent cycles. The five evidence gaps that get flagged most often, and how to close them without adding to faculty workload.',
-    meta: 'Accreditation · 14 min read',
+    meta: '14 min read',
     href: '/blog',
   },
   {
@@ -51,74 +51,68 @@ const resources: Resource[] = [
     tag: 'Curriculum',
     title: 'AI in the classroom under NEP 2020 — what is actually expected',
     excerpt: 'For school principals and curriculum heads — the difference between an AI elective and AI as a foundational layer of the curriculum.',
-    meta: 'Curriculum · 7 min read',
+    meta: '7 min read',
     href: '/blog',
   },
 ];
 
 export function Resources() {
   return (
-    <section className="py-24 md:py-32 bg-[var(--color-paper)]">
+    <section className="section-y bg-[var(--color-bg)]">
       <Container>
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-12 md:mb-16">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-10 md:mb-14">
           <div className="max-w-2xl">
             <p className="kicker">Notes from the practice</p>
-            <h2
-              className="mt-5 font-display font-bold tracking-[-0.025em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(2.25rem, 4.6vw, 3.5rem)', lineHeight: 1.02 }}
-            >
+            <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
               Field notes, briefs, and accreditation reads.
             </h2>
           </div>
-          <a
-            href="/blog"
-            className="link-draw inline-flex items-center gap-2 text-[0.9375rem] font-medium text-[var(--color-ink)]"
-          >
+          <a href="/blog" className="link-rule text-[14px]">
             Read all entries
-            <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+            <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.25} />
           </a>
         </div>
 
-        <div className="border-t border-[var(--color-line-strong)]">
+        <div>
           {resources.map((r, i) => (
-            <Reveal key={r.serial} delay={i * 60}>
+            <Reveal key={r.serial} delay={i * 50}>
               <a
                 href={r.href}
-                className="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 border-b border-[var(--color-line-strong)] py-7 md:py-10 px-2 transition-colors hover:bg-[var(--color-paper-blue)]"
+                className={`group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-6 md:py-8 px-2 transition-colors hover:bg-[var(--color-canvas)] ${i === 0 ? 'cap-row' : 'cap-row'}`}
               >
                 <div className="col-span-2 sm:col-span-1">
-                  <span className="font-mono text-[0.75rem] uppercase tracking-[0.18em] text-[var(--color-muted)]">
+                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-fg-5)]">
                     {r.serial}
                   </span>
                 </div>
                 <div className="col-span-10 sm:col-span-2">
-                  <span className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-[var(--color-navy-700)]">
+                  <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-brand-700)] font-semibold">
                     {r.tag}
                   </span>
                 </div>
                 <div className="col-span-12 sm:col-span-7 lg:col-span-7">
                   <h3
-                    className={`font-display font-bold tracking-[-0.015em] text-[var(--color-ink)] text-balance ${
+                    className={`font-display font-semibold tracking-[-0.018em] text-[var(--color-fg)] text-balance ${
                       r.featured
-                        ? 'text-[1.5rem] md:text-[1.875rem] leading-[1.08]'
-                        : 'text-[1.25rem] md:text-[1.375rem] leading-[1.15]'
+                        ? 'text-[24px] md:text-[28px] leading-[1.1]'
+                        : 'text-[18px] md:text-[20px] leading-[1.2]'
                     }`}
                   >
-                    <span className="link-draw">{r.title}</span>
+                    <span className="under-slide">{r.title}</span>
                   </h3>
                   {r.featured && (
-                    <p className="mt-3 max-w-2xl text-[0.9375rem] md:text-[1rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
+                    <p className="mt-3 max-w-[60ch] text-[14.5px] md:text-[15.5px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
                       {r.excerpt}
                     </p>
                   )}
                 </div>
-                <div className="hidden sm:flex col-span-2 items-baseline justify-end gap-3 text-[var(--color-muted)]">
-                  <span className="font-mono text-[0.75rem] uppercase tracking-[0.12em]">
-                    {r.meta.split(' · ')[1]}
+                <div className="hidden sm:flex col-span-2 items-baseline justify-end gap-3 text-[var(--color-fg-5)]">
+                  <span className="font-mono text-[10.5px] uppercase tracking-[0.12em]">
+                    {r.meta}
                   </span>
                   <ArrowUpRight
-                    className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    strokeWidth={2}
+                    className="h-3.5 w-3.5 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--color-brand-700)]"
+                    strokeWidth={2.25}
                   />
                 </div>
               </a>

@@ -32,48 +32,42 @@ const steps: Step[] = [
 
 export function ProcessSteps() {
   return (
-    <section className="py-24 md:py-32 bg-[var(--color-paper)]">
+    <section className="section-y bg-[var(--color-bg)]">
       <Container>
-        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-14 md:mb-20">
+        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-12 md:mb-16">
           <div className="lg:col-span-7">
             <p className="kicker">How we engage</p>
-            <h2
-              className="mt-5 font-display font-bold tracking-[-0.025em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(2.25rem, 4.6vw, 3.5rem)', lineHeight: 1 }}
-            >
+            <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
               Four phases. The same shape, every engagement.
             </h2>
           </div>
           <div className="lg:col-span-5 lg:self-end">
-            <p className="text-[1rem] md:text-[1.0625rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
+            <p className="text-[15px] md:text-[16px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
               The engagement model is the same whether you are a college director, a school principal, a founder,
               or an HR head — only the deliverables change.
             </p>
           </div>
         </div>
 
-        <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-[var(--color-line-strong)]">
+        <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((s, i) => (
-            <Reveal
-              as="li"
-              key={s.index}
-              delay={i * 80}
-              className="border-b border-[var(--color-line-strong)] lg:border-r lg:last:border-r-0 lg:[&:nth-child(2)]:border-r md:[&:nth-child(odd)]:border-r md:[&:nth-child(odd)]:lg:border-r py-8 md:py-10 lg:px-8 first:lg:pl-0"
-            >
-              <div className="flex items-baseline gap-3">
-                <span className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-[var(--color-muted)]">
-                  Phase
-                </span>
-                <span className="font-display text-[2rem] md:text-[2.25rem] font-bold tracking-[-0.02em] text-[var(--color-navy-700)]">
-                  {s.index}
-                </span>
+            <Reveal as="li" key={s.index} delay={i * 80}>
+              <div className="card glow-card h-full p-6 md:p-7">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-fg-5)]">
+                    Phase
+                  </span>
+                  <span className="font-display text-[26px] font-medium tracking-[-0.025em] text-[var(--color-brand-700)] print-in">
+                    {s.index}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-[22px] md:text-[24px] font-semibold tracking-[-0.018em] text-[var(--color-fg)]">
+                  {s.title}
+                </h3>
+                <p className="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-fg-3)] text-pretty">
+                  {s.body}
+                </p>
               </div>
-              <h3 className="mt-3 font-display text-[1.625rem] md:text-[1.75rem] font-bold tracking-[-0.02em] text-[var(--color-ink)]">
-                {s.title}
-              </h3>
-              <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
-                {s.body}
-              </p>
             </Reveal>
           ))}
         </ol>

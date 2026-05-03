@@ -1,537 +1,503 @@
-import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Menu, X, ArrowUpRight, Search, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  ChevronDown,
+  Menu,
+  X,
+  GraduationCap,
+  Building2,
+  School,
+  Rocket,
+  Users,
+  Phone,
+  Mail,
+  MapPin,
+  ShieldCheck,
+  Newspaper,
+  BookOpen,
+  Calendar,
+  Download,
+  ArrowRight,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Wordmark';
-import { Container } from '@/components/ui/Container';
-import { ButtonLink } from '@/components/ui/Button';
-import { segments } from '@/data/segments';
-import { portalLinks } from '@/data/nav';
 import { cn } from '@/lib/utils';
 
-type Panel = 'services' | 'portal' | null;
+type Item = { label: string; desc?: string; href: string; icon?: LucideIcon };
 
-/* ─────────────────────────────────────────────────────────────
-   Mega menu data — 4 service columns + 1 utility column.
-   Modelled on the standard 5-column dark mega-menu pattern used
-   by enterprise / edtech sites; original Alphinix content.
-   ───────────────────────────────────────────────────────────── */
-type ServiceItem = {
-  title: string;
-  blurb: string;
-  href: string;
-  badge?: 'live' | 'new' | 'free';
-  icon?: 'spark';
-};
-
-type ServiceColumn = {
-  heading: string;
-  items: ServiceItem[];
-};
-
-const serviceColumns: ServiceColumn[] = [
-  {
-    heading: 'Students',
-    items: [
-      {
-        title: 'Industrial Training',
-        blurb: 'Live cohorts across Maharashtra',
-        href: '/students/industrial-training',
-        badge: 'live',
-      },
-      {
-        title: 'Placement Preparation',
-        blurb: 'Structured job-ready tracks',
-        href: '/students/placement-prep',
-        icon: 'spark',
-      },
-    ],
-  },
-  {
-    heading: 'Colleges',
-    items: [
-      {
-        title: 'Campus Programs',
-        blurb: 'Training and placement drives',
-        href: '/colleges/campus-training',
-      },
-      {
-        title: 'Accreditation Support',
-        blurb: 'NAAC and NBA documentation',
-        href: '/colleges/naac-nba-support',
-      },
-    ],
-  },
-  {
-    heading: 'Schools',
-    items: [
-      {
-        title: 'AI and Robotics',
-        blurb: 'Curriculum and teacher training',
-        href: '/schools/ai-robotics-education',
-      },
-      {
-        title: 'ATL Labs',
-        blurb: 'STEM lab setup and kits',
-        href: '/schools/stem-atl-labs',
-        badge: 'new',
-      },
-    ],
-  },
-  {
-    heading: 'Businesses',
-    items: [
-      {
-        title: 'Software Build',
-        blurb: 'Web, mobile, and cloud',
-        href: '/businesses/website-development',
-      },
-      {
-        title: 'AI and Automation',
-        blurb: 'Solutions for growing SMBs',
-        href: '/businesses/ai-solutions',
-      },
-    ],
-  },
+const SOLUTIONS: Item[] = [
+  { label: 'For Students',     desc: 'Industrial training, internships, certifications.', href: '/students',   icon: GraduationCap },
+  { label: 'For Colleges',     desc: 'Placements, NAAC and NBA support, AI/IoT labs.',     href: '/colleges',   icon: Building2 },
+  { label: 'For Schools',      desc: 'AI, robotics, and STEM/ATL labs.',                   href: '/schools',    icon: School },
+  { label: 'For Businesses',   desc: 'Web, mobile, AI, automation, cloud.',                href: '/businesses', icon: Rocket },
+  { label: 'For Hiring Teams', desc: 'Permanent, contract, and bulk drives.',              href: '/hiring',     icon: Users },
 ];
 
-const utilityLinks = [
-  { label: 'Hiring services', href: '/hiring', highlight: true },
-  { label: 'Insights', href: '/blog' },
-  { label: 'Case studies', href: '/case-studies' },
-  { label: 'Webinars', href: '/webinars' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+const RESOURCES: Item[] = [
+  { label: 'Insights',          desc: 'Field notes from the practice.', href: '/blog',         icon: Newspaper },
+  { label: 'Webinars',          desc: 'Upcoming live sessions.',        href: '/webinars',     icon: Calendar },
+  { label: 'Guides & Roadmaps', desc: 'Free downloads by segment.',     href: '/resources',    icon: Download },
+  { label: 'Case Studies',      desc: 'Selected engagements.',          href: '/case-studies', icon: BookOpen },
 ];
 
-/* ─────────────────────────────────────────── */
+const PORTAL: Item[] = [
+  { label: 'Student LMS',   desc: 'Courses, assessments, certificates.',   href: '#', icon: GraduationCap },
+  { label: 'College ERP',   desc: 'Academic and placement operations.',     href: '#', icon: Building2 },
+  { label: 'Admin Console', desc: 'Internal pipeline and analytics.',       href: '#', icon: ShieldCheck },
+];
+
+const SIMPLE_LINKS = [
+  { label: 'Industries', href: '#audiences' },
+  { label: 'Approach',   href: '#approach' },
+  { label: 'About',      href: '/about' },
+  { label: 'Careers',    href: '/careers' },
+];
 
 export function Header() {
-  const [panel, setPanel] = useState<Panel>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState<string | null>(null);
+  const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const closeTimer = useRef<number | null>(null);
-
-  const open = (p: Panel) => {
-    if (closeTimer.current) window.clearTimeout(closeTimer.current);
-    setPanel(p);
-  };
-  const scheduleClose = () => {
-    if (closeTimer.current) window.clearTimeout(closeTimer.current);
-    closeTimer.current = window.setTimeout(() => setPanel(null), 140);
-  };
+  const [utilityHidden, setUtilityHidden] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        setScrolled(y > 4);
+        setUtilityHidden(y > 80);
+      });
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [mobileOpen]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setPanel(null);
-        setMobileOpen(false);
-      }
-    };
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(null);
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Header is dark over the dark hero (transparent), light when scrolled
-  const isLight = scrolled;
+  useEffect(() => {
+    document.body.style.overflow = mobile ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobile]);
 
   return (
-    <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-colors duration-300',
-        isLight
-          ? 'border-b border-[var(--color-line)] bg-[var(--color-paper)]/95 backdrop-blur-md text-[var(--color-ink)]'
-          : 'border-b border-white/0 bg-transparent text-white',
-      )}
-      onMouseLeave={scheduleClose}
-    >
-      <Container className="flex h-16 md:h-[72px] items-center justify-between gap-6">
-        <Wordmark tone={isLight ? 'ink' : 'paper'} />
+    <header className="sticky top-0 z-50 w-full">
+      {/* Utility bar — collapses on scroll past 80px */}
+      <div
+        className={cn(
+          'utility-bar hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out md:block',
+          utilityHidden ? 'max-h-0 opacity-0' : 'max-h-9 opacity-100',
+        )}
+      >
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-5 md:px-8">
+          <div className="flex items-center gap-5">
+            <span className="inline-flex items-center gap-1.5 text-white/80">
+              <MapPin className="h-3 w-3" strokeWidth={2.25} />
+              Pune, Maharashtra · India
+            </span>
+            <a href="tel:+910000000000" className="inline-flex items-center gap-1.5 text-white/80 hover:text-white">
+              <Phone className="h-3 w-3" strokeWidth={2.25} />
+              +91 00000 00000
+            </a>
+            <a href="mailto:hello@alphinix.in" className="inline-flex items-center gap-1.5 text-white/80 hover:text-white">
+              <Mail className="h-3 w-3" strokeWidth={2.25} />
+              hello@alphinix.in
+            </a>
+          </div>
+          <div className="flex items-center gap-5 text-white/80">
+            <a href="/about" className="hover:text-white">Investors</a>
+            <a href="/about" className="hover:text-white">Partners</a>
+            <a href="/blog" className="hover:text-white">Newsroom</a>
+            <a href="/contact" className="hover:text-white">Support</a>
+          </div>
+        </div>
+      </div>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-1 text-[0.9375rem]">
-          <NavTrigger
-            label="Services"
-            isOpen={panel === 'services'}
-            isLight={isLight}
-            onMouseEnter={() => open('services')}
-            onClick={() => setPanel(panel === 'services' ? null : 'services')}
-          />
-          <NavLink href="/about" isLight={isLight} onMouseEnter={() => open(null)}>About</NavLink>
-          <NavLink href="/blog" isLight={isLight} onMouseEnter={() => open(null)}>Insights</NavLink>
-          <NavLink href="/case-studies" isLight={isLight} onMouseEnter={() => open(null)}>Work</NavLink>
-          <NavLink href="/webinars" isLight={isLight} onMouseEnter={() => open(null)}>Webinars</NavLink>
-          <NavLink href="/careers" isLight={isLight} onMouseEnter={() => open(null)}>Careers</NavLink>
-        </nav>
+      {/* Main bar */}
+      <div
+        className={cn(
+          'border-b transition-[background-color,backdrop-filter,box-shadow,border-color] duration-300',
+          scrolled
+            ? 'border-[var(--color-line)] bg-white/85 shadow-[0_1px_0_0_rgba(11,18,32,0.04),0_8px_24px_-12px_rgba(11,18,32,0.08)] backdrop-blur-md'
+            : 'border-transparent bg-[var(--color-bg)]',
+        )}
+      >
+        <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-5 md:px-8">
+          <Wordmark />
 
-        {/* Right cluster */}
-        <div className="hidden lg:flex items-center gap-1">
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-1 lg:flex" onMouseLeave={() => setOpen(null)}>
+            <DropdownTrigger
+              label="Solutions"
+              isOpen={open === 'solutions'}
+              onEnter={() => setOpen('solutions')}
+            />
+            <DropdownTrigger
+              label="Resources"
+              isOpen={open === 'resources'}
+              onEnter={() => setOpen('resources')}
+            />
+            {SIMPLE_LINKS.map((l) => (
+              <a
+                key={l.label}
+                href={l.href}
+                onMouseEnter={() => setOpen(null)}
+                className="px-3.5 py-2 text-[14px] font-medium text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-fg)]"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Right cluster */}
+          <div className="hidden items-center gap-2 lg:flex">
+            <PortalDropdown items={PORTAL} />
+            <a
+              href="/contact"
+              className="group inline-flex items-center gap-1.5 rounded-[6px] bg-[var(--color-brand-700)] px-4 py-2 text-[13.5px] font-semibold text-white transition-colors hover:bg-[var(--color-brand-800)]"
+            >
+              Request a proposal
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" strokeWidth={2.5} />
+            </a>
+          </div>
+
           <button
-            aria-label="Search"
-            className={cn(
-              'inline-flex h-10 w-10 items-center justify-center rounded-[6px] transition-colors',
-              isLight ? 'hover:bg-[var(--color-paper-blue)]' : 'hover:bg-white/10',
-            )}
+            className="grid h-10 w-10 place-items-center rounded-[6px] text-[var(--color-fg)] ring-1 ring-[var(--color-line)] lg:hidden"
+            onClick={() => setMobile((v) => !v)}
+            aria-label="Toggle menu"
           >
-            <Search className="h-4 w-4" strokeWidth={1.75} />
+            {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
-          <NavTrigger
-            label="Portal"
-            isOpen={panel === 'portal'}
-            isLight={isLight}
-            compact
-            onMouseEnter={() => open('portal')}
-            onClick={() => setPanel(panel === 'portal' ? null : 'portal')}
-          />
-          <ButtonLink
-            href="/contact"
-            size="md"
-            className={cn(
-              'ml-1.5',
-              isLight
-                ? '!bg-[var(--color-navy-900)] !text-white hover:!bg-[var(--color-navy-800)]'
-                : '!bg-white !text-[var(--color-navy-900)] hover:!bg-white/90',
-            )}
-          >
-            Talk to us
-          </ButtonLink>
         </div>
 
-        {/* Mobile trigger */}
-        <button
-          className="lg:hidden inline-flex h-10 w-10 items-center justify-center"
-          aria-label="Open menu"
-          onClick={() => setMobileOpen(true)}
-        >
-          <Menu className="h-5 w-5" strokeWidth={1.75} />
-        </button>
-      </Container>
+        {/* Mega menus */}
+        <MegaMenu visible={open === 'solutions'} onClose={() => setOpen(null)}>
+          <MegaPanel
+            title="Solutions"
+            tagline="Five doors. One platform."
+            body="Tell us about your institution or company — we will recommend the right entry point."
+            cta="Talk to a consultant"
+            ctaHref="/contact"
+            items={SOLUTIONS}
+          />
+        </MegaMenu>
 
-      <ServicesPanel open={panel === 'services'} onMouseEnter={() => open('services')} />
-      <PortalPanel open={panel === 'portal'} onMouseEnter={() => open('portal')} isLight={isLight} />
+        <MegaMenu visible={open === 'resources'} onClose={() => setOpen(null)}>
+          <MegaPanel
+            title="Resources"
+            tagline="Insights, sessions, and free tools."
+            body="Quarterly notes on hiring trends, academic operations, and applied AI."
+            cta="Visit the blog"
+            ctaHref="/blog"
+            items={RESOURCES}
+          />
+        </MegaMenu>
+      </div>
 
-      {mobileOpen && <MobileMenu onClose={() => setMobileOpen(false)} />}
+      {/* Mobile sheet */}
+      <div
+        className={cn(
+          'border-b border-[var(--color-line)] bg-[var(--color-bg)] lg:hidden',
+          mobile ? 'max-h-[calc(100vh-60px)] overflow-y-auto' : 'max-h-0 overflow-hidden',
+          'transition-[max-height] duration-300',
+        )}
+      >
+        <div className="space-y-5 px-5 py-5">
+          <MobileGroup title="Solutions" items={SOLUTIONS} onItemClick={() => setMobile(false)} />
+          <MobileGroup title="Resources" items={RESOURCES} onItemClick={() => setMobile(false)} />
+          <MobileGroup title="Portal" items={PORTAL} onItemClick={() => setMobile(false)} />
+          <div className="space-y-1">
+            <p className="px-1 pb-1 pt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-fg-4)]">More</p>
+            {SIMPLE_LINKS.map((l) => (
+              <a
+                key={l.label}
+                href={l.href}
+                onClick={() => setMobile(false)}
+                className="block rounded-[6px] px-2 py-2.5 text-[14.5px] font-medium text-[var(--color-fg-2)] hover:bg-[var(--color-canvas)]"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+          <a
+            href="/contact"
+            className="inline-flex w-full items-center justify-center gap-1.5 rounded-[6px] bg-[var(--color-brand-700)] px-4 py-3 text-[14px] font-semibold text-white"
+          >
+            Request a proposal
+            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+          </a>
+        </div>
+      </div>
     </header>
   );
 }
 
 /* ─────────────────────────────────────────── */
 
-function NavLink({
-  href,
-  children,
-  onMouseEnter,
-  isLight,
-}: {
-  href: string;
-  children: React.ReactNode;
-  onMouseEnter?: () => void;
-  isLight: boolean;
-}) {
-  return (
-    <a
-      href={href}
-      onMouseEnter={onMouseEnter}
-      className={cn(
-        'rounded-[6px] px-3 py-2 transition-colors',
-        isLight ? 'text-[var(--color-ink)]/75 hover:text-[var(--color-ink)]' : 'text-white/80 hover:text-white',
-      )}
-    >
-      {children}
-    </a>
-  );
-}
-
-function NavTrigger({
+function DropdownTrigger({
   label,
   isOpen,
-  onMouseEnter,
-  onClick,
-  compact,
-  isLight,
+  onEnter,
 }: {
   label: string;
   isOpen: boolean;
-  onMouseEnter: () => void;
-  onClick: () => void;
-  compact?: boolean;
-  isLight: boolean;
+  onEnter: () => void;
 }) {
   return (
     <button
-      onMouseEnter={onMouseEnter}
-      onClick={onClick}
-      aria-expanded={isOpen}
+      onMouseEnter={onEnter}
       className={cn(
-        'inline-flex items-center gap-1 rounded-[6px] px-3 py-2 transition-colors',
-        isLight ? 'text-[var(--color-ink)]/75 hover:text-[var(--color-ink)]' : 'text-white/80 hover:text-white',
-        compact && 'text-[0.9375rem]',
+        'group relative inline-flex items-center gap-1 rounded-[6px] px-3.5 py-2 text-[14px] font-medium transition-colors',
+        isOpen ? 'bg-[var(--color-canvas)] text-[var(--color-fg)]' : 'text-[var(--color-fg-2)] hover:text-[var(--color-fg)]',
       )}
+      aria-expanded={isOpen}
     >
       {label}
       <ChevronDown
-        className={cn('h-3.5 w-3.5 transition-transform duration-200', isOpen && 'rotate-180')}
-        strokeWidth={2}
+        className={cn('h-3.5 w-3.5 transition-transform duration-200', isOpen && 'rotate-180 text-[var(--color-brand-700)]')}
+        strokeWidth={2.25}
+      />
+      <span
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute inset-x-3.5 -bottom-px h-0.5 origin-left bg-[var(--color-brand-700)] transition-transform duration-200',
+          isOpen ? 'scale-x-100' : 'scale-x-0',
+        )}
       />
     </button>
   );
 }
 
-/* ─────────────────────────────────────────── */
-/* Services mega menu — 5-column dark surface                                */
-/* Cols 1–4: service categories (heading + 1–2 link items + blurb + badge)   */
-/* Col 5:    utility / company links list                                    */
-/* ─────────────────────────────────────────── */
-
-function ServicesPanel({
-  open,
-  onMouseEnter,
+function MegaMenu({
+  visible,
+  onClose,
+  children,
 }: {
-  open: boolean;
-  onMouseEnter: () => void;
+  visible: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }) {
   return (
-    <div
-      onMouseEnter={onMouseEnter}
-      className={cn(
-        'absolute left-0 right-0 top-full overflow-hidden bg-[var(--color-navy-950)] text-white border-b border-white/10 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.5)] transition-[grid-template-rows,opacity] duration-300 grid',
-        open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
-      )}
-    >
-      <div className="min-h-0">
-        <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:divide-x lg:divide-white/10 py-10">
-            {serviceColumns.map((col) => (
-              <div key={col.heading} className="lg:px-7 first:lg:pl-0 py-5 md:py-0">
-                <p className="text-[0.875rem] font-medium text-[var(--color-navy-300)]">
-                  {col.heading}
-                </p>
-                <ul className="mt-5 space-y-6">
-                  {col.items.map((item) => (
-                    <li key={item.title}>
-                      <a href={item.href} className="group block">
-                        <div className="flex items-center gap-2">
-                          <span className="font-display text-[1.0625rem] font-bold tracking-[-0.01em] text-white group-hover:text-[var(--color-navy-200)] transition-colors">
-                            {item.title}
-                          </span>
-                          {item.badge === 'live' && <span className="badge badge-live">Live</span>}
-                          {item.badge === 'new' && <span className="badge badge-new">New</span>}
-                          {item.badge === 'free' && <span className="badge badge-free">Free</span>}
-                          {item.icon === 'spark' && (
-                            <Sparkles className="h-3 w-3 text-[var(--color-navy-300)]" strokeWidth={2} />
-                          )}
-                        </div>
-                        <p className="mt-1 text-[0.8125rem] text-white/55 leading-snug">
-                          {item.blurb}
-                        </p>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-
-            {/* Col 5 — utility links */}
-            <div className="lg:px-7 py-5 md:py-0">
-              <ul className="space-y-3">
-                {utilityLinks.map((l) => (
-                  <li key={l.label}>
-                    <a
-                      href={l.href}
-                      className={cn(
-                        'block text-[0.9375rem] transition-colors',
-                        l.highlight
-                          ? 'text-[var(--color-navy-300)] font-medium hover:text-white'
-                          : 'text-white/80 hover:text-white',
-                      )}
-                    >
-                      {l.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Container>
-      </div>
-    </div>
-  );
-}
-
-function PortalPanel({
-  open,
-  onMouseEnter,
-  isLight,
-}: {
-  open: boolean;
-  onMouseEnter: () => void;
-  isLight: boolean;
-}) {
-  return (
-    <div
-      onMouseEnter={onMouseEnter}
-      className={cn(
-        'absolute right-0 top-full mr-6 w-72 origin-top-right overflow-hidden rounded-[var(--radius-md)] shadow-[0_20px_60px_-20px_rgba(10,14,39,0.32)] transition-[opacity,transform] duration-200',
-        isLight
-          ? 'border border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)]'
-          : 'border border-white/10 bg-[var(--color-navy-950)] text-white',
-        open ? 'opacity-100 translate-y-2' : 'opacity-0 -translate-y-1 pointer-events-none',
-      )}
-    >
-      <div className="px-5 pt-5 pb-2">
-        <p className={cn('kicker', !isLight && 'kicker-on-dark')}>Sign in</p>
-      </div>
-      <div className="px-2 pb-3">
-        {portalLinks.map((l) => (
-          <a
-            key={l.label}
-            href={l.href}
-            className={cn(
-              'flex items-center justify-between px-3 py-2.5 text-[0.9375rem] rounded-[4px] transition-colors',
-              isLight ? 'hover:bg-[var(--color-paper-blue)]' : 'hover:bg-white/[0.06]',
-            )}
-          >
-            <span>{l.label}</span>
-            <ArrowUpRight
-              className={cn('h-3.5 w-3.5', isLight ? 'text-[var(--color-muted)]' : 'text-white/55')}
-              strokeWidth={2}
-            />
-          </a>
-        ))}
-      </div>
+    <>
       <div
+        aria-hidden="true"
         className={cn(
-          'border-t px-5 py-3 text-[0.75rem]',
-          isLight
-            ? 'border-[var(--color-line)] text-[var(--color-muted)]'
-            : 'border-white/10 text-white/55',
+          'fixed inset-0 top-[68px] -z-10 transition-opacity duration-200 md:top-[105px]',
+          visible
+            ? 'pointer-events-auto bg-[var(--color-fg)]/15 backdrop-blur-[2px] opacity-100'
+            : 'pointer-events-none opacity-0',
+        )}
+        onClick={onClose}
+      />
+      <div
+        onMouseLeave={onClose}
+        className={cn(
+          'absolute inset-x-0 top-full origin-top transition-[opacity,transform] duration-200',
+          visible
+            ? 'pointer-events-auto translate-y-0 opacity-100'
+            : 'pointer-events-none -translate-y-1 opacity-0',
         )}
       >
-        Portals open in a new tab.
+        <div className="mx-auto max-w-7xl px-5 pt-2 md:px-8">
+          <div className="overflow-hidden rounded-[6px] border border-[var(--color-line)] bg-[var(--color-bg)] shadow-2xl ring-1 ring-[var(--color-fg)]/[0.04]">
+            {children}
+          </div>
+        </div>
       </div>
+    </>
+  );
+}
+
+function MegaPanel({
+  title,
+  tagline,
+  body,
+  cta,
+  ctaHref,
+  items,
+}: {
+  title: string;
+  tagline: string;
+  body: string;
+  cta: string;
+  ctaHref: string;
+  items: Item[];
+}) {
+  return (
+    <div className="grid grid-cols-12">
+      {/* Left feature card — brand-mesh */}
+      <aside className="col-span-12 border-b border-[var(--color-line)] lg:col-span-4 lg:border-b-0 lg:border-r">
+        <div className="brand-mesh relative h-full overflow-hidden p-7 text-white md:p-8">
+          <div className="flex items-center justify-between">
+            <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--color-brand-200)]">
+              {title}
+            </p>
+            <span className="rounded-[4px] bg-white/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 ring-1 ring-white/15">
+              {String(items.length).padStart(2, '0')} options
+            </span>
+          </div>
+          <h3 className="mt-5 font-display text-[26px] font-semibold leading-[1.1] tracking-tight text-white md:text-[28px]">
+            {tagline}
+          </h3>
+          <p className="mt-4 max-w-[34ch] text-[13.5px] leading-[1.6] text-white/75">
+            {body}
+          </p>
+          <div className="mt-7 border-t border-white/15 pt-5">
+            <a
+              href={ctaHref}
+              className="group inline-flex items-center gap-1.5 rounded-[6px] bg-white px-4 py-2.5 text-[13px] font-semibold text-[var(--color-brand-950)] transition-colors hover:bg-[var(--color-brand-50)]"
+            >
+              {cta}
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" strokeWidth={2.5} />
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      {/* Items grid */}
+      <ul className="col-span-12 grid grid-cols-1 gap-0 p-3 sm:grid-cols-2 lg:col-span-8">
+        {items.map((it, i) => (
+          <li key={it.label}>
+            <a
+              href={it.href}
+              className="group relative flex items-start gap-3 rounded-[6px] p-3.5 transition-colors hover:bg-[var(--color-canvas)]"
+            >
+              {it.icon ? (
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[6px] bg-[var(--color-canvas-2)] text-[var(--color-brand-700)] transition-colors group-hover:bg-[var(--color-brand-700)] group-hover:text-white">
+                  <it.icon className="h-[17px] w-[17px]" strokeWidth={2} />
+                </span>
+              ) : null}
+              <span className="flex flex-1 flex-col">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[14px] font-semibold text-[var(--color-fg)]">{it.label}</span>
+                  <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-fg-5)]">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <span className="mt-0.5 text-[12.5px] leading-snug text-[var(--color-fg-3)]">{it.desc}</span>
+              </span>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-3.5 left-2 w-0.5 origin-top scale-y-0 rounded-full bg-[var(--color-brand-700)] transition-transform duration-200 group-hover:scale-y-100"
+              />
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────── */
-
-function MobileMenu({ onClose }: { onClose: () => void }) {
-  const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const toggle = (slug: string) => setOpenSlug(openSlug === slug ? null : slug);
-
+function PortalDropdown({ items }: { items: Item[] }) {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col bg-[var(--color-paper)] text-[var(--color-ink)] lg:hidden">
-      <div className="flex h-16 items-center justify-between px-6 border-b border-[var(--color-line)]">
-        <Wordmark />
-        <button aria-label="Close menu" className="inline-flex h-10 w-10 items-center justify-center" onClick={onClose}>
-          <X className="h-5 w-5" strokeWidth={1.75} />
-        </button>
-      </div>
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-6 py-7">
-          <p className="kicker">Services</p>
-          <ul className="mt-5 divide-y divide-[var(--color-line)]">
-            {segments.map((s) => {
-              const expanded = openSlug === s.slug;
-              return (
-                <li key={s.slug}>
-                  <button
-                    type="button"
-                    className="flex w-full items-baseline justify-between py-4 text-left"
-                    onClick={() => toggle(s.slug)}
-                    aria-expanded={expanded}
-                  >
-                    <span className="flex items-baseline gap-3">
-                      <span className="font-mono text-[0.6875rem] text-[var(--color-muted)]">{s.index}</span>
-                      <span className="font-display text-[1.375rem] font-bold tracking-[-0.01em]">{s.name}</span>
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        className={cn(
+          'inline-flex items-center gap-1.5 rounded-[6px] px-3.5 py-2 text-[13.5px] font-medium ring-1 transition-colors',
+          open
+            ? 'text-[var(--color-fg)] ring-[var(--color-line-2)] bg-[var(--color-canvas)]'
+            : 'text-[var(--color-fg-2)] ring-[var(--color-line)] hover:text-[var(--color-fg)] hover:ring-[var(--color-line-2)]',
+        )}
+        aria-expanded={open}
+      >
+        Portal Login
+        <ChevronDown
+          className={cn('h-3.5 w-3.5 transition-transform duration-200', open && 'rotate-180')}
+          strokeWidth={2.25}
+        />
+      </button>
+      <div
+        className={cn(
+          'absolute right-0 top-full w-[320px] origin-top-right pt-2 transition-[opacity,transform] duration-200',
+          open
+            ? 'pointer-events-auto translate-y-0 opacity-100'
+            : 'pointer-events-none -translate-y-1 opacity-0',
+        )}
+      >
+        <div className="overflow-hidden rounded-[6px] border border-[var(--color-line)] bg-[var(--color-bg)] shadow-xl">
+          <div className="flex items-center justify-between border-b border-[var(--color-line)] bg-[var(--color-canvas)] px-4 py-3">
+            <p className="kicker">Portal Login</p>
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-5)]">
+              {String(items.length).padStart(2, '0')} surfaces
+            </span>
+          </div>
+          <ul className="p-1.5">
+            {items.map((p, i) => (
+              <li key={p.label}>
+                <a
+                  href={p.href}
+                  className="group relative flex items-center gap-3 rounded-[4px] p-3 transition-colors hover:bg-[var(--color-canvas)]"
+                >
+                  {p.icon ? (
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[6px] bg-[var(--color-canvas-2)] text-[var(--color-brand-700)] transition-colors group-hover:bg-[var(--color-brand-700)] group-hover:text-white">
+                      <p.icon className="h-4 w-4" strokeWidth={2} />
                     </span>
-                    <ChevronDown
-                      className={cn('h-4 w-4 text-[var(--color-muted)] transition-transform', expanded && 'rotate-180')}
-                      strokeWidth={2}
-                    />
-                  </button>
-                  <div
-                    className={cn(
-                      'overflow-hidden transition-[grid-template-rows] duration-300 grid',
-                      expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
-                    )}
-                  >
-                    <ul className="min-h-0 pb-3 space-y-1">
-                      {s.services.map((srv) => (
-                        <li key={srv}>
-                          <a
-                            href={`/${s.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                            className="block py-1.5 text-[0.9375rem] text-[var(--color-ink)]/80"
-                            onClick={onClose}
-                          >
-                            {srv}
-                          </a>
-                        </li>
-                      ))}
-                      <li>
-                        <a
-                          href={`/${s.slug}`}
-                          className="link-draw mt-1 inline-flex items-center gap-1.5 py-1 text-[0.875rem] font-medium text-[var(--color-navy-700)]"
-                          onClick={onClose}
-                        >
-                          Visit hub <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <div className="px-6 py-6 border-t border-[var(--color-line)]">
-          <p className="kicker">Company</p>
-          <ul className="mt-3 space-y-1 text-[1.0625rem]">
-            <li><a href="/about" className="block py-2">About</a></li>
-            <li><a href="/blog" className="block py-2">Insights</a></li>
-            <li><a href="/case-studies" className="block py-2">Work</a></li>
-            <li><a href="/webinars" className="block py-2">Webinars</a></li>
-            <li><a href="/careers" className="block py-2">Careers</a></li>
-            <li><a href="/contact" className="block py-2">Contact</a></li>
-          </ul>
-        </div>
-
-        <div className="px-6 py-6 border-t border-[var(--color-line)]">
-          <p className="kicker">Sign in</p>
-          <ul className="mt-3 space-y-1 text-[1.0625rem]">
-            {portalLinks.map((l) => (
-              <li key={l.label}>
-                <a href={l.href} className="flex items-center justify-between py-2">
-                  <span>{l.label}</span>
-                  <ArrowUpRight className="h-4 w-4 text-[var(--color-muted)]" strokeWidth={2} />
+                  ) : null}
+                  <span className="flex flex-1 flex-col">
+                    <span className="text-[13px] font-semibold text-[var(--color-fg)]">{p.label}</span>
+                    <span className="mt-0.5 text-[12px] leading-snug text-[var(--color-fg-3)]">{p.desc}</span>
+                  </span>
+                  <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-fg-5)]">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-y-3 left-1.5 w-0.5 origin-top scale-y-0 rounded-full bg-[var(--color-brand-700)] transition-transform duration-200 group-hover:scale-y-100"
+                  />
                 </a>
               </li>
             ))}
           </ul>
         </div>
       </div>
+    </div>
+  );
+}
 
-      <div className="border-t border-[var(--color-line)] px-6 py-4">
-        <ButtonLink
-          href="/contact"
-          size="lg"
-          className="w-full !bg-[var(--color-navy-900)] !text-white hover:!bg-[var(--color-navy-800)]"
+function MobileGroup({
+  title,
+  items,
+  onItemClick,
+}: {
+  title: string;
+  items: Item[];
+  onItemClick?: () => void;
+}) {
+  return (
+    <div className="space-y-1">
+      <p className="px-1 pb-1 pt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-fg-4)]">
+        {title}
+      </p>
+      {items.map((it) => (
+        <a
+          key={it.label}
+          href={it.href}
+          onClick={onItemClick}
+          className="flex items-start gap-3 rounded-[6px] px-2 py-2.5 hover:bg-[var(--color-canvas)]"
         >
-          Talk to us
-        </ButtonLink>
-      </div>
+          {it.icon ? (
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[6px] bg-[var(--color-brand-50)] text-[var(--color-brand-700)] ring-1 ring-[var(--color-brand-100)]">
+              <it.icon className="h-4 w-4" strokeWidth={2} />
+            </span>
+          ) : null}
+          <span className="flex flex-col">
+            <span className="text-[14px] font-medium text-[var(--color-fg)]">{it.label}</span>
+            {it.desc ? <span className="text-[12px] text-[var(--color-fg-3)]">{it.desc}</span> : null}
+          </span>
+        </a>
+      ))}
     </div>
   );
 }
