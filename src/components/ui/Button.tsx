@@ -27,7 +27,7 @@ const sizes: Record<Size, string> = {
 };
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-[2px] font-medium tracking-tight transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2';
+  'inline-flex items-center justify-center gap-2 rounded-[8px] font-medium tracking-tight transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2';
 
 export function Button({
   variant = 'ink',

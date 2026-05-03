@@ -1,112 +1,106 @@
 import { Container } from '@/components/ui/Container';
 import { ButtonLink } from '@/components/ui/Button';
-import { HeroDiagram } from '@/components/visuals/HeroDiagram';
-import { segments } from '@/data/segments';
+import { heroImage } from '@/data/images';
+import { ArrowUpRight } from 'lucide-react';
 
 export function Hero() {
   return (
-    <section className="relative pt-10 md:pt-16 pb-20 md:pb-28 overflow-hidden">
+    <section className="relative pt-12 md:pt-20 pb-20 md:pb-28">
       <Container>
-        {/* Architectural masthead — measurement rule + serial labels */}
-        <div className="relative">
-          <div className="flex items-baseline justify-between font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-[var(--color-muted)]">
-            <span className="dot-accent">Pune · Maharashtra · India</span>
-            <span className="hidden sm:inline">Section 01 / The platform</span>
-          </div>
-          <div className="mt-4 flex items-center gap-3">
-            <span className="font-mono text-[0.6875rem] text-[var(--color-muted)]">A</span>
-            <div className="measure-rule flex-1 text-[var(--color-ink)]" />
-            <span className="font-mono text-[0.6875rem] text-[var(--color-muted)]">B</span>
-          </div>
-        </div>
-
-        <div className="mt-12 md:mt-14 grid grid-cols-1 gap-y-16 lg:grid-cols-12 lg:gap-x-12 items-center">
-          {/* Headline column */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-12 items-center">
+          {/* Text column */}
           <div className="lg:col-span-7">
+            <p className="eyebrow mount-up">Pune · India · Technology platform</p>
+
             <h1
-              className="mount-up font-display font-bold tracking-[-0.025em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(2.5rem, 6.6vw, 5.75rem)', lineHeight: 0.96 }}
+              className="mt-6 font-display font-bold tracking-[-0.025em] text-[var(--color-ink)] text-balance mount-up"
+              style={{ fontSize: 'clamp(2.5rem, 6.4vw, 5.5rem)', lineHeight: 1 }}
             >
-              Education, technology, <br className="hidden sm:block" />
-              and hiring — built as <br className="hidden sm:block" />
-              <span className="italic font-medium tracking-[-0.03em]">one practice.</span>
+              Where India moves <br className="hidden sm:block" />
+              from learning <br className="hidden sm:block" />
+              <span className="text-[var(--color-brand-600)]">to earning.</span>
             </h1>
 
             <p
-              className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink)]/70 text-pretty mount-up"
+              className="mt-7 max-w-xl text-[1.0625rem] md:text-[1.125rem] leading-relaxed text-[var(--color-ink)]/75 text-pretty mount-up"
               style={{ animationDelay: '120ms' }}
             >
-              Alphinix serves five connected audiences from a single Pune-based team — students moving into work,
-              institutions building capability, and the businesses that hire them.
+              Alphinix is a Pune-based technology platform serving five connected audiences — students,
+              colleges, schools, businesses, and hiring teams — from a single engineering and consulting
+              practice.
             </p>
 
             <div
-              className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 mount-up"
+              className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4 mount-up"
               style={{ animationDelay: '220ms' }}
             >
-              <ButtonLink href="#audiences" variant="ink" size="lg" trailingArrow>
-                Choose where you sit
+              <ButtonLink href="/contact" variant="ink" size="lg" trailingArrow>
+                Talk to us
               </ButtonLink>
-              <a
-                href="/about"
-                className="link-draw text-[0.9375rem] font-medium text-[var(--color-ink)]"
-              >
-                Read about Alphinix
-              </a>
+              <ButtonLink href="/services" variant="outline" size="lg">
+                See services
+              </ButtonLink>
             </div>
 
-            {/* Inline meta strip */}
-            <dl className="mt-12 grid grid-cols-3 gap-6 max-w-md">
-              {[
-                { k: 'Audiences', v: '05' },
-                { k: 'Service categories', v: '05' },
-                { k: 'Operating from', v: 'Pune' },
-              ].map((m) => (
-                <div key={m.k} className="border-t border-[var(--color-ink)]/15 pt-3">
-                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-muted)]">
-                    {m.k}
-                  </dt>
-                  <dd className="mt-1 font-display text-[1.5rem] font-bold text-[var(--color-ink)] tracking-[-0.02em]">
-                    {m.v}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            {/* Inline mini-card link — optional, sits beneath CTAs */}
+            <a
+              href="#audiences"
+              className="group mt-10 inline-flex items-center gap-3 mount-up"
+              style={{ animationDelay: '320ms' }}
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-brand-50)] text-[var(--color-brand-700)] transition-colors group-hover:bg-[var(--color-brand-100)]">
+                <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+              </span>
+              <span className="text-[0.9375rem] text-[var(--color-ink)]/80">
+                <span className="link-draw font-medium text-[var(--color-ink)]">Find your path</span>
+                <span className="text-[var(--color-muted)]"> — five audiences, one practice</span>
+              </span>
+            </a>
           </div>
 
-          {/* Diagram column */}
+          {/* Image column */}
           <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-[520px]">
-              <span className="bracket-tl text-[var(--color-ink)]" />
-              <span className="bracket-tr text-[var(--color-ink)]" />
-              <span className="bracket-bl text-[var(--color-ink)]" />
-              <span className="bracket-br text-[var(--color-ink)]" />
-              <div className="p-3 md:p-4">
-                <HeroDiagram />
+            <div className="relative">
+              {/* Subtle blue accent shape behind image */}
+              <div
+                aria-hidden="true"
+                className="absolute -top-4 -right-4 h-32 w-32 rounded-full bg-[var(--color-brand-100)] blur-2xl opacity-70"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute -bottom-6 -left-6 h-40 w-40 rounded-[var(--radius-xl)] bg-[var(--color-brand-50)] -z-10"
+              />
+
+              {/* Main image plate */}
+              <div className="image-plate relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-[var(--radius-xl)]">
+                <img
+                  src={heroImage}
+                  alt="Students collaborating around a shared workspace"
+                  loading="eager"
+                  fetchPriority="high"
+                  width={1200}
+                  height={1500}
+                />
+                {/* Floating badge — bottom-left */}
+                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+                  <div className="rounded-[var(--radius-md)] bg-[var(--color-paper)]/95 px-4 py-3 backdrop-blur-sm">
+                    <p className="font-mono text-[0.625rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                      Operating from
+                    </p>
+                    <p className="mt-0.5 font-display text-[1.125rem] font-bold tracking-[-0.02em] text-[var(--color-ink)]">
+                      Pune, Maharashtra
+                    </p>
+                  </div>
+                  <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[var(--color-paper)]/95 px-3 py-1.5 text-[0.6875rem] font-medium text-[var(--color-ink)] backdrop-blur-sm">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-seg-students)]" />
+                    Active engagements
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </Container>
-
-      {/* Bottom segment strip — narrow, subtle, anchors the hero to the page */}
-      <div className="mt-20 md:mt-24 border-y border-[var(--color-ink)]/10 bg-[var(--color-paper-warm)]">
-        <Container>
-          <div className="flex items-center gap-6 overflow-x-auto py-4 text-[0.75rem] uppercase tracking-[0.16em] text-[var(--color-muted)] font-mono whitespace-nowrap">
-            <span className="text-[var(--color-ink)]">In service of —</span>
-            {segments.map((s, i) => (
-              <span key={s.slug} className="flex items-center gap-2">
-                <span
-                  className="inline-block h-1.5 w-1.5 rounded-full"
-                  style={{ backgroundColor: `var(${s.colorVar})` }}
-                />
-                {s.name}
-                {i < segments.length - 1 && <span className="ml-6 opacity-30">·</span>}
-              </span>
-            ))}
-          </div>
-        </Container>
-      </div>
     </section>
   );
 }

@@ -4,12 +4,12 @@ const frameworks = [
   {
     code: 'NEP 2020',
     name: 'National Education Policy',
-    note: 'School and college programs are designed to align with the policy framework.',
+    note: 'School and college programs designed against the published policy framework.',
   },
   {
     code: 'NAAC',
     name: 'Accreditation council',
-    note: 'Documentation, processes, and evidence support for accreditation cycles.',
+    note: 'Documentation, processes, and evidence support across accreditation cycles.',
   },
   {
     code: 'NBA',
@@ -24,30 +24,26 @@ const frameworks = [
   {
     code: 'ATL',
     name: 'Atal Tinkering Labs',
-    note: 'School lab setups and kits in line with the official guidelines.',
+    note: 'School lab setups and kits aligned with the official ATL guidelines.',
   },
 ];
 
 export function Standards() {
   return (
-    <section className="border-t border-[var(--color-ink)]/10 bg-[var(--color-paper-warm)] py-20 md:py-24">
+    <section className="bg-[var(--color-paper-warm)] py-20 md:py-24">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12">
           <div className="lg:col-span-5">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-[var(--color-muted)] dot-accent">
-              Section 05 / Built around standards
-            </p>
+            <p className="eyebrow">Built around standards</p>
             <h2
-              className="mt-4 font-display font-bold tracking-[-0.02em] text-[var(--color-ink)]"
-              style={{ fontSize: 'clamp(1.75rem, 3.6vw, 2.625rem)', lineHeight: 1.02 }}
+              className="mt-5 font-display font-bold tracking-[-0.02em] text-[var(--color-ink)] text-balance"
+              style={{ fontSize: 'clamp(1.875rem, 3.6vw, 2.75rem)', lineHeight: 1.04 }}
             >
-              Aligned to the frameworks <br />
-              that schools, colleges, and <br />
-              regulators already use.
+              Aligned with the frameworks that schools, colleges, and regulators already use.
             </h2>
           </div>
-          <div className="lg:col-span-6 lg:col-start-7 self-end">
-            <p className="text-[1rem] leading-relaxed text-[var(--color-ink)]/75 text-pretty">
+          <div className="lg:col-span-6 lg:col-start-7 lg:self-end">
+            <p className="text-[1rem] md:text-[1.0625rem] leading-relaxed text-[var(--color-ink)]/75 text-pretty">
               Programs and infrastructure are designed against the published guidelines of India&apos;s education
               and technical-education bodies. This keeps the work credible at audit, accreditation, and
               policy-level conversations.
@@ -55,32 +51,32 @@ export function Standards() {
           </div>
         </div>
 
-        <div className="mt-12 md:mt-16">
-          <div className="border-t border-[var(--color-ink)]/15" />
+        <ul className="mt-12 md:mt-16">
+          <li className="border-t border-[var(--color-ink)]/15" aria-hidden="true" />
           {frameworks.map((f) => (
-            <div
+            <li
               key={f.code}
               className="grid grid-cols-12 items-baseline gap-x-6 gap-y-2 border-b border-[var(--color-ink)]/15 py-5 md:py-6"
             >
               <div className="col-span-12 sm:col-span-3 lg:col-span-2 flex items-center gap-3">
-                <span className="inline-block h-1 w-6 bg-[var(--color-accent-500)]" aria-hidden="true" />
-                <p className="font-display text-[1.5rem] font-bold tracking-[-0.02em] text-[var(--color-ink)]">
+                <span aria-hidden="true" className="inline-block h-1 w-6 bg-[var(--color-brand-600)]" />
+                <p className="font-display text-[1.25rem] md:text-[1.5rem] font-bold tracking-[-0.02em] text-[var(--color-ink)]">
                   {f.code}
                 </p>
               </div>
               <div className="col-span-12 sm:col-span-3 lg:col-span-3">
-                <p className="text-[0.8125rem] uppercase tracking-[0.12em] text-[var(--color-muted)]">
+                <p className="text-[0.8125rem] uppercase tracking-[0.1em] text-[var(--color-muted)]">
                   {f.name}
                 </p>
               </div>
               <div className="col-span-12 sm:col-span-6 lg:col-span-7">
-                <p className="text-[0.9375rem] leading-snug text-[var(--color-ink)]/80">
+                <p className="text-[0.9375rem] md:text-[1rem] leading-snug text-[var(--color-ink)]/80">
                   {f.note}
                 </p>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </Container>
     </section>
   );

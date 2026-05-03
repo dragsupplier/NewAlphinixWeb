@@ -1,9 +1,11 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
-import { AudienceList } from '@/components/sections/AudienceList';
-import { CapabilityStream } from '@/components/sections/CapabilityStream';
-import { Manifesto } from '@/components/sections/Manifesto';
+import { TrustStrip } from '@/components/sections/TrustStrip';
+import { AudienceTiles } from '@/components/sections/AudienceTiles';
+import { SignatureBlocks } from '@/components/sections/SignatureBlocks';
+import { ProcessSteps } from '@/components/sections/ProcessSteps';
+import { Resources } from '@/components/sections/Resources';
 import { Standards } from '@/components/sections/Standards';
 import { ContactBand } from '@/components/sections/ContactBand';
 
@@ -13,9 +15,11 @@ export function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <AudienceList />
-        <CapabilityStream />
-        <Manifesto />
+        <TrustStrip />
+        <AudienceTiles />
+        <SignatureBlocks />
+        <ProcessSteps />
+        <Resources />
         <Standards />
         <ContactBand />
       </main>
