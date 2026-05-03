@@ -338,54 +338,20 @@
     animation: word-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
-  /* Giant index numeral (display) */
-  .index-display {
-    font-family: var(--font-display);
+  /* Subtle row hover — used on editorial list rows */
+  .row-hover {
+    transition: background-color 240ms ease;
+  }
+  .row-hover:hover { background-color: rgba(29, 58, 165, 0.025); }
+
+  /* Numbered marker — small mono index for grid items */
+  .item-index {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
     font-weight: 600;
-    letter-spacing: -0.05em;
-    line-height: 0.85;
-  }
-
-  /* Outlined numeral — fills with brand-700 on group hover */
-  .outline-numeral {
-    color: transparent;
-    -webkit-text-stroke: 1.4px var(--color-brand-700);
-    transition: color 480ms cubic-bezier(0.2, 0.7, 0.2, 1),
-                transform 480ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .group:hover .outline-numeral,
-  .group:focus-visible .outline-numeral {
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: var(--color-brand-700);
-    transform: translateY(-2px);
-  }
-
-  /* Magazine TOC leader (the row of dots between title and meta) */
-  .toc-leader {
-    flex: 1;
-    align-self: end;
-    height: 1px;
-    margin-bottom: 0.55em;
-    background-image: radial-gradient(circle, var(--color-line-2) 1px, transparent 1.2px);
-    background-size: 7px 2px;
-    background-repeat: repeat-x;
-    background-position: 0 50%;
-    opacity: 0.85;
-  }
-
-  /* Section row wrapper with side-margin index number */
-  .editorial-row {
-    transition: background-color 320ms ease;
-  }
-  .editorial-row:hover { background-color: rgba(29, 58, 165, 0.025); }
-
-  /* Heavy-rule (used at top of editorial sections) */
-  .heavy-rule { background: var(--color-fg); height: 2px; }
-
-  /* Vertical hairline divider used between Standards columns */
-  .v-rule {
-    background: var(--color-line);
-    width: 1px;
-    align-self: stretch;
   }
 
   /* ─── Footer giant wordmark ────────────────────────────────── */
@@ -438,19 +404,12 @@
   .social-icon:hover > .ic-base  { transform: translateY(-110%); opacity: 0; }
   .social-icon:hover > .ic-hover { transform: translateY(0); opacity: 1; }
 
-  /* Bento number that scales-in on enter */
-  @keyframes count-in {
-    from { transform: translateY(40%) scale(0.92); opacity: 0; letter-spacing: -0.02em; }
-    to   { transform: translateY(0) scale(1); opacity: 1; letter-spacing: -0.05em; }
-  }
-  .count-in { animation: count-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-
   /* Footer wordmark drift */
   @keyframes wordmark-drift {
     0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-6px); }
+    50%      { transform: translateY(-4px); }
   }
-  .wordmark-drift { animation: wordmark-drift 14s ease-in-out infinite; }
+  .wordmark-drift { animation: wordmark-drift 16s ease-in-out infinite; }
 }
 
 @media (prefers-reduced-motion: reduce) {
