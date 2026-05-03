@@ -49,26 +49,26 @@ export function Standards() {
           </div>
         </div>
 
+        {/* Vertical statement rows — code | name | description across 12 cols */}
         <div className="border-t border-[var(--color-fg)]">
-          <div className="grid grid-cols-1 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-[var(--color-line)]">
-            {frameworks.map((f, i) => (
-              <Reveal
-                key={f.code}
-                delay={i * 60}
-                className="py-9 md:py-10 lg:px-6 lg:first:pl-0 lg:last:pr-0"
-              >
-                <p className="font-display text-[22px] md:text-[24px] font-semibold leading-[1] tracking-[-0.022em] text-[var(--color-fg)]">
-                  {f.code}
-                </p>
-                <p className="mt-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--color-brand-700)] font-semibold">
-                  {f.name}
-                </p>
-                <p className="mt-5 text-[13.5px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
-                  {f.note}
-                </p>
-              </Reveal>
-            ))}
-          </div>
+          {frameworks.map((f, i) => (
+            <Reveal
+              as="article"
+              key={f.code}
+              delay={i * 60}
+              className="row-hover grid grid-cols-12 gap-x-6 gap-y-3 py-9 md:py-11 lg:py-12 border-b border-[var(--color-line)] items-baseline"
+            >
+              <p className="col-span-12 md:col-span-3 font-display text-[28px] md:text-[34px] lg:text-[38px] font-semibold leading-[1] tracking-[-0.025em] text-[var(--color-brand-700)]">
+                {f.code}
+              </p>
+              <p className="col-span-12 md:col-span-3 font-mono text-[10.5px] uppercase tracking-[0.16em] font-semibold text-[var(--color-fg)] md:self-center">
+                {f.name}
+              </p>
+              <p className="col-span-12 md:col-span-6 text-[14.5px] md:text-[15px] leading-[1.65] text-[var(--color-fg-3)] text-pretty md:self-center">
+                {f.note}
+              </p>
+            </Reveal>
+          ))}
         </div>
       </Container>
     </section>
