@@ -37,15 +37,14 @@ const steps: Step[] = [
 
 export function ProcessSteps() {
   return (
-    <section className="py-20 md:py-28 bg-[var(--color-paper)]">
+    <section className="py-24 md:py-32 bg-[var(--color-paper)]">
       <Container>
-        {/* Section masthead */}
-        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-14 md:mb-20">
           <div className="lg:col-span-7">
             <p className="eyebrow">How we engage</p>
             <h2
               className="mt-5 font-display font-bold tracking-[-0.025em] text-[var(--color-ink)] text-balance"
-              style={{ fontSize: 'clamp(2.25rem, 4.6vw, 3.5rem)', lineHeight: 1.02 }}
+              style={{ fontSize: 'clamp(2.25rem, 4.6vw, 3.5rem)', lineHeight: 1 }}
             >
               Four phases. <br />
               The same shape, every engagement.
@@ -59,22 +58,25 @@ export function ProcessSteps() {
           </div>
         </div>
 
-        {/* Steps grid */}
-        <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-[var(--color-ink)]/12">
+        <ol className="grid-room grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
-            <Reveal as="li" key={s.index} delay={i * 80} className="border-r border-b border-[var(--color-ink)]/12 p-7 md:p-8 lg:p-9">
-              {/* Accent bar */}
+            <Reveal
+              as="li"
+              key={s.index}
+              delay={i * 80}
+              className="relative p-7 md:p-8 lg:p-10 bg-[var(--color-paper)] transition-colors hover:bg-[var(--color-paper-blue)]"
+            >
               <span
                 aria-hidden="true"
-                className="block h-1 w-10"
+                className="absolute top-0 left-0 right-0 h-1"
                 style={{ backgroundColor: s.accent }}
               />
-              <div className="mt-5 flex items-baseline gap-3">
+              <div className="mt-2 flex items-baseline gap-3">
                 <span className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-[var(--color-muted)]">
                   Phase
                 </span>
                 <span
-                  className="font-display text-[1.875rem] md:text-[2.125rem] font-bold tracking-[-0.02em]"
+                  className="font-display text-[2rem] md:text-[2.25rem] font-black tracking-[-0.02em]"
                   style={{ color: s.accent }}
                 >
                   {s.index}

@@ -58,7 +58,7 @@ const resources: Resource[] = [
 
 export function Resources() {
   return (
-    <section className="py-20 md:py-28 bg-[var(--color-paper)]">
+    <section className="py-24 md:py-32 bg-[var(--color-paper-blue)]">
       <Container>
         {/* Section masthead */}
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-12 md:mb-16">
@@ -86,7 +86,7 @@ export function Resources() {
             <Reveal key={r.serial} delay={i * 60}>
               <a
                 href={r.href}
-                className="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 border-b border-[var(--color-line)] py-7 md:py-10 hover:bg-[var(--color-paper-soft)] transition-colors px-2"
+                className="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 border-b border-[var(--color-line)] py-7 md:py-10 hover:bg-[var(--color-paper)] transition-colors px-2"
               >
                 {/* Serial */}
                 <div className="col-span-2 sm:col-span-1">
