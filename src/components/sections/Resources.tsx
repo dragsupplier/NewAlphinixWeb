@@ -64,6 +64,7 @@ const resources: Resource[] = [
 export function Resources() {
   const featured = resources.find((r) => r.featured) ?? resources[0]!;
   const rest = resources.filter((r) => r !== featured);
+  const total = String(resources.length).padStart(2, '0');
 
   return (
     <section className="section-y bg-[var(--color-bg)]">
@@ -87,23 +88,42 @@ export function Resources() {
           </a>
         </div>
 
-        {/* Magazine cover (left, 7-col) + index list (right, 5-col) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-[var(--color-fg)]">
-          {/* Featured cover */}
-          <Reveal className="lg:col-span-7 lg:border-r lg:border-[var(--color-line)] py-10 md:py-12 lg:pr-12 xl:pr-16">
-            <a href={featured.href} className="group block">
-              <span className="item-index">{featured.tag}</span>
-              <h3 className="mt-6 font-display text-[30px] md:text-[40px] lg:text-[52px] font-semibold leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)] text-balance">
+        {/* Two-column layout: featured cover (7) + index column (5) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 border-y-2 border-[var(--color-fg)]">
+          {/* Featured cover with brand-700 pinned-rule on the left */}
+          <Reveal className="lg:col-span-7 lg:border-r lg:border-[var(--color-line)]">
+            <a
+              href={featured.href}
+              className="group relative block py-10 md:py-12 lg:py-14 lg:pr-12 xl:pr-16 lg:pl-8"
+            >
+              {/* brand-700 pinned-rule */}
+              <span
+                aria-hidden="true"
+                className="hidden lg:block absolute left-0 top-10 bottom-10 w-[3px] bg-[var(--color-brand-700)]"
+              />
+
+              <div className="flex items-center justify-between">
+                <span className="item-index">{featured.tag}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-5)] tabular-nums">
+                  {featured.serial} <span className="text-[var(--color-line-2)]">/</span> {total}
+                </span>
+              </div>
+
+              <span aria-hidden="true" className="mt-3 block h-px w-12 bg-[var(--color-brand-700)]" />
+
+              <h3 className="mt-7 font-display text-[32px] md:text-[44px] lg:text-[58px] font-semibold leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)] text-balance">
                 <span className="under-slide">{featured.title}</span>
               </h3>
-              <p className="mt-6 max-w-[60ch] text-[15px] md:text-[16px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
+
+              <p className="mt-6 max-w-[58ch] text-[15.5px] md:text-[16px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
                 {featured.excerpt}
               </p>
-              <div className="mt-10 flex items-baseline justify-between border-t border-[var(--color-line)] pt-5 text-[var(--color-fg-5)]">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em]">
+
+              <div className="mt-10 flex items-center justify-between border-t border-[var(--color-line)] pt-5">
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-fg-5)] tabular-nums">
                   {featured.meta}
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[var(--color-fg)]">
+                <span className="inline-flex items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.16em] font-semibold text-[var(--color-fg)]">
                   Read in full
                   <ArrowUpRight
                     className="h-3.5 w-3.5 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--color-brand-700)]"
@@ -114,8 +134,8 @@ export function Resources() {
             </a>
           </Reveal>
 
-          {/* Index list of remaining articles */}
-          <ol className="lg:col-span-5 lg:pl-12 xl:pl-16">
+          {/* Index column — each entry: tag/serial header → display title → meta+arrow footer */}
+          <ol className="lg:col-span-5 lg:pl-10 xl:pl-14">
             {rest.map((r, i) => (
               <Reveal
                 as="li"
@@ -123,11 +143,18 @@ export function Resources() {
                 delay={i * 60}
                 className="border-t border-[var(--color-line)] first:border-t-0 lg:first:border-t-0"
               >
-                <a href={r.href} className="row-hover group block py-6 md:py-7">
-                  <span className="item-index">{r.tag}</span>
-                  <h3 className="mt-2.5 font-display text-[16px] md:text-[18px] font-semibold leading-[1.28] tracking-[-0.015em] text-[var(--color-fg)] text-balance">
+                <a href={r.href} className="row-hover group block py-6 md:py-7 lg:pr-2">
+                  <div className="flex items-baseline justify-between">
+                    <span className="item-index">{r.tag}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-5)] tabular-nums">
+                      {r.serial} <span className="text-[var(--color-line-2)]">/</span> {total}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-3 font-display text-[16px] md:text-[18px] lg:text-[19px] font-semibold leading-[1.28] tracking-[-0.018em] text-[var(--color-fg)] text-balance">
                     <span className="under-slide">{r.title}</span>
                   </h3>
+
                   <div className="mt-4 flex items-center justify-between text-[var(--color-fg-5)]">
                     <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] tabular-nums">
                       {r.meta}
