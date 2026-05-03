@@ -1,6 +1,7 @@
 import { Container } from '@/components/ui/Container';
 import { ButtonLink } from '@/components/ui/Button';
 import { Reveal } from '@/components/Reveal';
+import { ArrowUpRight } from 'lucide-react';
 
 type Differentiator = {
   index: string;
@@ -42,6 +43,8 @@ const differentiators: Differentiator[] = [
 ];
 
 export function SignatureBlocks() {
+  const [feature, ...rest] = differentiators;
+
   return (
     <section id="approach" className="section-y bg-[var(--color-canvas)]">
       <Container>
@@ -65,25 +68,69 @@ export function SignatureBlocks() {
           </div>
         </div>
 
-        <div>
-          {differentiators.map((d, i) => (
-            <Reveal
-              key={d.index}
-              delay={(i % 3) * 60}
-              className={`grid grid-cols-12 gap-x-6 gap-y-3 py-7 md:py-9 ${i === 0 ? 'cap-row' : 'cap-row'}`}
-            >
-              <div className="col-span-12 sm:col-span-2 lg:col-span-1">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-brand-700)] font-semibold">
-                  {d.index}
+        {/* Bento grid: 1 feature tile + 5 supporting tiles */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-5">
+          {/* Featured tile — spans 3 cols × 2 rows on desktop */}
+          <Reveal className="md:col-span-2 lg:col-span-3 lg:row-span-2 bento-feature color-card-edge rounded-[12px] p-7 md:p-9 text-white">
+            <div className="flex h-full flex-col justify-between gap-10 min-h-[340px]">
+              <div className="flex items-start justify-between">
+                <p className="kicker kicker-on-dark">Signature reason</p>
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-white/55">
+                  01 / 06
                 </span>
               </div>
-              <div className="col-span-12 sm:col-span-10 lg:col-span-5">
-                <h3 className="font-display text-[20px] md:text-[24px] font-semibold leading-[1.18] tracking-[-0.018em] text-[var(--color-fg)] text-balance">
+
+              <div>
+                <p className="index-display text-[120px] md:text-[148px] lg:text-[168px] text-[var(--color-brand-200)]/80 count-in">
+                  {feature.index}
+                </p>
+                <h3 className="mt-4 font-display text-[26px] md:text-[32px] lg:text-[36px] font-semibold leading-[1.05] tracking-[-0.02em] text-white text-balance">
+                  {feature.heading}
+                </h3>
+                <p className="mt-5 max-w-[44ch] text-[14.5px] md:text-[15.5px] leading-[1.65] text-white/75 text-pretty">
+                  {feature.body}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-white/15 pt-5">
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
+                  Why this matters
+                </span>
+                <a
+                  href="/about#one-practice"
+                  className="group inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-white"
+                >
+                  <span className="under-slide">Read more</span>
+                  <ArrowUpRight
+                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    strokeWidth={2.25}
+                  />
+                </a>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Five supporting tiles — first two span 3 cols (top row half), next three span 2 cols (bottom row thirds) */}
+          {rest.map((d, i) => (
+            <Reveal
+              key={d.index}
+              delay={(i + 1) * 60}
+              className={`card glow-card p-6 md:p-7 ${i < 2 ? 'lg:col-span-3' : 'lg:col-span-2'}`}
+            >
+              <div className="flex h-full flex-col">
+                <div className="flex items-baseline justify-between">
+                  <span className="index-display text-[44px] md:text-[52px] text-[var(--color-brand-700)]">
+                    {d.index}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-fg-5)]">
+                    Reason
+                  </span>
+                </div>
+                <div className="mt-4 h-px w-10 bg-[var(--color-brand-700)]" />
+                <h3 className="mt-5 font-display text-[18px] md:text-[20px] font-semibold leading-[1.18] tracking-[-0.018em] text-[var(--color-fg)] text-balance">
                   {d.heading}
                 </h3>
-              </div>
-              <div className="col-span-12 lg:col-span-6">
-                <p className="text-[14.5px] md:text-[15.5px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
+                <p className="mt-3 text-[13.5px] md:text-[14.5px] leading-[1.6] text-[var(--color-fg-3)] text-pretty">
                   {d.body}
                 </p>
               </div>
