@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Menu, X, ArrowUpRight, Search, ArrowRight } from 'lucide-react';
+import { ChevronDown, Menu, X, ArrowUpRight, Search, Sparkles } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { Container } from '@/components/ui/Container';
 import { ButtonLink } from '@/components/ui/Button';
@@ -8,6 +8,102 @@ import { portalLinks } from '@/data/nav';
 import { cn } from '@/lib/utils';
 
 type Panel = 'services' | 'portal' | null;
+
+/* ─────────────────────────────────────────────────────────────
+   Mega menu data — 4 service columns + 1 utility column.
+   Modelled on the standard 5-column dark mega-menu pattern used
+   by enterprise / edtech sites; original Alphinix content.
+   ───────────────────────────────────────────────────────────── */
+type ServiceItem = {
+  title: string;
+  blurb: string;
+  href: string;
+  badge?: 'live' | 'new' | 'free';
+  icon?: 'spark';
+};
+
+type ServiceColumn = {
+  heading: string;
+  items: ServiceItem[];
+};
+
+const serviceColumns: ServiceColumn[] = [
+  {
+    heading: 'Students',
+    items: [
+      {
+        title: 'Industrial Training',
+        blurb: 'Live cohorts across Maharashtra',
+        href: '/students/industrial-training',
+        badge: 'live',
+      },
+      {
+        title: 'Placement Preparation',
+        blurb: 'Structured job-ready tracks',
+        href: '/students/placement-prep',
+        icon: 'spark',
+      },
+    ],
+  },
+  {
+    heading: 'Colleges',
+    items: [
+      {
+        title: 'Campus Programs',
+        blurb: 'Training and placement drives',
+        href: '/colleges/campus-training',
+      },
+      {
+        title: 'Accreditation Support',
+        blurb: 'NAAC and NBA documentation',
+        href: '/colleges/naac-nba-support',
+      },
+    ],
+  },
+  {
+    heading: 'Schools',
+    items: [
+      {
+        title: 'AI and Robotics',
+        blurb: 'Curriculum and teacher training',
+        href: '/schools/ai-robotics-education',
+      },
+      {
+        title: 'ATL Labs',
+        blurb: 'STEM lab setup and kits',
+        href: '/schools/stem-atl-labs',
+        badge: 'new',
+      },
+    ],
+  },
+  {
+    heading: 'Businesses',
+    items: [
+      {
+        title: 'Software Build',
+        blurb: 'Web, mobile, and cloud',
+        href: '/businesses/website-development',
+      },
+      {
+        title: 'AI and Automation',
+        blurb: 'Solutions for growing SMBs',
+        href: '/businesses/ai-solutions',
+      },
+    ],
+  },
+];
+
+const utilityLinks = [
+  { label: 'Hiring services', href: '/hiring', highlight: true },
+  { label: 'Insights', href: '/blog' },
+  { label: 'Case studies', href: '/case-studies' },
+  { label: 'Webinars', href: '/webinars' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
+
+/* ─────────────────────────────────────────── */
 
 export function Header() {
   const [panel, setPanel] = useState<Panel>(null);
@@ -47,7 +143,7 @@ export function Header() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Light header when scrolled (over light content); transparent when over the dark hero.
+  // Header is dark over the dark hero (transparent), light when scrolled
   const isLight = scrolled;
 
   return (
@@ -84,7 +180,7 @@ export function Header() {
           <button
             aria-label="Search"
             className={cn(
-              'inline-flex h-10 w-10 items-center justify-center rounded-[8px] transition-colors',
+              'inline-flex h-10 w-10 items-center justify-center rounded-[6px] transition-colors',
               isLight ? 'hover:bg-[var(--color-paper-blue)]' : 'hover:bg-white/10',
             )}
           >
@@ -104,8 +200,8 @@ export function Header() {
             className={cn(
               'ml-1.5',
               isLight
-                ? '!bg-[var(--color-ink)] !text-[var(--color-paper)] hover:!bg-[var(--color-ink-soft)]'
-                : '!bg-white !text-[var(--color-ink)] hover:!bg-white/90',
+                ? '!bg-[var(--color-navy-900)] !text-white hover:!bg-[var(--color-navy-800)]'
+                : '!bg-white !text-[var(--color-navy-900)] hover:!bg-white/90',
             )}
           >
             Talk to us
@@ -123,7 +219,7 @@ export function Header() {
       </Container>
 
       <ServicesPanel open={panel === 'services'} onMouseEnter={() => open('services')} />
-      <PortalPanel open={panel === 'portal'} onMouseEnter={() => open('portal')} />
+      <PortalPanel open={panel === 'portal'} onMouseEnter={() => open('portal')} isLight={isLight} />
 
       {mobileOpen && <MobileMenu onClose={() => setMobileOpen(false)} />}
     </header>
@@ -148,7 +244,7 @@ function NavLink({
       href={href}
       onMouseEnter={onMouseEnter}
       className={cn(
-        'rounded-[8px] px-3 py-2 transition-colors',
+        'rounded-[6px] px-3 py-2 transition-colors',
         isLight ? 'text-[var(--color-ink)]/75 hover:text-[var(--color-ink)]' : 'text-white/80 hover:text-white',
       )}
     >
@@ -178,7 +274,7 @@ function NavTrigger({
       onClick={onClick}
       aria-expanded={isOpen}
       className={cn(
-        'inline-flex items-center gap-1 rounded-[8px] px-3 py-2 transition-colors',
+        'inline-flex items-center gap-1 rounded-[6px] px-3 py-2 transition-colors',
         isLight ? 'text-[var(--color-ink)]/75 hover:text-[var(--color-ink)]' : 'text-white/80 hover:text-white',
         compact && 'text-[0.9375rem]',
       )}
@@ -193,10 +289,9 @@ function NavTrigger({
 }
 
 /* ─────────────────────────────────────────── */
-/* Services mega menu — 4 cols, hover-driven content swap                    */
-/* Col 1: hover-able audience list                                           */
-/* Cols 2–3: services for the hovered audience                               */
-/* Col 4: featured CTA card                                                  */
+/* Services mega menu — 5-column dark surface                                */
+/* Cols 1–4: service categories (heading + 1–2 link items + blurb + badge)   */
+/* Col 5:    utility / company links list                                    */
 /* ─────────────────────────────────────────── */
 
 function ServicesPanel({
@@ -206,136 +301,66 @@ function ServicesPanel({
   open: boolean;
   onMouseEnter: () => void;
 }) {
-  const [active, setActive] = useState(0);
-  const seg = segments[active]!;
-
   return (
     <div
       onMouseEnter={onMouseEnter}
       className={cn(
-        'absolute left-0 right-0 top-full overflow-hidden border-b border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] shadow-[0_24px_60px_-32px_rgba(10,14,39,0.18)] transition-[grid-template-rows,opacity] duration-300 grid',
+        'absolute left-0 right-0 top-full overflow-hidden bg-[var(--color-navy-950)] text-white border-b border-white/10 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.5)] transition-[grid-template-rows,opacity] duration-300 grid',
         open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
       )}
     >
       <div className="min-h-0">
         <Container>
-          <div className="grid grid-cols-12 gap-x-8 py-10">
-            {/* Col 1 — audience list */}
-            <div className="col-span-12 md:col-span-4 lg:col-span-3">
-              <p className="eyebrow">Audiences</p>
-              <ul className="mt-5 -ml-2">
-                {segments.map((s, i) => (
-                  <li key={s.slug}>
-                    <button
-                      type="button"
-                      onMouseEnter={() => setActive(i)}
-                      onFocus={() => setActive(i)}
-                      onClick={() => { window.location.href = `/${s.slug}`; }}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:divide-x lg:divide-white/10 py-10">
+            {serviceColumns.map((col) => (
+              <div key={col.heading} className="lg:px-7 first:lg:pl-0 py-5 md:py-0">
+                <p className="text-[0.875rem] font-medium text-[var(--color-navy-300)]">
+                  {col.heading}
+                </p>
+                <ul className="mt-5 space-y-6">
+                  {col.items.map((item) => (
+                    <li key={item.title}>
+                      <a href={item.href} className="group block">
+                        <div className="flex items-center gap-2">
+                          <span className="font-display text-[1.0625rem] font-bold tracking-[-0.01em] text-white group-hover:text-[var(--color-navy-200)] transition-colors">
+                            {item.title}
+                          </span>
+                          {item.badge === 'live' && <span className="badge badge-live">Live</span>}
+                          {item.badge === 'new' && <span className="badge badge-new">New</span>}
+                          {item.badge === 'free' && <span className="badge badge-free">Free</span>}
+                          {item.icon === 'spark' && (
+                            <Sparkles className="h-3 w-3 text-[var(--color-navy-300)]" strokeWidth={2} />
+                          )}
+                        </div>
+                        <p className="mt-1 text-[0.8125rem] text-white/55 leading-snug">
+                          {item.blurb}
+                        </p>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            {/* Col 5 — utility links */}
+            <div className="lg:px-7 py-5 md:py-0">
+              <ul className="space-y-3">
+                {utilityLinks.map((l) => (
+                  <li key={l.label}>
+                    <a
+                      href={l.href}
                       className={cn(
-                        'group flex w-full items-center justify-between gap-3 rounded-[8px] px-3 py-3 text-left transition-colors',
-                        i === active
-                          ? 'bg-[var(--color-paper-blue)]'
-                          : 'hover:bg-[var(--color-paper-blue)]',
+                        'block text-[0.9375rem] transition-colors',
+                        l.highlight
+                          ? 'text-[var(--color-navy-300)] font-medium hover:text-white'
+                          : 'text-white/80 hover:text-white',
                       )}
                     >
-                      <span className="flex items-baseline gap-3">
-                        <span
-                          aria-hidden="true"
-                          className="inline-block h-1.5 w-1.5 rounded-full mt-2"
-                          style={{ backgroundColor: `var(${s.colorVar})` }}
-                        />
-                        <span>
-                          <span className="block font-display text-[1.0625rem] font-bold tracking-[-0.01em]">
-                            {s.name}
-                          </span>
-                          <span className="block text-[0.8125rem] text-[var(--color-muted)] mt-0.5">
-                            {s.audience}
-                          </span>
-                        </span>
-                      </span>
-                      <ArrowRight
-                        className={cn(
-                          'h-4 w-4 transition-all',
-                          i === active
-                            ? 'text-[var(--color-brand-700)] translate-x-0.5'
-                            : 'text-[var(--color-muted)] opacity-0 group-hover:opacity-100',
-                        )}
-                        strokeWidth={1.75}
-                      />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Cols 2–3 — services for active audience */}
-            <div className="col-span-12 md:col-span-8 lg:col-span-6 md:border-l md:border-[var(--color-line)] md:pl-8">
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="eyebrow">Services</p>
-                  <p className="mt-2 font-display text-[1.5rem] md:text-[1.75rem] font-bold tracking-[-0.015em] text-[var(--color-ink)]">
-                    {seg.name} <span className="text-[var(--color-muted)]">— {seg.outcome.replace(/\.$/, '')}</span>
-                  </p>
-                </div>
-              </div>
-              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-                {seg.services.map((srv) => (
-                  <li key={srv}>
-                    <a
-                      href={`/${seg.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                      className="group flex items-baseline justify-between rounded-[6px] px-3 py-2.5 text-[0.9375rem] hover:bg-[var(--color-paper-blue)] transition-colors"
-                    >
-                      <span className="text-[var(--color-ink)]">{srv}</span>
-                      <ArrowUpRight className="h-3.5 w-3.5 text-[var(--color-muted)] opacity-0 transition-opacity group-hover:opacity-100" strokeWidth={2} />
+                      {l.label}
                     </a>
                   </li>
                 ))}
               </ul>
-              <a
-                href={`/${seg.slug}`}
-                className="mt-6 inline-flex items-center gap-1.5 text-[0.875rem] font-medium text-[var(--color-brand-700)] link-draw"
-              >
-                Visit the {seg.name.toLowerCase()} hub
-                <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
-              </a>
-            </div>
-
-            {/* Col 4 — featured CTA card */}
-            <div className="hidden lg:block lg:col-span-3">
-              <div
-                className="relative overflow-hidden rounded-[var(--radius-lg)] p-6 text-white"
-                style={{
-                  background:
-                    'linear-gradient(155deg, var(--color-brand-700) 0%, var(--color-brand-900) 70%, var(--color-ink-deep) 100%)',
-                }}
-              >
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full bg-white/10 blur-2xl"
-                />
-                <p className="relative font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-[var(--color-brand-300)]">
-                  Not sure where to start?
-                </p>
-                <p
-                  className="relative mt-4 font-display font-bold tracking-[-0.015em] text-balance"
-                  style={{ fontSize: 'clamp(1.25rem, 1.4vw, 1.5rem)', lineHeight: 1.18 }}
-                >
-                  Tell us the outcome you need. We will route the right team within a working day.
-                </p>
-                <div className="relative mt-6">
-                  <ButtonLink
-                    href="/contact"
-                    size="md"
-                    trailingArrow
-                    className="!bg-white !text-[var(--color-ink)] hover:!bg-white/90"
-                  >
-                    Schedule a call
-                  </ButtonLink>
-                </div>
-                <p className="relative mt-5 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-white/55">
-                  Pune · Maharashtra · India
-                </p>
-              </div>
             </div>
           </div>
         </Container>
@@ -347,35 +372,53 @@ function ServicesPanel({
 function PortalPanel({
   open,
   onMouseEnter,
+  isLight,
 }: {
   open: boolean;
   onMouseEnter: () => void;
+  isLight: boolean;
 }) {
   return (
     <div
       onMouseEnter={onMouseEnter}
       className={cn(
-        'absolute right-0 top-full mr-6 w-72 origin-top-right overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] shadow-[0_20px_60px_-20px_rgba(10,14,39,0.22)] transition-[opacity,transform] duration-200',
+        'absolute right-0 top-full mr-6 w-72 origin-top-right overflow-hidden rounded-[var(--radius-md)] shadow-[0_20px_60px_-20px_rgba(10,14,39,0.32)] transition-[opacity,transform] duration-200',
+        isLight
+          ? 'border border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)]'
+          : 'border border-white/10 bg-[var(--color-navy-950)] text-white',
         open ? 'opacity-100 translate-y-2' : 'opacity-0 -translate-y-1 pointer-events-none',
       )}
     >
       <div className="px-5 pt-5 pb-2">
-        <p className="eyebrow">Sign in</p>
+        <p className={cn('kicker', !isLight && 'kicker-on-dark')}>Sign in</p>
       </div>
       <div className="px-2 pb-3">
         {portalLinks.map((l) => (
           <a
             key={l.label}
             href={l.href}
-            className="flex items-center justify-between px-3 py-2.5 text-[0.9375rem] rounded-[6px] transition-colors hover:bg-[var(--color-paper-blue)]"
+            className={cn(
+              'flex items-center justify-between px-3 py-2.5 text-[0.9375rem] rounded-[4px] transition-colors',
+              isLight ? 'hover:bg-[var(--color-paper-blue)]' : 'hover:bg-white/[0.06]',
+            )}
           >
             <span>{l.label}</span>
-            <ArrowUpRight className="h-3.5 w-3.5 text-[var(--color-muted)]" strokeWidth={2} />
+            <ArrowUpRight
+              className={cn('h-3.5 w-3.5', isLight ? 'text-[var(--color-muted)]' : 'text-white/55')}
+              strokeWidth={2}
+            />
           </a>
         ))}
       </div>
-      <div className="border-t border-[var(--color-line)] px-5 py-3 text-[0.75rem] text-[var(--color-muted)]">
-        Portals are separate products and open in a new tab.
+      <div
+        className={cn(
+          'border-t px-5 py-3 text-[0.75rem]',
+          isLight
+            ? 'border-[var(--color-line)] text-[var(--color-muted)]'
+            : 'border-white/10 text-white/55',
+        )}
+      >
+        Portals open in a new tab.
       </div>
     </div>
   );
@@ -384,8 +427,8 @@ function PortalPanel({
 /* ─────────────────────────────────────────── */
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
-  const [open, setOpen] = useState<string | null>(null);
-  const toggle = (slug: string) => setOpen(open === slug ? null : slug);
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const toggle = (slug: string) => setOpenSlug(openSlug === slug ? null : slug);
 
   return (
     <div className="fixed inset-0 z-[60] flex flex-col bg-[var(--color-paper)] text-[var(--color-ink)] lg:hidden">
@@ -397,10 +440,10 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
       </div>
       <div className="flex-1 overflow-y-auto">
         <div className="px-6 py-7">
-          <p className="eyebrow">Services</p>
+          <p className="kicker">Services</p>
           <ul className="mt-5 divide-y divide-[var(--color-line)]">
             {segments.map((s) => {
-              const expanded = open === s.slug;
+              const expanded = openSlug === s.slug;
               return (
                 <li key={s.slug}>
                   <button
@@ -410,11 +453,6 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
                     aria-expanded={expanded}
                   >
                     <span className="flex items-baseline gap-3">
-                      <span
-                        aria-hidden="true"
-                        className="inline-block h-1.5 w-1.5 rounded-full"
-                        style={{ backgroundColor: `var(${s.colorVar})` }}
-                      />
                       <span className="font-mono text-[0.6875rem] text-[var(--color-muted)]">{s.index}</span>
                       <span className="font-display text-[1.375rem] font-bold tracking-[-0.01em]">{s.name}</span>
                     </span>
@@ -444,7 +482,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
                       <li>
                         <a
                           href={`/${s.slug}`}
-                          className="link-draw mt-1 inline-flex items-center gap-1.5 py-1 text-[0.875rem] font-medium text-[var(--color-brand-700)]"
+                          className="link-draw mt-1 inline-flex items-center gap-1.5 py-1 text-[0.875rem] font-medium text-[var(--color-navy-700)]"
                           onClick={onClose}
                         >
                           Visit hub <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
@@ -459,7 +497,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="px-6 py-6 border-t border-[var(--color-line)]">
-          <p className="eyebrow">Company</p>
+          <p className="kicker">Company</p>
           <ul className="mt-3 space-y-1 text-[1.0625rem]">
             <li><a href="/about" className="block py-2">About</a></li>
             <li><a href="/blog" className="block py-2">Insights</a></li>
@@ -471,7 +509,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="px-6 py-6 border-t border-[var(--color-line)]">
-          <p className="eyebrow">Sign in</p>
+          <p className="kicker">Sign in</p>
           <ul className="mt-3 space-y-1 text-[1.0625rem]">
             {portalLinks.map((l) => (
               <li key={l.label}>
@@ -486,7 +524,11 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="border-t border-[var(--color-line)] px-6 py-4">
-        <ButtonLink href="/contact" variant="ink" size="lg" className="w-full">
+        <ButtonLink
+          href="/contact"
+          size="lg"
+          className="w-full !bg-[var(--color-navy-900)] !text-white hover:!bg-[var(--color-navy-800)]"
+        >
           Talk to us
         </ButtonLink>
       </div>

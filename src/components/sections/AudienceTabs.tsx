@@ -22,7 +22,6 @@ export function AudienceTabs() {
     return () => window.removeEventListener('resize', recompute);
   }, [active]);
 
-  // Allow deep-linking from the hero pivot strip
   useEffect(() => {
     const onHash = () => {
       const hash = window.location.hash;
@@ -44,19 +43,18 @@ export function AudienceTabs() {
         {/* Section masthead */}
         <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-12 md:mb-16">
           <div className="lg:col-span-7">
-            <p className="eyebrow">Where you sit</p>
+            <p className="kicker">Where you sit</p>
             <h2
               className="mt-5 font-display font-bold tracking-[-0.02em] text-[var(--color-ink)] text-balance"
               style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)', lineHeight: 1 }}
             >
-              Five audiences. <br />
-              One operating practice.
+              Five audiences. One operating practice.
             </h2>
           </div>
           <div className="lg:col-span-5 lg:self-end">
-            <p className="text-[1rem] md:text-[1.0625rem] leading-relaxed text-[var(--color-ink)]/75 text-pretty">
-              Pick the audience you belong to. The work, the team, and the deliverables shift accordingly —
-              the practice does not.
+            <p className="text-[1rem] md:text-[1.0625rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
+              Alphinix is organised by who you are, not by what we sell. Pick the audience you belong to.
+              Every other page on this site is built around it.
             </p>
           </div>
         </div>
@@ -78,20 +76,12 @@ export function AudienceTabs() {
                 aria-controls={`audience-panel-${s.slug}`}
                 onClick={() => setActive(i)}
                 className={cn(
-                  'group relative flex shrink-0 items-baseline gap-2.5 px-4 py-4 md:px-6 md:py-5 transition-colors',
+                  'group relative flex shrink-0 items-baseline gap-3 px-5 py-4 md:px-6 md:py-5 transition-colors',
                   i === active
                     ? 'text-[var(--color-ink)]'
-                    : 'text-[var(--color-muted-strong)] hover:text-[var(--color-ink)]',
+                    : 'text-[var(--color-ink-muted)] hover:text-[var(--color-ink)]',
                 )}
               >
-                <span
-                  aria-hidden="true"
-                  className="inline-block h-1.5 w-1.5 rounded-full transition-transform"
-                  style={{
-                    backgroundColor: `var(${s.colorVar})`,
-                    transform: i === active ? 'scale(1.4)' : 'scale(1)',
-                  }}
-                />
                 <span className="font-mono text-[0.75rem] uppercase tracking-[0.16em] opacity-70">
                   {s.index}
                 </span>
@@ -115,96 +105,57 @@ export function AudienceTabs() {
           role="tabpanel"
           className="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12 mount-up"
         >
-          {/* Left — colour block + headline */}
+          {/* Left — heading + intent */}
           <div className="lg:col-span-5">
-            <div
-              className="relative rounded-[var(--radius-lg)] p-8 md:p-10 lg:p-12 overflow-hidden text-white"
-              style={{
-                background: `linear-gradient(155deg, var(${seg.colorVar}) 0%, var(--color-brand-900) 80%)`,
-              }}
+            <p className="kicker">Segment {seg.index} — {seg.audience}</p>
+            <h3
+              className="mt-4 font-display font-bold tracking-[-0.025em] text-[var(--color-ink)]"
+              style={{ fontSize: 'clamp(2.25rem, 4.4vw, 3.5rem)', lineHeight: 1 }}
             >
-              {/* Faint grid texture */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 opacity-[0.08]"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(to right, rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.7) 1px, transparent 1px)',
-                  backgroundSize: '40px 40px',
-                  maskImage: 'radial-gradient(ellipse 80% 60% at 50% 50%, #000 35%, transparent 100%)',
-                }}
-              />
-
-              <span className="relative font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-white/70">
-                Segment {seg.index} · {seg.audience}
-              </span>
-              <h3
-                className="relative mt-4 font-display font-bold tracking-[-0.025em]"
-                style={{ fontSize: 'clamp(2.25rem, 4.6vw, 3.75rem)', lineHeight: 0.98 }}
+              {seg.name}
+            </h3>
+            <p
+              className="mt-6 max-w-xl font-display font-medium tracking-[-0.015em] text-[var(--color-ink)] text-balance"
+              style={{ fontSize: 'clamp(1.125rem, 1.6vw, 1.5rem)', lineHeight: 1.22 }}
+            >
+              {seg.outcome}
+            </p>
+            <p className="mt-5 max-w-xl text-[1rem] leading-relaxed text-[var(--color-ink-muted)] text-pretty">
+              {seg.intent}
+            </p>
+            <div className="mt-8">
+              <ButtonLink
+                href={`/${seg.slug}`}
+                size="md"
+                trailingArrow
+                className="!bg-[var(--color-navy-900)] !text-white hover:!bg-[var(--color-navy-800)]"
               >
-                {seg.name}
-              </h3>
-              <p
-                className="relative mt-5 font-display font-medium tracking-[-0.015em] text-white/90 text-balance"
-                style={{ fontSize: 'clamp(1.125rem, 1.5vw, 1.375rem)', lineHeight: 1.25 }}
-              >
-                {seg.outcome}
-              </p>
-              <div className="relative mt-8">
-                <ButtonLink
-                  href={`/${seg.slug}`}
-                  size="md"
-                  trailingArrow
-                  className="!bg-white !text-[var(--color-ink)] hover:!bg-white/90"
-                >
-                  Visit the {seg.name.toLowerCase()} hub
-                </ButtonLink>
-              </div>
+                Visit the {seg.name.toLowerCase()} hub
+              </ButtonLink>
             </div>
           </div>
 
-          {/* Right — intent + service grid */}
+          {/* Right — service list with hairline rows */}
           <div className="lg:col-span-7">
-            <p className="text-[1rem] md:text-[1.125rem] leading-relaxed text-[var(--color-ink)]/80 text-pretty">
-              {seg.intent}
-            </p>
-
-            <p className="mt-9 font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">
-              Services for {seg.name.toLowerCase()}
-            </p>
-            <div className="mt-3 grid-room grid grid-cols-1 sm:grid-cols-2">
+            <p className="kicker">Services for {seg.name.toLowerCase()}</p>
+            <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-8 border-t border-[var(--color-line)]">
               {seg.services.map((srv) => (
-                <a
-                  key={srv}
-                  href={`/${seg.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                  className="group flex items-baseline justify-between gap-3 px-5 py-4 transition-colors hover:bg-[var(--color-paper-blue)]"
-                >
-                  <span className="text-[0.9375rem] md:text-[1rem] text-[var(--color-ink)]">
-                    {srv}
-                  </span>
-                  <ArrowUpRight
-                    className="h-4 w-4 text-[var(--color-muted)] transition-all group-hover:text-[var(--color-brand-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    strokeWidth={1.75}
-                  />
-                </a>
+                <li key={srv} className="border-b border-[var(--color-line)]">
+                  <a
+                    href={`/${seg.slug}#${srv.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                    className="group flex items-baseline justify-between gap-3 py-4 transition-colors"
+                  >
+                    <span className="text-[0.9375rem] md:text-[1rem] text-[var(--color-ink)] group-hover:text-[var(--color-navy-700)]">
+                      {srv}
+                    </span>
+                    <ArrowUpRight
+                      className="h-4 w-4 text-[var(--color-muted)] transition-all group-hover:text-[var(--color-navy-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      strokeWidth={1.75}
+                    />
+                  </a>
+                </li>
               ))}
-            </div>
-
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <a
-                href={`/contact?segment=${seg.slug}`}
-                className="link-draw text-[0.9375rem] font-medium text-[var(--color-ink)]"
-              >
-                Talk to us about {seg.name.toLowerCase()}
-              </a>
-              <span className="hidden sm:inline-block h-1 w-1 rounded-full bg-[var(--color-line-strong)]" />
-              <a
-                href={`/${seg.slug}`}
-                className="link-draw text-[0.9375rem] font-medium text-[var(--color-muted-strong)]"
-              >
-                Or read the full hub →
-              </a>
-            </div>
+            </ul>
           </div>
         </div>
       </Container>
