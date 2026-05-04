@@ -6,7 +6,7 @@ import { Reveal } from '@/components/Reveal';
 
 export function ContactBand() {
   return (
-    <section className="relative overflow-hidden brand-mesh text-white">
+    <section className="relative overflow-hidden bg-[var(--color-brand-800)] text-white">
       <Container>
         <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-12 py-20 md:py-28">
           <div className="lg:col-span-7">

@@ -26,6 +26,7 @@ import {
   Map,
   List,
   Rss,
+  School,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Wordmark';
@@ -177,9 +178,11 @@ const RESOURCES_GROUPS: MenuGroup[] = [
 ];
 
 const PORTAL: PortalItem[] = [
-  { label: 'Student LMS', desc: 'Courses, assessments, certificates.', href: '#', icon: GraduationCap },
-  { label: 'College ERP', desc: 'Academic and placement operations.', href: '#', icon: Building2 },
-  { label: 'Admin Console', desc: 'Internal pipeline and analytics.', href: '#', icon: ShieldCheck },
+  { label: 'Learner Portal',   desc: 'For students enrolled in programs.',  href: '#', icon: GraduationCap },
+  { label: 'Campus Console',   desc: 'For colleges and polytechnic institutes.', href: '#', icon: Building2 },
+  { label: 'Educator Hub',     desc: 'For school principals and teachers.', href: '#', icon: School },
+  { label: 'Client Workspace', desc: 'For business engagements.',           href: '#', icon: Briefcase },
+  { label: 'Recruiter Hub',    desc: 'For hiring managers and RPO teams.',  href: '#', icon: Users },
 ];
 
 const SIMPLE_LINKS = [
@@ -757,33 +760,48 @@ function PortalDropdown({ items }: { items: PortalItem[] }) {
         />
       </button>
       <div
+        data-state={open ? 'open' : 'closed'}
         className={cn(
-          'absolute right-0 top-full w-[320px] origin-top-right pt-2 transition-[opacity,transform] duration-200',
+          'absolute right-0 top-full w-[340px] origin-top-right pt-2 transition-[opacity,transform] duration-200',
           open
             ? 'pointer-events-auto translate-y-0 opacity-100'
             : 'pointer-events-none -translate-y-1 opacity-0',
         )}
       >
-        <div className="overflow-hidden rounded-[6px] border border-[var(--color-line)] bg-[var(--color-bg)] shadow-xl">
-          <div className="border-b border-[var(--color-line)] bg-[var(--color-canvas)] px-4 py-3">
-            <p className="kicker">Portal Login</p>
+        <div className="overflow-hidden rounded-[8px] border border-[var(--color-line)] bg-[var(--color-bg)] shadow-[0_24px_60px_-24px_rgba(11,18,32,0.18)]">
+          <div className="border-b border-[var(--color-line)] px-5 py-3">
+            <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--color-brand-700)]">
+              Portal Login
+            </p>
           </div>
-          <ul className="p-1.5">
-            {items.map((p) => (
-              <li key={p.label}>
+          <ul className="p-2">
+            {items.map((p, i) => (
+              <li
+                key={p.label}
+                className="stagger-item"
+                style={{ ['--stagger-delay' as string]: `${i * 40}ms` }}
+              >
                 <a
                   href={p.href}
-                  className="group flex items-center gap-3 rounded-[4px] p-3 transition-colors hover:bg-[var(--color-canvas)]"
+                  className="group/item flex items-start gap-3 rounded-[6px] px-3 py-2.5 transition-colors hover:bg-[var(--color-canvas)]"
                 >
                   {p.icon ? (
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[6px] bg-[var(--color-canvas-2)] text-[var(--color-brand-700)] transition-colors group-hover:bg-[var(--color-brand-700)] group-hover:text-white">
-                      <p.icon className="h-4 w-4" strokeWidth={2} />
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[6px] bg-[var(--color-canvas)] text-[var(--color-brand-700)] ring-1 ring-[var(--color-line)] transition-colors group-hover/item:bg-[var(--color-brand-700)] group-hover/item:text-white group-hover/item:ring-[var(--color-brand-700)]">
+                      <p.icon className="h-4 w-4" strokeWidth={1.75} />
                     </span>
                   ) : null}
-                  <span className="flex flex-1 flex-col">
-                    <span className="text-[13px] font-semibold text-[var(--color-fg)]">{p.label}</span>
-                    <span className="mt-0.5 text-[12px] leading-snug text-[var(--color-fg-3)]">{p.desc}</span>
+                  <span className="flex flex-1 flex-col min-w-0">
+                    <span className="text-[14px] font-semibold text-[var(--color-fg)] transition-colors group-hover/item:text-[var(--color-brand-700)]">
+                      {p.label}
+                    </span>
+                    <span className="mt-0.5 text-[12px] leading-[1.4] text-[var(--color-fg-3)]">
+                      {p.desc}
+                    </span>
                   </span>
+                  <ArrowUpRight
+                    className="mt-2 h-3.5 w-3.5 shrink-0 text-[var(--color-fg-5)] opacity-0 transition-all duration-200 group-hover/item:opacity-100 group-hover/item:text-[var(--color-brand-700)] group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5"
+                    strokeWidth={2.25}
+                  />
                 </a>
               </li>
             ))}
