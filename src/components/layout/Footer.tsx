@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { ButtonLink } from '@/components/ui/Button';
 import { segments } from '@/data/segments';
 import { portalLinks } from '@/data/nav';
 import {
+  ArrowUp,
   ArrowUpRight,
   Mail,
   Phone,
@@ -38,12 +38,11 @@ const supportLinks = [
 ];
 
 const legalLinks = [
-  { label: 'Privacy policy', href: '/privacy-policy' },
-  { label: 'Terms of service', href: '/terms-of-service' },
-  { label: 'Cookie policy', href: '/cookie-policy' },
-  { label: 'Refund policy', href: '/refund-policy' },
-  { label: 'Disclaimer', href: '/disclaimer' },
-  { label: 'Grievance redressal', href: '/grievance' },
+  { label: 'Privacy', href: '/privacy-policy' },
+  { label: 'Terms', href: '/terms-of-service' },
+  { label: 'Cookies', href: '/cookie-policy' },
+  { label: 'Refund', href: '/refund-policy' },
+  { label: 'Grievance', href: '/grievance' },
 ];
 
 const socials = [
@@ -53,34 +52,12 @@ const socials = [
   { label: 'YouTube', href: '#', Icon: Youtube },
 ];
 
-function useIstClock() {
-  const [time, setTime] = useState(() => formatIst(new Date()));
-  useEffect(() => {
-    const id = window.setInterval(() => setTime(formatIst(new Date())), 1000);
-    return () => window.clearInterval(id);
-  }, []);
-  return time;
-}
-
-function formatIst(date: Date) {
-  return new Intl.DateTimeFormat('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  })
-    .format(date)
-    .replace(/ /g, ' ');
-}
-
 export function Footer() {
   const year = new Date().getFullYear();
   const totalServices = segments.reduce((n, s) => n + s.services.length, 0);
-  const ist = useIstClock();
 
   return (
-    <footer className="relative overflow-hidden bg-[var(--color-fg)] text-white">
+    <footer className="relative bg-[var(--color-brand-950)] text-white">
       {/* Pre-footer CTA strip */}
       <Container>
         <div className="border-b border-white/10 py-14 md:py-20">
@@ -99,7 +76,7 @@ export function Footer() {
                   href="/contact"
                   size="lg"
                   trailingArrow
-                  className="!bg-white !text-[var(--color-fg)] hover:!bg-white/90"
+                  className="!bg-white !text-[var(--color-brand-950)] hover:!bg-white/90"
                 >
                   Schedule a call
                 </ButtonLink>
@@ -129,7 +106,7 @@ export function Footer() {
             </div>
             <a
               href="/services"
-              className="inline-flex items-center gap-1.5 text-[13px] font-mono uppercase tracking-[0.14em] text-white/85"
+              className="group inline-flex items-center gap-1.5 text-[13px] font-mono uppercase tracking-[0.14em] text-white/85 hover:text-white transition-colors"
             >
               <span className="under-slide">Full directory</span>
               <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.25} />
@@ -199,30 +176,6 @@ export function Footer() {
                 </li>
               </ul>
 
-              {/* Live status row — IST clock + response window */}
-              <div className="mt-8 grid grid-cols-2 gap-6 max-w-md border-t border-white/10 pt-6">
-                <div>
-                  <p className="kicker kicker-on-dark inline-flex items-center gap-2">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-brand-300)] opacity-75 pulse-dot" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-brand-300)]" />
-                    </span>
-                    Pune time
-                  </p>
-                  <p className="mt-2 font-mono text-[18px] font-semibold tabular-nums text-white">
-                    {ist}
-                  </p>
-                  <p className="text-[12px] text-white/55">IST · UTC+5:30</p>
-                </div>
-                <div>
-                  <p className="kicker kicker-on-dark">Response within</p>
-                  <p className="mt-2 font-display text-[15px] font-semibold tracking-[-0.018em] text-white">
-                    1 working day
-                  </p>
-                  <p className="text-[12.5px] text-white/65">After form submission</p>
-                </div>
-              </div>
-
               <div className="mt-8">
                 <p className="kicker kicker-on-dark">Follow us</p>
                 <ul className="mt-3 flex items-center gap-2">
@@ -256,113 +209,50 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Legal */}
+      {/* Bottom row — copyright · legal · back-to-top */}
       <Container>
-        <div className="border-t border-white/10 py-7">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <p className="kicker kicker-on-dark">Legal</p>
-            <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <div className="border-t border-white/10 py-7 md:py-8">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <p className="text-[12px] text-white/55">
+              © {year} Alphinix Technologies Private Limited.
+            </p>
+            <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px]">
               {legalLinks.map((l) => (
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    className="text-[12.5px] text-white/65 hover:text-white transition-colors"
+                    className="text-white/65 hover:text-white transition-colors"
                   >
                     {l.label}
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href="/sitemap.html"
+                  className="text-white/65 hover:text-white transition-colors"
+                >
+                  Sitemap
+                </a>
+              </li>
             </ul>
-          </div>
-        </div>
-      </Container>
-
-      {/* Bottom utility row */}
-      <Container>
-        <div className="border-t border-white/10 py-5">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-[11.5px] text-white/55">
-            <p>© {year} Alphinix Technologies Private Limited. All rights reserved.</p>
-            <div className="flex items-center gap-5 font-mono uppercase tracking-[0.14em] text-[10.5px]">
-              <a href="/sitemap.html" className="hover:text-white transition-colors">
-                Sitemap
-              </a>
-              <span aria-label="Locale">EN · IN</span>
-              <button
-                type="button"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="group inline-flex items-center gap-1 hover:text-white transition-colors"
-              >
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="group inline-flex items-center gap-2 self-start rounded-full border border-white/15 bg-white/[0.02] px-4 py-2 transition-colors hover:border-white/40 hover:bg-white/[0.06] md:self-auto"
+              aria-label="Back to top"
+            >
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10 text-white transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:bg-[var(--color-brand-300)] group-hover:text-[var(--color-brand-950)]">
+                <ArrowUp className="h-3 w-3" strokeWidth={2.5} />
+              </span>
+              <span className="text-[12px] font-medium text-white/80 group-hover:text-white">
                 Back to top
-                <ArrowUpRight
-                  className="h-3 w-3 -rotate-45 transition-transform group-hover:-translate-y-0.5"
-                  strokeWidth={2}
-                />
-              </button>
-            </div>
+              </span>
+            </button>
           </div>
         </div>
       </Container>
-
-      {/* Stats dashboard — replaces the marquee with institutional metrics */}
-      <div className="border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-5 md:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-white/10">
-            <FooterStat
-              label="Audiences"
-              value="05"
-              sub="Distinct segments"
-            />
-            <FooterStat
-              label="Service lines"
-              value="04"
-              sub="Training · Infra · Software · Hiring"
-            />
-            <FooterStat
-              label="Operating from"
-              value="Pune"
-              sub="Maharashtra, India"
-            />
-            <FooterStat
-              label="Operating since"
-              value={String(year)}
-              sub="Built for institutions"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Giant outlined wordmark — sits behind everything, drifts slowly */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none select-none flex justify-center px-4 pb-3 md:pb-6"
-      >
-        <span className="footer-wordmark wordmark-drift text-[clamp(80px,18vw,260px)] leading-none">
-          ALPHINIX
-        </span>
-      </div>
     </footer>
-  );
-}
-
-function FooterStat({
-  label,
-  value,
-  sub,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-}) {
-  return (
-    <div className="px-5 md:px-7 py-7 md:py-9 first:pl-0 last:pr-0">
-      <p className="kicker kicker-on-dark">{label}</p>
-      <p className="mt-3 font-display text-[36px] md:text-[44px] lg:text-[52px] font-semibold leading-[0.95] tracking-[-0.025em] text-white">
-        {value}
-      </p>
-      <p className="mt-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
-        {sub}
-      </p>
-    </div>
   );
 }
 
