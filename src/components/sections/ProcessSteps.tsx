@@ -55,91 +55,126 @@ export function ProcessSteps() {
           </p>
         </div>
 
-        {/* Diagram — desktop. Wrapped in Reveal so connector lines draw on scroll-in. */}
-        <Reveal className="hidden md:block mt-14 lg:mt-16">
-          {/* Center mark with subtle pulse */}
-          <div className="flex justify-center">
-            <CenterMark />
-          </div>
+        {/* Diagram — desktop. Framed area with corner brackets + dot grid background */}
+        <div className="hidden md:block mt-14 lg:mt-16">
+          <div className="relative">
+            {/* Dot-grid backdrop */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundImage:
+                  'radial-gradient(rgba(11, 18, 32, 0.07) 1px, transparent 1px)',
+                backgroundSize: '20px 20px',
+                backgroundPosition: '10px 10px',
+              }}
+            />
 
-          {/* Vertical drop — draws first */}
-          <div className="flex justify-center h-10 lg:h-12">
+            {/* Corner brackets — technical drawing aesthetic */}
             <span
               aria-hidden="true"
-              className="draw-y block w-px h-full bg-[var(--color-brand-700)]"
-              style={{ ['--anim-delay' as string]: '60ms' }}
+              className="absolute top-0 left-0 h-4 w-4 border-t-[1.5px] border-l-[1.5px] border-[var(--color-fg-4)]"
             />
-          </div>
-
-          {/* Bus + 4 nodes */}
-          <div className="relative grid grid-cols-4 h-2.5">
             <span
               aria-hidden="true"
-              className="draw-x absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-px bg-[var(--color-brand-700)]"
-              style={{ ['--anim-delay' as string]: '520ms' }}
+              className="absolute top-0 right-0 h-4 w-4 border-t-[1.5px] border-r-[1.5px] border-[var(--color-fg-4)]"
             />
-            {phases.map((p, i) => (
-              <div key={p.title} className="relative flex items-center justify-center">
-                <span
-                  aria-hidden="true"
-                  className="dot-pop relative z-10 block h-2.5 w-2.5 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-canvas)]"
-                  style={{ ['--anim-delay' as string]: `${1100 + i * 80}ms` }}
-                />
+            <span
+              aria-hidden="true"
+              className="absolute bottom-0 left-0 h-4 w-4 border-b-[1.5px] border-l-[1.5px] border-[var(--color-fg-4)]"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute bottom-0 right-0 h-4 w-4 border-b-[1.5px] border-r-[1.5px] border-[var(--color-fg-4)]"
+            />
+
+            {/* Diagram content — wrapped in Reveal so connector lines draw on scroll */}
+            <Reveal className="relative px-8 py-12 lg:px-14 lg:py-16">
+              {/* Center mark with depth */}
+              <div className="flex justify-center">
+                <CenterMark />
               </div>
-            ))}
-          </div>
 
-          {/* Vertical drops to phase labels */}
-          <div className="grid grid-cols-4 h-7 lg:h-9">
-            {phases.map((p, i) => (
-              <div key={p.title} className="flex justify-center">
+              {/* Vertical drop — draws first */}
+              <div className="flex justify-center h-10 lg:h-12">
                 <span
                   aria-hidden="true"
                   className="draw-y block w-px h-full bg-[var(--color-brand-700)]"
-                  style={{ ['--anim-delay' as string]: `${1400 + i * 80}ms` }}
+                  style={{ ['--anim-delay' as string]: '60ms' }}
                 />
               </div>
-            ))}
-          </div>
 
-          {/* Phase headers — typographic, no pills, no icons */}
-          <div className="grid grid-cols-4 gap-x-4 lg:gap-x-6 text-center">
-            {phases.map((p, i) => (
-              <div
-                key={p.title}
-                className="reveal-item group/phase cursor-default"
-                style={{ ['--anim-delay' as string]: `${1700 + i * 80}ms` }}
-              >
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)] transition-colors group-hover/phase:text-[var(--color-brand-800)]">
-                  Phase {p.index}
-                </p>
-                <h3 className="mt-2 font-display text-[20px] lg:text-[22px] font-semibold tracking-[-0.018em] text-[var(--color-fg)] transition-colors group-hover/phase:text-[var(--color-brand-700)]">
-                  {p.title}
-                </h3>
-              </div>
-            ))}
-          </div>
-
-          {/* Item lists with brand-700 left rule that thickens on hover */}
-          <div className="mt-8 lg:mt-10 grid grid-cols-4 gap-x-4 lg:gap-x-6">
-            {phases.map((p, i) => (
-              <ul
-                key={p.title}
-                className="reveal-item group/list border-l-2 border-[var(--color-brand-700)] pl-4 lg:pl-5 space-y-1.5 transition-colors hover:border-[var(--color-brand-800)]"
-                style={{ ['--anim-delay' as string]: `${2000 + i * 80}ms` }}
-              >
-                {p.items.map((item) => (
-                  <li
-                    key={item}
-                    className="text-[13px] lg:text-[13.5px] leading-[1.55] text-[var(--color-fg-3)] transition-colors group-hover/list:text-[var(--color-fg-2)]"
-                  >
-                    {item}
-                  </li>
+              {/* Bus + 4 nodes */}
+              <div className="relative grid grid-cols-4 h-2.5">
+                <span
+                  aria-hidden="true"
+                  className="draw-x absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-px bg-[var(--color-brand-700)]"
+                  style={{ ['--anim-delay' as string]: '520ms' }}
+                />
+                {phases.map((p, i) => (
+                  <div key={p.title} className="relative flex items-center justify-center">
+                    <span
+                      aria-hidden="true"
+                      className="dot-pop relative z-10 block h-2.5 w-2.5 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-canvas)]"
+                      style={{ ['--anim-delay' as string]: `${1100 + i * 80}ms` }}
+                    />
+                  </div>
                 ))}
-              </ul>
-            ))}
+              </div>
+
+              {/* Vertical drops to phase labels */}
+              <div className="grid grid-cols-4 h-7 lg:h-9">
+                {phases.map((p, i) => (
+                  <div key={p.title} className="flex justify-center">
+                    <span
+                      aria-hidden="true"
+                      className="draw-y block w-px h-full bg-[var(--color-brand-700)]"
+                      style={{ ['--anim-delay' as string]: `${1400 + i * 80}ms` }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Phase headers — typographic */}
+              <div className="grid grid-cols-4 gap-x-4 lg:gap-x-6 text-center">
+                {phases.map((p, i) => (
+                  <div
+                    key={p.title}
+                    className="reveal-item group/phase cursor-default"
+                    style={{ ['--anim-delay' as string]: `${1700 + i * 80}ms` }}
+                  >
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)] transition-colors group-hover/phase:text-[var(--color-brand-800)]">
+                      Phase {p.index}
+                    </p>
+                    <h3 className="mt-2 font-display text-[20px] lg:text-[22px] font-semibold tracking-[-0.018em] text-[var(--color-fg)] transition-colors group-hover/phase:text-[var(--color-brand-700)]">
+                      {p.title}
+                    </h3>
+                  </div>
+                ))}
+              </div>
+
+              {/* Item lists with brand-700 left rule */}
+              <div className="mt-8 lg:mt-10 grid grid-cols-4 gap-x-4 lg:gap-x-6">
+                {phases.map((p, i) => (
+                  <ul
+                    key={p.title}
+                    className="reveal-item group/list border-l-2 border-[var(--color-brand-700)] pl-4 lg:pl-5 space-y-1.5 transition-colors hover:border-[var(--color-brand-800)]"
+                    style={{ ['--anim-delay' as string]: `${2000 + i * 80}ms` }}
+                  >
+                    {p.items.map((item) => (
+                      <li
+                        key={item}
+                        className="text-[13px] lg:text-[13.5px] leading-[1.55] text-[var(--color-fg-3)] transition-colors group-hover/list:text-[var(--color-fg-2)]"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
+        </div>
 
         {/* Diagram — mobile vertical spine */}
         <div className="md:hidden mt-12">
@@ -182,15 +217,16 @@ export function ProcessSteps() {
 }
 
 function CenterMark({ small }: { small?: boolean }) {
-  const outer = small ? 'h-14 w-14' : 'h-16 w-16 lg:h-[72px] lg:w-[72px]';
-  const inner = small ? 'h-9 w-9' : 'h-10 w-10 lg:h-12 lg:w-12';
-  const iconSize = small ? 'h-4 w-4' : 'h-5 w-5 lg:h-6 lg:w-6';
+  // Larger, with depth — drop shadow + inner highlight
+  const outer = small ? 'h-14 w-14' : 'h-20 w-20 lg:h-[88px] lg:w-[88px]';
+  const inner = small ? 'h-9 w-9' : 'h-12 w-12 lg:h-14 lg:w-14';
+  const iconSize = small ? 'h-4 w-4' : 'h-6 w-6 lg:h-7 lg:w-7';
   return (
     <div
-      className={`relative ${outer} rounded-full border border-[var(--color-brand-700)]/30 grid place-items-center bg-[var(--color-canvas)]`}
+      className={`relative ${outer} rounded-full border border-[var(--color-brand-700)]/25 grid place-items-center bg-[var(--color-canvas)] shadow-[0_18px_48px_-18px_rgba(29,58,165,0.4)]`}
     >
       <div
-        className={`badge-pulse ${inner} rounded-full bg-[var(--color-brand-700)] grid place-items-center text-white`}
+        className={`badge-pulse ${inner} rounded-full bg-[var(--color-brand-700)] grid place-items-center text-white shadow-[0_6px_18px_-4px_rgba(29,58,165,0.55),inset_0_1px_0_rgba(255,255,255,0.18)]`}
       >
         <svg
           viewBox="0 0 32 32"

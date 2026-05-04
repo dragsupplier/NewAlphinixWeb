@@ -6,47 +6,50 @@ type WordmarkProps = {
 };
 
 export function Wordmark({ className, tone = 'ink' }: WordmarkProps) {
-  // Dark surfaces (footer, dark hero) keep the white SVG mark + wordmark.
-  if (tone === 'paper') {
-    return (
-      <a
-        href="/"
-        className={cn('group inline-flex items-center gap-2.5', className)}
-        aria-label="Alphinix — home"
-      >
-        <svg
-          viewBox="0 0 32 32"
-          className="h-6 w-6 text-white"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M5 26 L16 5 L27 26 M10 19 H22"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="square"
-          />
-        </svg>
-        <span className="font-display text-[17px] font-semibold tracking-[-0.018em] text-white">
-          Alphinix
-        </span>
-      </a>
-    );
-  }
+  const textColor = tone === 'ink' ? 'var(--color-fg)' : '#ffffff';
+  const accentColor = tone === 'ink' ? 'var(--color-brand-700)' : 'var(--color-brand-300)';
 
-  // Light surfaces (header) use the supplied logo image.
   return (
     <a
       href="/"
       className={cn('inline-flex items-center', className)}
       aria-label="Alphinix — home"
     >
-      <img
-        src="/alphinix-logo.png"
-        alt="Alphinix"
+      <svg
+        viewBox="0 0 540 140"
         className="h-7 md:h-8 w-auto select-none"
-        draggable={false}
-      />
+        aria-hidden="true"
+      >
+        <text
+          x="2"
+          y="105"
+          style={{
+            fontFamily: 'var(--font-display), Inter Tight, system-ui, sans-serif',
+            fontSize: '118px',
+            fontWeight: 700,
+            letterSpacing: '-4px',
+          }}
+          fill={textColor}
+        >
+          Alphinix
+        </text>
+        <path
+          d="M 8 110 C 38 130, 80 130, 122 110 C 138 102, 150 98, 162 96"
+          stroke={accentColor}
+          strokeWidth="11"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+        <path
+          d="M 425 38 C 458 10, 495 6, 524 22 C 534 28, 539 34, 540 40"
+          stroke={accentColor}
+          strokeWidth="11"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </svg>
     </a>
   );
 }
