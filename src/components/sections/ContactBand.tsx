@@ -37,27 +37,6 @@ export function ContactBand() {
                 See the directory
               </ButtonLink>
             </div>
-
-            <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-6 max-w-xl">
-              <div>
-                <p className="kicker kicker-on-dark">Response within</p>
-                <p className="mt-2 font-display text-[18px] font-semibold tracking-[-0.018em] text-white">
-                  1 working day
-                </p>
-              </div>
-              <div>
-                <p className="kicker kicker-on-dark">Operating from</p>
-                <p className="mt-2 font-display text-[18px] font-semibold tracking-[-0.018em] text-white">
-                  Pune, India
-                </p>
-              </div>
-              <div>
-                <p className="kicker kicker-on-dark">Engagements</p>
-                <p className="mt-2 font-display text-[18px] font-semibold tracking-[-0.018em] text-white">
-                  Long-form
-                </p>
-              </div>
-            </div>
           </div>
 
           <div className="lg:col-span-5">
