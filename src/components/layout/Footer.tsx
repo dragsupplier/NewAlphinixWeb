@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { ButtonLink } from '@/components/ui/Button';
@@ -54,31 +53,11 @@ const socials = [
   { label: 'YouTube', href: '#', Icon: Youtube },
 ];
 
-function useIstClock() {
-  const [time, setTime] = useState(() => formatIst(new Date()));
-  useEffect(() => {
-    const id = window.setInterval(() => setTime(formatIst(new Date())), 1000);
-    return () => window.clearInterval(id);
-  }, []);
-  return time;
-}
 
-function formatIst(date: Date) {
-  return new Intl.DateTimeFormat('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  })
-    .format(date)
-    .replace(/ /g, ' ');
-}
 
 export function Footer() {
   const year = new Date().getFullYear();
   const totalServices = segments.reduce((n, s) => n + s.services.length, 0);
-  const ist = useIstClock();
 
   return (
     <footer className="relative overflow-hidden bg-[var(--color-fg)] text-white">
@@ -199,30 +178,6 @@ export function Footer() {
                   </a>
                 </li>
               </ul>
-
-              {/* Live status row — IST clock + response window */}
-              <div className="mt-8 grid grid-cols-2 gap-6 max-w-md border-t border-white/10 pt-6">
-                <div>
-                  <p className="kicker kicker-on-dark inline-flex items-center gap-2">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-brand-300)] opacity-75 pulse-dot" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-brand-300)]" />
-                    </span>
-                    Pune time
-                  </p>
-                  <p className="mt-2 font-mono text-[18px] font-semibold tabular-nums text-white">
-                    {ist}
-                  </p>
-                  <p className="text-[12px] text-white/55">IST · UTC+5:30</p>
-                </div>
-                <div>
-                  <p className="kicker kicker-on-dark">Response within</p>
-                  <p className="mt-2 font-display text-[15px] font-semibold tracking-[-0.018em] text-white">
-                    1 working day
-                  </p>
-                  <p className="text-[12.5px] text-white/65">After form submission</p>
-                </div>
-              </div>
 
               <div className="mt-8">
                 <p className="kicker kicker-on-dark">Follow us</p>
