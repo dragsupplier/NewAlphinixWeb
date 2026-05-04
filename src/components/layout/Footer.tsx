@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
 import { Container } from '@/components/ui/Container';
+import { cn } from '@/lib/utils';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { ButtonLink } from '@/components/ui/Button';
 import { segments } from '@/data/segments';
@@ -305,29 +305,59 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Marquee credit strip — fades into the surface at both edges */}
-      <div className="relative border-t border-white/10 overflow-hidden">
-        <div
-          className="marquee-slow py-3.5 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/35"
-          style={{
-            WebkitMaskImage:
-              'linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)',
-            maskImage:
-              'linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)',
-          }}
-        >
-          {Array.from({ length: 6 }).map((_, i) => (
-            <span key={i} className="inline-flex items-center gap-4 whitespace-nowrap">
-              <MarqueeGroup>Students &middot; Colleges &middot; Schools &middot; Businesses &middot; Hiring teams</MarqueeGroup>
-              <HexMark />
-              <MarqueeGroup>One practice &middot; five audiences</MarqueeGroup>
-              <HexMark />
-              <MarqueeGroup>Training &middot; Infrastructure &middot; Software &middot; Hiring</MarqueeGroup>
-              <HexMark />
-              <MarqueeGroup>Built from Pune &middot; serving India</MarqueeGroup>
-              <HexMark />
-            </span>
-          ))}
+      {/* Dual-row marquee banner — top row big-display L→R, bottom row mono R→L */}
+      <div
+        className="relative border-t border-white/10 overflow-hidden"
+        style={{
+          WebkitMaskImage:
+            'linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%)',
+          maskImage:
+            'linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%)',
+        }}
+      >
+        {/* Top row — big display, scrolls left */}
+        <div className="border-b border-white/10 py-6 md:py-8">
+          <div className="marquee-track marquee-medium flex items-center gap-12">
+            {Array.from({ length: 4 }).map((_, k) => (
+              <span key={k} className="flex items-center gap-12 shrink-0">
+                {[
+                  'Students',
+                  'Colleges',
+                  'Schools',
+                  'Businesses',
+                  'Hiring teams',
+                ].map((label) => (
+                  <span
+                    key={`${k}-${label}`}
+                    className="flex items-center gap-12 shrink-0"
+                  >
+                    <span className="font-display text-[40px] md:text-[60px] lg:text-[80px] font-semibold leading-[0.95] tracking-[-0.03em] text-white/65 whitespace-nowrap">
+                      {label}
+                    </span>
+                    <HexMark />
+                  </span>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom row — mono uppercase, scrolls right */}
+        <div className="py-3.5">
+          <div className="marquee-track marquee-fast marquee-reverse flex items-center gap-10 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">
+            {Array.from({ length: 6 }).map((_, k) => (
+              <span key={k} className="flex items-center gap-10 shrink-0">
+                <span className="whitespace-nowrap">One practice &middot; five audiences</span>
+                <HexMark small />
+                <span className="whitespace-nowrap">Training &middot; Infrastructure &middot; Software &middot; Hiring</span>
+                <HexMark small />
+                <span className="whitespace-nowrap">Built from Pune &middot; serving India</span>
+                <HexMark small />
+                <span className="whitespace-nowrap">Aligned with NEP 2020 &middot; NAAC &middot; NBA &middot; AICTE &middot; ATL</span>
+                <HexMark small />
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -344,15 +374,14 @@ export function Footer() {
   );
 }
 
-function MarqueeGroup({ children }: { children: ReactNode }) {
-  return <span className="text-white/45">{children}</span>;
-}
-
-function HexMark() {
+function HexMark({ small }: { small?: boolean }) {
   return (
     <Hexagon
       aria-hidden="true"
-      className="h-2.5 w-2.5 shrink-0 text-[var(--color-brand-300)]"
+      className={cn(
+        'shrink-0 text-[var(--color-brand-300)]',
+        small ? 'h-2.5 w-2.5' : 'h-4 w-4 md:h-5 md:w-5',
+      )}
       strokeWidth={1.5}
       fill="currentColor"
       fillOpacity={0.25}
