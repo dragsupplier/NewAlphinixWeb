@@ -1,5 +1,6 @@
 import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/Reveal';
+import { ChevronDown } from 'lucide-react';
 
 type Phase = {
   index: string;
@@ -37,10 +38,10 @@ const phases: Phase[] = [
 
 export function ProcessSteps() {
   return (
-    <section className="bg-[var(--color-canvas)] py-14 md:py-16">
+    <section className="bg-[var(--color-canvas)] py-14 md:py-16 lg:py-20 overflow-hidden">
       <Container>
-        {/* Compact header row — two columns, no stacking on lg, keeps vertical space tight */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-5 lg:gap-x-12 mb-10 md:mb-12">
+        {/* Compact header row */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-5 lg:gap-x-12 mb-10 md:mb-14">
           <div className="lg:col-span-7">
             <p className="kicker">How we engage</p>
             <h2 className="mt-3 font-display text-[28px] md:text-[36px] lg:text-[42px] font-semibold leading-[1.08] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
@@ -56,67 +57,145 @@ export function ProcessSteps() {
           </div>
         </div>
 
-        {/* 2×2 quadrant matrix — single hairline cross, no enclosures, no diagram */}
-        <Reveal>
-          <div className="relative border-t border-l border-r border-b border-[var(--color-line)] bg-[var(--color-bg)]">
-            {/* Vertical center divider (hidden on mobile) */}
-            <span
-              aria-hidden="true"
-              className="hidden md:block absolute top-6 bottom-6 left-1/2 w-px bg-[var(--color-line)]"
-            />
-            {/* Horizontal center divider */}
-            <span
-              aria-hidden="true"
-              className="absolute left-6 right-6 top-1/2 h-px bg-[var(--color-line)]"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2">
+        {/* Desktop workflow diagram */}
+        <Reveal className="hidden md:block">
+          <div className="relative">
+            <div className="grid grid-cols-4 gap-x-10 lg:gap-x-12">
               {phases.map((p, i) => (
-                <div
-                  key={p.title}
-                  className="reveal-item group/cell relative px-6 md:px-8 lg:px-10 py-6 md:py-7 lg:py-8 transition-colors hover:bg-[var(--color-canvas)]"
-                  style={{ ['--anim-delay' as string]: `${i * 80}ms` }}
-                >
-                  {/* Top row: number + phase label */}
-                  <div className="flex items-baseline justify-between">
-                    <span className="font-display text-[42px] md:text-[48px] lg:text-[56px] font-semibold leading-[0.9] tracking-[-0.04em] text-[var(--color-brand-700)] transition-transform duration-300 group-hover/cell:-translate-y-0.5">
-                      {p.index}
+                <div key={p.title} className="relative">
+                  <PhaseNode phase={p} />
+                  {/* Arrow connector to the next node — sits in the gap to the right */}
+                  {i < phases.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-[40px] -right-10 lg:-right-12 flex items-center w-10 lg:w-12 z-10"
+                    >
+                      <span className="h-px flex-1 bg-[var(--color-brand-700)]" />
+                      <span className="h-1.5 w-1.5 -ml-[3px] border-t-[1.5px] border-r-[1.5px] border-[var(--color-brand-700)] rotate-45" />
                     </span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--color-fg-5)]">
-                      Phase
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="mt-4 font-display text-[20px] md:text-[22px] lg:text-[24px] font-semibold leading-[1.15] tracking-[-0.018em] text-[var(--color-fg)]">
-                    {p.title}
-                  </h3>
-
-                  {/* Body */}
-                  <p className="mt-2 text-[13px] md:text-[13.5px] leading-[1.6] text-[var(--color-fg-3)] text-pretty">
-                    {p.body}
-                  </p>
-
-                  {/* Items — inline tags, single row, scrolls horizontally only if needed */}
-                  <ul className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5">
-                    {p.items.map((item, j) => (
-                      <li
-                        key={item}
-                        className="font-mono text-[10px] uppercase tracking-[0.12em] font-semibold text-[var(--color-fg-4)] transition-colors group-hover/cell:text-[var(--color-brand-700)]"
-                      >
-                        {item}
-                        {j < p.items.length - 1 && (
-                          <span aria-hidden="true" className="ml-2 text-[var(--color-line-2)]">·</span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
+                  )}
                 </div>
               ))}
             </div>
+
+            {/* Refresh-cycle loop arc beneath the row */}
+            <FeedbackLoop />
           </div>
+        </Reveal>
+
+        {/* Mobile: vertical workflow */}
+        <Reveal className="md:hidden">
+          <ol className="space-y-3">
+            {phases.map((p, i) => (
+              <li key={p.title} className="relative">
+                <PhaseNode phase={p} />
+                {i < phases.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className="flex justify-center py-2"
+                  >
+                    <ChevronDown
+                      className="h-4 w-4 text-[var(--color-brand-700)]"
+                      strokeWidth={2}
+                    />
+                  </span>
+                )}
+              </li>
+            ))}
+            <li className="flex items-center justify-center gap-2 pt-3 font-mono text-[10.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)]">
+              <span aria-hidden="true">↻</span>
+              Refresh cycle
+            </li>
+          </ol>
         </Reveal>
       </Container>
     </section>
+  );
+}
+
+/* ───── Phase node — the technical-diagram box ─────────────── */
+
+function PhaseNode({ phase }: { phase: Phase }) {
+  return (
+    <div className="group relative h-full bg-[var(--color-bg)] border-[1.5px] border-[var(--color-brand-700)] rounded-[4px] p-5 lg:p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-12px_rgba(29,58,165,0.4)]">
+      {/* Top row: phase number + PHASE label */}
+      <div className="flex items-baseline justify-between">
+        <span className="font-display text-[36px] md:text-[40px] lg:text-[44px] font-semibold leading-[0.9] tracking-[-0.04em] text-[var(--color-brand-700)]">
+          {phase.index}
+        </span>
+        <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-fg-5)]">
+          Phase
+        </span>
+      </div>
+
+      {/* Hairline divider */}
+      <span
+        aria-hidden="true"
+        className="block mt-3.5 h-px w-full bg-[var(--color-line-2)]"
+      />
+
+      {/* Title */}
+      <h3 className="mt-3.5 font-display text-[18px] lg:text-[20px] font-semibold tracking-[-0.018em] text-[var(--color-fg)]">
+        {phase.title}
+      </h3>
+
+      {/* Items list — bullet rows */}
+      <ul className="mt-3 space-y-1.5">
+        {phase.items.map((item) => (
+          <li
+            key={item}
+            className="flex items-baseline gap-2 font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--color-fg-3)]"
+          >
+            <span
+              aria-hidden="true"
+              className="block h-1 w-1 shrink-0 rounded-full bg-[var(--color-brand-700)] -translate-y-[1px]"
+            />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ───── Feedback loop arc beneath the desktop diagram ─────── */
+
+function FeedbackLoop() {
+  // Box centers in a 4-col grid: ~12.5% and ~87.5% from edges (gaps shift this slightly).
+  // Positioning the loop endpoints with calc() so they line up with the bullet boxes regardless of gap.
+  return (
+    <div aria-hidden="true" className="relative mt-3 lg:mt-4 h-14 lg:h-16 select-none">
+      {/* Vertical drop down from box 4's bottom-right area */}
+      <span
+        className="absolute top-0 w-px bg-[var(--color-brand-700)]/45"
+        style={{ left: 'calc(87.5% - 0px)', height: '50%' }}
+      />
+      {/* Horizontal sweep */}
+      <span
+        className="absolute h-px bg-[var(--color-brand-700)]/45"
+        style={{ left: 'calc(12.5% - 0px)', right: 'calc(12.5% - 0px)', top: '50%' }}
+      />
+      {/* Vertical up to box 1's bottom-left area */}
+      <span
+        className="absolute w-px bg-[var(--color-brand-700)]/45"
+        style={{ left: 'calc(12.5% - 0px)', top: 0, height: '50%' }}
+      />
+      {/* Up-arrow tip on the box-1 side */}
+      <span
+        className="absolute h-2 w-2 border-t-[1.5px] border-l-[1.5px] border-[var(--color-brand-700)] rotate-45"
+        style={{
+          left: 'calc(12.5% - 0px)',
+          top: '-4px',
+          transform: 'translateX(-50%) rotate(45deg)',
+        }}
+      />
+      {/* Centered label, sits on top of the horizontal rule */}
+      <span
+        className="absolute left-1/2 -translate-x-1/2 bg-[var(--color-canvas)] px-3 font-mono text-[10.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)]"
+        style={{ top: 'calc(50% - 9px)' }}
+      >
+        Refresh cycle
+      </span>
+    </div>
   );
 }
