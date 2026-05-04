@@ -413,6 +413,75 @@
     50%      { transform: translateY(-4px); }
   }
   .wordmark-drift { animation: wordmark-drift 16s ease-in-out infinite; }
+
+  /* Mega-menu stagger reveal — each item slides in slightly delayed when popup opens */
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 380ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 380ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--stagger-delay, 0ms);
+  }
+  [data-state='open'] .stagger-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Connector draw — used in ProcessSteps to animate the diagram lines on scroll-in */
+  @keyframes draw-x {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  @keyframes draw-y {
+    from { transform: scaleY(0); }
+    to   { transform: scaleY(1); }
+  }
+  .draw-x {
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  .draw-y {
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+  [data-reveal-visible='true'] .draw-x {
+    animation: draw-x 700ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--anim-delay, 0ms) both;
+  }
+  [data-reveal-visible='true'] .draw-y {
+    animation: draw-y 540ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--anim-delay, 0ms) both;
+  }
+
+  /* Subtle pulse on the central badge in ProcessSteps */
+  @keyframes badge-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(29, 58, 165, 0.18); }
+    50%      { box-shadow: 0 0 0 14px rgba(29, 58, 165, 0); }
+  }
+  .badge-pulse { animation: badge-pulse 3.6s ease-in-out infinite; }
+
+  /* Item fade-up triggered when a Reveal becomes visible */
+  .reveal-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 520ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--anim-delay, 0ms);
+  }
+  [data-reveal-visible='true'] .reveal-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Dot pop — used for the bus nodes */
+  @keyframes dot-pop {
+    from { opacity: 0; transform: scale(0); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .dot-pop { opacity: 0; transform: scale(0); }
+  [data-reveal-visible='true'] .dot-pop {
+    animation: dot-pop 420ms cubic-bezier(0.5, 1.5, 0.4, 1) var(--anim-delay, 0ms) both;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
