@@ -11,6 +11,21 @@ import {
   ShieldCheck,
   ArrowRight,
   ArrowUpRight,
+  Target,
+  Users,
+  FlaskConical,
+  Bot,
+  Code2,
+  Cloud,
+  UserCheck,
+  Briefcase,
+  FileText,
+  BookOpen,
+  Video,
+  Wrench,
+  Map,
+  List,
+  Rss,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Wordmark';
@@ -20,6 +35,7 @@ type MenuItem = {
   label: string;
   desc?: string;
   href: string;
+  icon: LucideIcon;
 };
 
 type MenuGroup = {
@@ -41,11 +57,13 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
         label: 'Industrial Training',
         desc: 'Cohorts for engineering students.',
         href: '/students#training',
+        icon: GraduationCap,
       },
       {
         label: 'Placement Prep',
-        desc: 'Aptitude, technicals, and mock interviews.',
+        desc: 'Aptitude, technicals, mock interviews.',
         href: '/students#placement-prep',
+        icon: Target,
       },
     ],
   },
@@ -57,11 +75,13 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
         label: 'Campus Drives',
         desc: 'On-campus and pooled placement drives.',
         href: '/colleges#placements',
+        icon: Users,
       },
       {
         label: 'NAAC + NBA',
         desc: 'Documentation across accreditation cycles.',
         href: '/colleges#accreditation',
+        icon: ShieldCheck,
       },
     ],
   },
@@ -73,11 +93,13 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
         label: 'ATL Labs',
         desc: 'Atal Tinkering Labs setup and curriculum.',
         href: '/schools#atl',
+        icon: FlaskConical,
       },
       {
         label: 'AI & Robotics',
         desc: 'Programs aligned to NEP 2020.',
         href: '/schools#ai-robotics',
+        icon: Bot,
       },
     ],
   },
@@ -89,11 +111,13 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
         label: 'Software & AI',
         desc: 'Web, mobile, and applied AI delivery.',
         href: '/businesses#software',
+        icon: Code2,
       },
       {
         label: 'Cloud & DevOps',
-        desc: 'Infrastructure, security, and reliability.',
+        desc: 'Infrastructure, security, reliability.',
         href: '/businesses#cloud',
+        icon: Cloud,
       },
     ],
   },
@@ -105,11 +129,13 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
         label: 'Pre-trained Interns',
         desc: 'Bench of screened candidates.',
         href: '/hiring#interns',
+        icon: UserCheck,
       },
       {
         label: 'Bulk Drives',
-        desc: 'Permanent, contract, and RPO at scale.',
+        desc: 'Permanent, contract, RPO at scale.',
         href: '/hiring#bulk',
+        icon: Briefcase,
       },
     ],
   },
@@ -120,32 +146,32 @@ const RESOURCES_GROUPS: MenuGroup[] = [
     title: 'Read',
     href: '/blog',
     items: [
-      { label: 'Field Notes', desc: 'Quarterly notes from the practice.', href: '/blog' },
-      { label: 'Case Studies', desc: 'Selected engagements.', href: '/case-studies' },
+      { label: 'Field Notes', desc: 'Quarterly notes from the practice.', href: '/blog', icon: FileText },
+      { label: 'Case Studies', desc: 'Selected engagements.', href: '/case-studies', icon: BookOpen },
     ],
   },
   {
     title: 'Watch',
     href: '/webinars',
     items: [
-      { label: 'Webinars', desc: 'Upcoming live sessions.', href: '/webinars' },
-      { label: 'Workshops', desc: 'Hands-on intensives.', href: '/workshops' },
+      { label: 'Webinars', desc: 'Upcoming live sessions.', href: '/webinars', icon: Video },
+      { label: 'Workshops', desc: 'Hands-on intensives.', href: '/workshops', icon: Wrench },
     ],
   },
   {
     title: 'Download',
     href: '/resources',
     items: [
-      { label: 'Guides & Roadmaps', desc: 'Resources by segment.', href: '/resources' },
-      { label: 'Glossary', desc: 'Industry terminology.', href: '/glossary' },
+      { label: 'Guides & Roadmaps', desc: 'Resources by segment.', href: '/resources', icon: Map },
+      { label: 'Glossary', desc: 'Industry terminology.', href: '/glossary', icon: List },
     ],
   },
   {
     title: 'Subscribe',
     href: '/newsletter',
     items: [
-      { label: 'Monthly Brief', desc: 'One email a month.', href: '/newsletter' },
-      { label: 'RSS Feed', desc: 'Latest field notes via RSS.', href: '/rss.xml' },
+      { label: 'Monthly Brief', desc: 'One email a month.', href: '/newsletter', icon: Mail },
+      { label: 'RSS Feed', desc: 'Latest field notes via RSS.', href: '/rss.xml', icon: Rss },
     ],
   },
 ];
@@ -545,6 +571,7 @@ function MegaMenu({
         onClick={onClose}
       />
       <div
+        data-state={visible ? 'open' : 'closed'}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         className={cn(
@@ -569,6 +596,7 @@ function MegaPanel({
   groups: MenuGroup[];
   footer?: { body: string; cta: string; href: string };
 }) {
+  let staggerSeq = 0;
   return (
     <div className="mx-auto max-w-7xl px-5 md:px-8">
       <div
@@ -581,45 +609,83 @@ function MegaPanel({
               : 'grid-cols-3',
         )}
       >
-        {groups.map((g, gi) => (
-          <div
-            key={g.title}
-            className={cn(
-              'py-9',
-              gi === 0 ? 'pr-7' : gi === groups.length - 1 ? 'pl-7' : 'px-7',
-            )}
-          >
-            <a href={g.href} className="group/header inline-flex">
-              <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--color-brand-700)] transition-colors group-hover/header:text-[var(--color-brand-800)]">
-                {g.title}
-              </span>
-            </a>
+        {groups.map((g, gi) => {
+          const headerDelay = gi * 50;
+          return (
+            <div
+              key={g.title}
+              className={cn(
+                'flex flex-col py-9',
+                gi === 0 ? 'pr-6' : gi === groups.length - 1 ? 'pl-6' : 'px-6',
+              )}
+            >
+              <a
+                href={g.href}
+                className="group/header stagger-item inline-flex w-fit"
+                style={{ ['--stagger-delay' as string]: `${headerDelay}ms` }}
+              >
+                <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--color-brand-700)] transition-colors group-hover/header:text-[var(--color-brand-800)]">
+                  {g.title}
+                </span>
+              </a>
 
-            <ul className="mt-5 space-y-1">
-              {g.items.map((it) => (
-                <li key={it.label}>
-                  <a
-                    href={it.href}
-                    className="group/item block -mx-2 rounded-[6px] px-2 py-2 transition-colors hover:bg-[var(--color-canvas)]"
-                  >
-                    <span className="text-[14.5px] font-semibold text-[var(--color-fg)] transition-colors group-hover/item:text-[var(--color-brand-700)]">
-                      {it.label}
-                    </span>
-                    {it.desc && (
-                      <p className="mt-0.5 text-[12.5px] leading-[1.45] text-[var(--color-fg-3)]">
-                        {it.desc}
-                      </p>
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+              <ul className="mt-5 flex-1 space-y-1">
+                {g.items.map((it) => {
+                  staggerSeq++;
+                  return (
+                    <li
+                      key={it.label}
+                      className="stagger-item"
+                      style={{ ['--stagger-delay' as string]: `${headerDelay + 60 + staggerSeq * 20}ms` }}
+                    >
+                      <a
+                        href={it.href}
+                        className="group/item flex items-start gap-3 -mx-2 rounded-[6px] px-2 py-2 transition-colors hover:bg-[var(--color-canvas)]"
+                      >
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[6px] bg-[var(--color-canvas)] text-[var(--color-brand-700)] ring-1 ring-[var(--color-line)] transition-colors group-hover/item:bg-[var(--color-brand-700)] group-hover/item:text-white group-hover/item:ring-[var(--color-brand-700)]">
+                          <it.icon className="h-4 w-4" strokeWidth={1.75} />
+                        </span>
+                        <span className="flex-1 min-w-0">
+                          <span className="block text-[14px] font-semibold text-[var(--color-fg)] transition-colors group-hover/item:text-[var(--color-brand-700)]">
+                            {it.label}
+                          </span>
+                          {it.desc && (
+                            <p className="mt-0.5 text-[12px] leading-[1.4] text-[var(--color-fg-3)]">
+                              {it.desc}
+                            </p>
+                          )}
+                        </span>
+                        <ArrowUpRight
+                          className="mt-2 h-3.5 w-3.5 shrink-0 text-[var(--color-fg-5)] opacity-0 transition-all duration-200 group-hover/item:opacity-100 group-hover/item:text-[var(--color-brand-700)] group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5"
+                          strokeWidth={2.25}
+                        />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <a
+                href={g.href}
+                className="stagger-item group/viewall mt-5 inline-flex items-center gap-1.5 self-start font-mono text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[var(--color-brand-700)] transition-colors hover:text-[var(--color-brand-800)]"
+                style={{ ['--stagger-delay' as string]: `${headerDelay + 200}ms` }}
+              >
+                <span className="under-slide">View all</span>
+                <ArrowRight
+                  className="h-3 w-3 transition-transform group-hover/viewall:translate-x-0.5"
+                  strokeWidth={2.5}
+                />
+              </a>
+            </div>
+          );
+        })}
       </div>
 
       {footer && (
-        <div className="flex items-center justify-between gap-4 border-t border-[var(--color-line)] py-4">
+        <div
+          className="stagger-item flex items-center justify-between gap-4 border-t border-[var(--color-line)] py-4"
+          style={{ ['--stagger-delay' as string]: '320ms' }}
+        >
           <p className="max-w-[44ch] text-[12.5px] text-[var(--color-fg-3)]">{footer.body}</p>
           <a
             href={footer.href}
