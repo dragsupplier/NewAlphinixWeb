@@ -1,7 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
-import { TrustStrip } from '@/components/sections/TrustStrip';
 import { AudienceTabs } from '@/components/sections/AudienceTabs';
 import { SignatureBlocks } from '@/components/sections/SignatureBlocks';
 import { ProcessSteps } from '@/components/sections/ProcessSteps';
@@ -15,7 +14,6 @@ export function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <TrustStrip />
         <AudienceTabs />
         <SignatureBlocks />
         <ProcessSteps />
