@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Container } from '@/components/ui/Container';
-import { cn } from '@/lib/utils';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { ButtonLink } from '@/components/ui/Button';
 import { segments } from '@/data/segments';
@@ -14,7 +13,6 @@ import {
   Instagram,
   Twitter,
   Youtube,
-  Hexagon,
 } from 'lucide-react';
 
 const companyLinks = [
@@ -305,58 +303,30 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Dual-row marquee banner — top row big-display L→R, bottom row mono R→L */}
-      <div
-        className="relative border-t border-white/10 overflow-hidden"
-        style={{
-          WebkitMaskImage:
-            'linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%)',
-          maskImage:
-            'linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%)',
-        }}
-      >
-        {/* Top row — big display, scrolls left */}
-        <div className="border-b border-white/10 py-6 md:py-8">
-          <div className="marquee-track marquee-medium flex items-center gap-12">
-            {Array.from({ length: 4 }).map((_, k) => (
-              <span key={k} className="flex items-center gap-12 shrink-0">
-                {[
-                  'Students',
-                  'Colleges',
-                  'Schools',
-                  'Businesses',
-                  'Hiring teams',
-                ].map((label) => (
-                  <span
-                    key={`${k}-${label}`}
-                    className="flex items-center gap-12 shrink-0"
-                  >
-                    <span className="font-display text-[40px] md:text-[60px] lg:text-[80px] font-semibold leading-[0.95] tracking-[-0.03em] text-white/65 whitespace-nowrap">
-                      {label}
-                    </span>
-                    <HexMark />
-                  </span>
-                ))}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Bottom row — mono uppercase, scrolls right */}
-        <div className="py-3.5">
-          <div className="marquee-track marquee-fast marquee-reverse flex items-center gap-10 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">
-            {Array.from({ length: 6 }).map((_, k) => (
-              <span key={k} className="flex items-center gap-10 shrink-0">
-                <span className="whitespace-nowrap">One practice &middot; five audiences</span>
-                <HexMark small />
-                <span className="whitespace-nowrap">Training &middot; Infrastructure &middot; Software &middot; Hiring</span>
-                <HexMark small />
-                <span className="whitespace-nowrap">Built from Pune &middot; serving India</span>
-                <HexMark small />
-                <span className="whitespace-nowrap">Aligned with NEP 2020 &middot; NAAC &middot; NBA &middot; AICTE &middot; ATL</span>
-                <HexMark small />
-              </span>
-            ))}
+      {/* Stats dashboard — replaces the marquee with institutional metrics */}
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-7xl px-5 md:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-white/10">
+            <FooterStat
+              label="Audiences"
+              value="05"
+              sub="Distinct segments"
+            />
+            <FooterStat
+              label="Service lines"
+              value="04"
+              sub="Training · Infra · Software · Hiring"
+            />
+            <FooterStat
+              label="Operating from"
+              value="Pune"
+              sub="Maharashtra, India"
+            />
+            <FooterStat
+              label="Operating since"
+              value={String(year)}
+              sub="Built for institutions"
+            />
           </div>
         </div>
       </div>
@@ -374,18 +344,25 @@ export function Footer() {
   );
 }
 
-function HexMark({ small }: { small?: boolean }) {
+function FooterStat({
+  label,
+  value,
+  sub,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+}) {
   return (
-    <Hexagon
-      aria-hidden="true"
-      className={cn(
-        'shrink-0 text-[var(--color-brand-300)]',
-        small ? 'h-2.5 w-2.5' : 'h-4 w-4 md:h-5 md:w-5',
-      )}
-      strokeWidth={1.5}
-      fill="currentColor"
-      fillOpacity={0.25}
-    />
+    <div className="px-5 md:px-7 py-7 md:py-9 first:pl-0 last:pr-0">
+      <p className="kicker kicker-on-dark">{label}</p>
+      <p className="mt-3 font-display text-[36px] md:text-[44px] lg:text-[52px] font-semibold leading-[0.95] tracking-[-0.025em] text-white">
+        {value}
+      </p>
+      <p className="mt-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
+        {sub}
+      </p>
+    </div>
   );
 }
 
