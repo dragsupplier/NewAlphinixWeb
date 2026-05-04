@@ -1,13 +1,10 @@
 import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/Reveal';
-import { Search, PenTool, Send, RefreshCw } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 
 type Phase = {
   index: string;
   title: string;
   body: string;
-  icon: LucideIcon;
   items: string[];
 };
 
@@ -15,28 +12,24 @@ const phases: Phase[] = [
   {
     index: '01',
     title: 'Discover',
-    icon: Search,
     body: 'A structured conversation about the audience you serve, the outcome you need, and the constraints you work within. One named owner from day one.',
     items: ['Audience research', 'Desired outcome', 'Project constraints', 'Named owner'],
   },
   {
     index: '02',
     title: 'Design',
-    icon: PenTool,
     body: 'A scoped plan covering programs, infrastructure, software, or hiring routes — with a delivery cadence and a documentation set agreed up front.',
-    items: ['Scoped plan', 'Delivery cadence', 'Documentation set', 'Programs · infra · software'],
+    items: ['Scoped plan', 'Delivery cadence', 'Documentation set', 'Defined routes'],
   },
   {
     index: '03',
     title: 'Deliver',
-    icon: Send,
     body: 'The work runs against a quarterly review cycle. Documentation is produced for audit, accreditation, and stakeholder reporting as it is built.',
     items: ['Quarterly reviews', 'Audit-ready docs', 'Stakeholder reports', 'As-built records'],
   },
   {
     index: '04',
     title: 'Sustain',
-    icon: RefreshCw,
     body: 'Engagements continue beyond the first project — refresh cycles, capacity additions, and outcomes tracked across years.',
     items: ['Refresh cycles', 'Capacity additions', 'Outcome tracking', 'Multi-year continuity'],
   },
@@ -46,38 +39,37 @@ export function ProcessSteps() {
   return (
     <section className="section-y bg-[var(--color-canvas)] overflow-hidden">
       <Container>
-        {/* Centered header */}
+        {/* Section header — restrained, centered */}
         <div className="text-center max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-bg)] border border-[var(--color-line)] px-3 py-1 font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-brand-700)] font-semibold">
             <span aria-hidden="true" className="block h-1 w-1 rounded-full bg-[var(--color-brand-700)]" />
             How we engage
           </span>
-          <h2 className="mt-6 font-display text-[34px] md:text-[44px] lg:text-[56px] font-semibold leading-[1.04] tracking-[-0.025em] text-[var(--color-fg)] text-balance">
-            Four phases.
-            <br />
+          <h2 className="mt-6 font-display text-[32px] md:text-[42px] lg:text-[48px] font-semibold leading-[1.06] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
+            Four phases.{' '}
             <span className="text-[var(--color-brand-700)]">The same shape, every engagement.</span>
           </h2>
-          <p className="mt-6 max-w-2xl mx-auto text-[15px] md:text-[16px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
-            The engagement model is the same whether you are a college director, a school principal, a founder, or
+          <p className="mt-5 max-w-xl mx-auto text-[14.5px] md:text-[15px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
+            The engagement model holds whether you are a college director, a school principal, a founder, or
             an HR head — only the deliverables change.
           </p>
         </div>
 
-        {/* Desktop: branching diagram */}
-        <div className="hidden md:block mt-16 lg:mt-20">
-          {/* Central badge */}
+        {/* Diagram — desktop */}
+        <div className="hidden md:block mt-14 lg:mt-16">
+          {/* Center mark */}
           <div className="flex justify-center">
-            <CenterBadge />
+            <CenterMark />
           </div>
 
-          {/* Vertical drop from badge to bus */}
-          <div className="flex justify-center h-12 lg:h-16">
+          {/* Vertical drop */}
+          <div className="flex justify-center h-10 lg:h-12">
             <span aria-hidden="true" className="block w-px h-full bg-[var(--color-brand-700)]" />
           </div>
 
           {/* Bus + 4 nodes */}
-          <div className="relative grid grid-cols-4 h-3">
-            <div
+          <div className="relative grid grid-cols-4 h-2.5">
+            <span
               aria-hidden="true"
               className="absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-px bg-[var(--color-brand-700)]"
             />
@@ -85,14 +77,14 @@ export function ProcessSteps() {
               <div key={p.title} className="relative flex items-center justify-center">
                 <span
                   aria-hidden="true"
-                  className="relative z-10 block h-3 w-3 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-canvas)]"
+                  className="relative z-10 block h-2.5 w-2.5 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-canvas)]"
                 />
               </div>
             ))}
           </div>
 
-          {/* Vertical drops from bus to pills */}
-          <div className="grid grid-cols-4 h-10 lg:h-12">
+          {/* Vertical drops to phase labels */}
+          <div className="grid grid-cols-4 h-7 lg:h-9">
             {phases.map((p) => (
               <div key={p.title} className="flex justify-center">
                 <span aria-hidden="true" className="block w-px h-full bg-[var(--color-brand-700)]" />
@@ -100,16 +92,16 @@ export function ProcessSteps() {
             ))}
           </div>
 
-          {/* Pill labels */}
-          <div className="grid grid-cols-4 gap-x-4">
+          {/* Phase headers — typographic, no pills, no icons */}
+          <div className="grid grid-cols-4 gap-x-4 lg:gap-x-6 text-center">
             {phases.map((p, i) => (
-              <Reveal key={p.title} delay={i * 70} className="flex justify-center">
-                <div className="inline-flex items-center gap-2 rounded-full bg-[var(--color-bg)] border border-[var(--color-line-2)] px-4 py-2 shadow-[0_4px_12px_-4px_rgba(11,18,32,0.06)]">
-                  <p.icon className="h-4 w-4 text-[var(--color-brand-700)]" strokeWidth={2} />
-                  <span className="font-display text-[14.5px] lg:text-[15px] font-semibold tracking-[-0.012em] text-[var(--color-fg)]">
-                    {p.title}
-                  </span>
-                </div>
+              <Reveal key={p.title} delay={i * 70}>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)]">
+                  Phase {p.index}
+                </p>
+                <h3 className="mt-2 font-display text-[20px] lg:text-[22px] font-semibold tracking-[-0.018em] text-[var(--color-fg)]">
+                  {p.title}
+                </h3>
               </Reveal>
             ))}
           </div>
@@ -117,7 +109,7 @@ export function ProcessSteps() {
           {/* Item lists with brand-700 left rule */}
           <div className="mt-8 lg:mt-10 grid grid-cols-4 gap-x-4 lg:gap-x-6">
             {phases.map((p, i) => (
-              <Reveal key={p.title} delay={i * 70 + 120} as="ul" className="border-l-2 border-[var(--color-brand-700)] pl-4 lg:pl-5 space-y-1.5">
+              <Reveal as="ul" key={p.title} delay={i * 70 + 120} className="border-l-2 border-[var(--color-brand-700)] pl-4 lg:pl-5 space-y-1.5">
                 {p.items.map((item) => (
                   <li
                     key={item}
@@ -131,29 +123,29 @@ export function ProcessSteps() {
           </div>
         </div>
 
-        {/* Mobile: vertical spine */}
+        {/* Diagram — mobile vertical spine */}
         <div className="md:hidden mt-12">
-          <div className="flex justify-center mb-4">
-            <CenterBadge small />
+          <div className="flex justify-center mb-3">
+            <CenterMark small />
           </div>
           <div className="relative pl-7">
             <span
               aria-hidden="true"
               className="absolute left-1.5 top-2 bottom-2 w-px bg-[var(--color-brand-700)]"
             />
-            <ol className="space-y-8">
+            <ol className="space-y-7">
               {phases.map((p, i) => (
                 <Reveal as="li" key={p.title} delay={i * 60} className="relative">
                   <span
                     aria-hidden="true"
-                    className="absolute -left-[26px] top-1 block h-3 w-3 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-canvas)]"
+                    className="absolute -left-[26px] top-1 block h-2.5 w-2.5 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-canvas)]"
                   />
-                  <div className="inline-flex items-center gap-2 rounded-full bg-[var(--color-bg)] border border-[var(--color-line-2)] px-3.5 py-1.5">
-                    <p.icon className="h-3.5 w-3.5 text-[var(--color-brand-700)]" strokeWidth={2} />
-                    <span className="font-display text-[14px] font-semibold tracking-[-0.012em] text-[var(--color-fg)]">
-                      {p.title}
-                    </span>
-                  </div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)]">
+                    Phase {p.index}
+                  </p>
+                  <h3 className="mt-1 font-display text-[20px] font-semibold tracking-[-0.018em] text-[var(--color-fg)]">
+                    {p.title}
+                  </h3>
                   <ul className="mt-3 border-l-2 border-[var(--color-brand-700)] pl-3.5 space-y-1.5">
                     {p.items.map((item) => (
                       <li key={item} className="text-[13px] leading-[1.5] text-[var(--color-fg-3)]">
@@ -171,40 +163,30 @@ export function ProcessSteps() {
   );
 }
 
-function CenterBadge({ small }: { small?: boolean }) {
-  const outer = small ? 'h-16 w-16' : 'h-20 w-20 lg:h-24 lg:w-24';
-  const inner = small ? 'h-11 w-11' : 'h-14 w-14 lg:h-16 lg:w-16';
-  const iconSize = small ? 'h-5 w-5' : 'h-6 w-6 lg:h-7 lg:w-7';
+function CenterMark({ small }: { small?: boolean }) {
+  const outer = small ? 'h-14 w-14' : 'h-16 w-16 lg:h-[72px] lg:w-[72px]';
+  const inner = small ? 'h-9 w-9' : 'h-10 w-10 lg:h-12 lg:w-12';
+  const iconSize = small ? 'h-4 w-4' : 'h-5 w-5 lg:h-6 lg:w-6';
   return (
-    <div className="relative">
-      {/* Aura */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-0 rounded-full bg-[var(--color-brand-700)] opacity-20 blur-2xl scale-150"
-      />
-      {/* Outer thin ring */}
+    <div
+      className={`relative ${outer} rounded-full border border-[var(--color-brand-700)]/30 grid place-items-center bg-[var(--color-canvas)]`}
+    >
       <div
-        className={`relative ${outer} rounded-full border-2 border-[var(--color-brand-700)]/25 grid place-items-center bg-[var(--color-canvas)]`}
+        className={`${inner} rounded-full bg-[var(--color-brand-700)] grid place-items-center text-white`}
       >
-        {/* Inner filled brand circle */}
-        <div
-          className={`${inner} rounded-full bg-[var(--color-brand-700)] grid place-items-center text-white shadow-[0_8px_24px_-6px_rgba(29,58,165,0.55)]`}
+        <svg
+          viewBox="0 0 32 32"
+          className={iconSize}
+          fill="none"
+          aria-hidden="true"
         >
-          {/* Alphinix A-mark */}
-          <svg
-            viewBox="0 0 32 32"
-            className={iconSize}
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M5 26 L16 5 L27 26 M10 19 H22"
-              stroke="currentColor"
-              strokeWidth="2.6"
-              strokeLinecap="square"
-            />
-          </svg>
-        </div>
+          <path
+            d="M5 26 L16 5 L27 26 M10 19 H22"
+            stroke="currentColor"
+            strokeWidth="2.6"
+            strokeLinecap="square"
+          />
+        </svg>
       </div>
     </div>
   );

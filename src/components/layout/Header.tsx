@@ -246,42 +246,34 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full">
-      {/* Utility bar */}
+      {/* Utility bar — centered contact details only */}
       <div
         className={cn(
           'utility-bar hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out md:block',
           utilityHidden ? 'max-h-0 opacity-0' : 'max-h-9 opacity-100',
         )}
       >
-        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-5 md:px-8">
-          <div className="flex items-center gap-5">
-            <span className="inline-flex items-center gap-1.5 text-white/80">
-              <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-                <span className="absolute inset-0 rounded-full bg-[var(--color-brand-300)] opacity-75 pulse-dot" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-brand-300)]" />
-              </span>
-              <span className="text-white/90 font-medium">Open</span>
-              <span className="text-white/45">·</span>
-              <span className="inline-flex items-center gap-1.5 text-white/65">
-                <MapPin className="h-3 w-3" strokeWidth={2.25} />
-                Pune, IN
-              </span>
-            </span>
-            <a href="tel:+910000000000" className="inline-flex items-center gap-1.5 text-white/65 hover:text-white transition-colors">
-              <Phone className="h-3 w-3" strokeWidth={2.25} />
-              +91 00000 00000
-            </a>
-            <a href="mailto:hello@alphinix.in" className="inline-flex items-center gap-1.5 text-white/65 hover:text-white transition-colors">
-              <Mail className="h-3 w-3" strokeWidth={2.25} />
-              hello@alphinix.in
-            </a>
-          </div>
-          <div className="flex items-center gap-5 text-white/65">
-            <a href="/about" className="hover:text-white transition-colors">Investors</a>
-            <a href="/about" className="hover:text-white transition-colors">Partners</a>
-            <a href="/blog" className="hover:text-white transition-colors">Newsroom</a>
-            <a href="/contact" className="hover:text-white transition-colors">Support</a>
-          </div>
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-center gap-5 px-5 md:px-8 text-white/75">
+          <span className="inline-flex items-center gap-1.5">
+            <MapPin className="h-3 w-3" strokeWidth={2.25} />
+            Pune, Maharashtra · India
+          </span>
+          <span aria-hidden="true" className="text-white/30">·</span>
+          <a
+            href="tel:+910000000000"
+            className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+          >
+            <Phone className="h-3 w-3" strokeWidth={2.25} />
+            +91 00000 00000
+          </a>
+          <span aria-hidden="true" className="text-white/30">·</span>
+          <a
+            href="mailto:hello@alphinix.in"
+            className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+          >
+            <Mail className="h-3 w-3" strokeWidth={2.25} />
+            hello@alphinix.in
+          </a>
         </div>
       </div>
 
@@ -305,11 +297,13 @@ export function Header() {
               label="Solutions"
               isOpen={open === 'solutions'}
               onEnter={() => setOpen('solutions')}
+              onToggle={() => setOpen(open === 'solutions' ? null : 'solutions')}
             />
             <DropdownTrigger
               label="Resources"
               isOpen={open === 'resources'}
               onEnter={() => setOpen('resources')}
+              onToggle={() => setOpen(open === 'resources' ? null : 'resources')}
             />
             {SIMPLE_LINKS.map((l) => (
               <SimpleLink key={l.label} label={l.label} href={l.href} onEnter={() => setOpen(null)} />
@@ -431,19 +425,24 @@ function DropdownTrigger({
   label,
   isOpen,
   onEnter,
+  onToggle,
 }: {
   label: string;
   isOpen: boolean;
   onEnter: () => void;
+  onToggle: () => void;
 }) {
   return (
     <button
+      type="button"
       onMouseEnter={onEnter}
+      onClick={onToggle}
       className={cn(
         'group relative inline-flex items-center gap-1 rounded-[6px] px-3.5 py-2 text-[14px] font-medium transition-colors',
         isOpen ? 'text-[var(--color-fg)]' : 'text-[var(--color-fg-2)] hover:text-[var(--color-fg)]',
       )}
       aria-expanded={isOpen}
+      aria-haspopup="true"
     >
       {label}
       <ChevronDown
@@ -520,7 +519,7 @@ function MegaMenu({
             : 'pointer-events-none -translate-y-1 opacity-0',
         )}
       >
-        <div className="border-y border-white/5 bg-[var(--color-fg)] shadow-[0_24px_60px_-24px_rgba(11,18,32,0.5)]">
+        <div className="border-y border-[var(--color-line)] bg-[var(--color-bg)] shadow-[0_24px_60px_-24px_rgba(11,18,32,0.18)]">
           {children}
         </div>
       </div>
@@ -539,7 +538,7 @@ function MegaPanel({
     <div className="mx-auto max-w-7xl px-5 md:px-8">
       <div
         className={cn(
-          'grid divide-x divide-white/10',
+          'grid divide-x divide-[var(--color-line)]',
           groups.length === 5
             ? 'grid-cols-5'
             : groups.length === 4
@@ -564,15 +563,15 @@ function MegaPanel({
               <span
                 className={cn(
                   'font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] transition-colors',
-                  g.accent ? 'text-[var(--color-brand-300)]' : 'text-[var(--color-brand-200)]',
-                  'group-hover/header:text-white',
+                  'text-[var(--color-brand-700)]',
+                  'group-hover/header:text-[var(--color-brand-800)]',
                 )}
               >
                 {g.title}
               </span>
               {g.accent && (
                 <Hexagon
-                  className="h-3 w-3 text-[var(--color-brand-300)]"
+                  className="h-3 w-3 text-[var(--color-brand-700)]"
                   strokeWidth={1.75}
                   fill="currentColor"
                   fillOpacity={0.3}
@@ -585,13 +584,13 @@ function MegaPanel({
                 <li key={it.label}>
                   <a href={it.href} className="group/item block">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[14.5px] font-semibold text-white transition-colors group-hover/item:text-[var(--color-brand-200)]">
+                      <span className="text-[14.5px] font-semibold text-[var(--color-fg)] transition-colors group-hover/item:text-[var(--color-brand-700)]">
                         {it.label}
                       </span>
-                      {it.badge && <Badge type={it.badge} tone="dark" />}
+                      {it.badge && <Badge type={it.badge} tone="light" />}
                     </div>
                     {it.desc && (
-                      <p className="mt-1 text-[12.5px] leading-[1.45] text-white/55">
+                      <p className="mt-1 text-[12.5px] leading-[1.45] text-[var(--color-fg-3)]">
                         {it.desc}
                       </p>
                     )}
@@ -604,11 +603,11 @@ function MegaPanel({
       </div>
 
       {footer && (
-        <div className="flex items-center justify-between border-t border-white/10 py-4">
-          <p className="text-[12.5px] text-white/55 max-w-[44ch]">{footer.body}</p>
+        <div className="flex items-center justify-between border-t border-[var(--color-line)] py-4">
+          <p className="text-[12.5px] text-[var(--color-fg-3)] max-w-[44ch]">{footer.body}</p>
           <a
             href={footer.href}
-            className="group inline-flex items-center gap-1.5 text-[12.5px] font-mono font-semibold uppercase tracking-[0.14em] text-white"
+            className="group inline-flex items-center gap-1.5 text-[12.5px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--color-fg)]"
           >
             <span className="under-slide">{footer.cta}</span>
             <ArrowUpRight
