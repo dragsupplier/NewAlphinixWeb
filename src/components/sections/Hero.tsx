@@ -12,14 +12,14 @@ import type { LucideIcon } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { TextReveal } from '@/components/ui/TextReveal';
 
-type AudienceCell = { label: string; icon: LucideIcon; href: string };
+type AudienceCell = { label: string; sub: string; icon: LucideIcon; href: string };
 
 const AUDIENCE: AudienceCell[] = [
-  { label: 'Students',     icon: GraduationCap, href: '/students' },
-  { label: 'Colleges',     icon: Building2,     href: '/colleges' },
-  { label: 'Schools',      icon: School,        href: '/schools' },
-  { label: 'Businesses',   icon: Rocket,        href: '/businesses' },
-  { label: 'Hiring Teams', icon: Users,         href: '/hiring' },
+  { label: 'Students',     sub: 'Training and placement',    icon: GraduationCap, href: '/students' },
+  { label: 'Colleges',     sub: 'Academic operations',       icon: Building2,     href: '/colleges' },
+  { label: 'Schools',      sub: 'STEM, ATL, and AI labs',    icon: School,        href: '/schools' },
+  { label: 'Businesses',   sub: 'Engineering and AI',        icon: Rocket,        href: '/businesses' },
+  { label: 'Hiring Teams', sub: 'Recruitment services',      icon: Users,         href: '/hiring' },
 ];
 
 export function Hero() {
@@ -89,6 +89,7 @@ export function Hero() {
                 <p className="under-slide mt-5 inline-block font-display text-[18px] font-semibold leading-tight tracking-tight text-[var(--color-fg)] group-hover:text-[var(--color-brand-700)] md:text-[19px]">
                   {m.label}
                 </p>
+                <p className="mt-1 text-[12.5px] text-[var(--color-fg-4)]">{m.sub}</p>
                 <div className="mt-5 flex items-center justify-between border-t border-[var(--color-line)] pt-3">
                   <span className="text-[11.5px] font-medium text-[var(--color-fg-3)] group-hover:text-[var(--color-brand-700)]">
                     Explore
