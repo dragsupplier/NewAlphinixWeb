@@ -1,201 +1,221 @@
 import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/Reveal';
-import { ChevronDown } from 'lucide-react';
+import { ArrowUpRight, Search, PenTool, Send, RefreshCw } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 type Phase = {
   index: string;
   title: string;
-  body: string;
-  items: string[];
+  icon: LucideIcon;
 };
 
 const phases: Phase[] = [
-  {
-    index: '01',
-    title: 'Discover',
-    body: 'A structured conversation about the audience you serve, the outcome you need, and the constraints you work within. One named owner from day one.',
-    items: ['Audience research', 'Desired outcome', 'Project constraints', 'Named owner'],
-  },
-  {
-    index: '02',
-    title: 'Design',
-    body: 'A scoped plan covering programs, infrastructure, software, or hiring routes — with a delivery cadence and a documentation set agreed up front.',
-    items: ['Scoped plan', 'Delivery cadence', 'Documentation set', 'Defined routes'],
-  },
-  {
-    index: '03',
-    title: 'Deliver',
-    body: 'The work runs against a quarterly review cycle. Documentation is produced for audit, accreditation, and stakeholder reporting as it is built.',
-    items: ['Quarterly reviews', 'Audit-ready docs', 'Stakeholder reports', 'As-built records'],
-  },
-  {
-    index: '04',
-    title: 'Sustain',
-    body: 'Engagements continue beyond the first project — refresh cycles, capacity additions, and outcomes tracked across years.',
-    items: ['Refresh cycles', 'Capacity additions', 'Outcome tracking', 'Multi-year continuity'],
-  },
+  { index: '01', title: 'Discover', icon: Search },
+  { index: '02', title: 'Design',   icon: PenTool },
+  { index: '03', title: 'Deliver',  icon: Send },
+  { index: '04', title: 'Sustain',  icon: RefreshCw },
 ];
 
 export function ProcessSteps() {
   return (
-    <section className="bg-[var(--color-canvas)] py-14 md:py-16 lg:py-20 overflow-hidden">
+    <section className="bg-[var(--color-brand-950)] text-white py-20 md:py-24 lg:py-28 overflow-hidden">
       <Container>
-        {/* Compact header row */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-5 lg:gap-x-12 mb-10 md:mb-14">
-          <div className="lg:col-span-7">
-            <p className="kicker">How we engage</p>
-            <h2 className="mt-3 font-display text-[28px] md:text-[36px] lg:text-[42px] font-semibold leading-[1.08] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
-              Four phases.{' '}
-              <span className="text-[var(--color-brand-700)]">The same shape, every engagement.</span>
-            </h2>
-          </div>
-          <div className="lg:col-span-5 lg:self-end">
-            <p className="text-[14px] md:text-[14.5px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
-              The engagement model holds whether you are a college director, a school principal, a founder,
-              or an HR head — only the deliverables change.
-            </p>
-          </div>
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-16 lg:gap-x-16 items-center">
+          {/* Left column — content */}
+          <div className="lg:col-span-1">
+            <p className="kicker kicker-on-dark">How we engage</p>
 
-        {/* Desktop workflow diagram */}
-        <Reveal className="hidden md:block">
-          <div className="relative">
-            <div className="grid grid-cols-4 gap-x-10 lg:gap-x-12">
-              {phases.map((p, i) => (
-                <div key={p.title} className="relative">
-                  <PhaseNode phase={p} />
-                  {/* Arrow connector to the next node — sits in the gap to the right */}
-                  {i < phases.length - 1 && (
-                    <span
-                      aria-hidden="true"
-                      className="absolute top-[40px] -right-10 lg:-right-12 flex items-center w-10 lg:w-12 z-10"
-                    >
-                      <span className="h-px flex-1 bg-[var(--color-brand-700)]" />
-                      <span className="h-1.5 w-1.5 -ml-[3px] border-t-[1.5px] border-r-[1.5px] border-[var(--color-brand-700)] rotate-45" />
-                    </span>
-                  )}
-                </div>
+            <h2 className="mt-5 font-display text-[34px] md:text-[42px] lg:text-[52px] font-semibold leading-[1.04] tracking-[-0.025em] text-white text-balance">
+              Engagement
+              <br />
+              Lifecycle
+              <br />
+              <span className="text-[var(--color-brand-200)]">Management</span>
+            </h2>
+
+            <p className="mt-6 max-w-md text-[14.5px] md:text-[15px] leading-[1.7] text-white/70 text-pretty">
+              Four phases that hold across every engagement — discover the brief, design the plan,
+              deliver the work, sustain the relationship across years. The deliverables change by
+              audience, the shape never does.
+            </p>
+
+            <a
+              href="/about#approach"
+              className="group mt-8 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-white transition-colors hover:text-[var(--color-brand-200)]"
+            >
+              <span className="under-slide">Learn more</span>
+              <ArrowUpRight
+                className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                strokeWidth={2.25}
+              />
+            </a>
+
+            <span aria-hidden="true" className="mt-10 block h-px w-full max-w-md bg-white/10" />
+
+            {/* Phase pills */}
+            <div className="mt-6 flex flex-wrap gap-2.5 max-w-md">
+              {phases.map((p) => (
+                <span
+                  key={p.title}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] font-medium text-white/85 transition-colors hover:border-white/30 hover:bg-white/[0.06]"
+                >
+                  <p.icon className="h-3.5 w-3.5 text-[var(--color-brand-300)]" strokeWidth={1.75} />
+                  {p.title}
+                </span>
               ))}
             </div>
-
-            {/* Refresh-cycle loop arc beneath the row */}
-            <FeedbackLoop />
           </div>
-        </Reveal>
 
-        {/* Mobile: vertical workflow */}
-        <Reveal className="md:hidden">
-          <ol className="space-y-3">
-            {phases.map((p, i) => (
-              <li key={p.title} className="relative">
-                <PhaseNode phase={p} />
-                {i < phases.length - 1 && (
-                  <span
-                    aria-hidden="true"
-                    className="flex justify-center py-2"
-                  >
-                    <ChevronDown
-                      className="h-4 w-4 text-[var(--color-brand-700)]"
-                      strokeWidth={2}
-                    />
-                  </span>
-                )}
-              </li>
-            ))}
-            <li className="flex items-center justify-center gap-2 pt-3 font-mono text-[10.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)]">
-              <span aria-hidden="true">↻</span>
-              Refresh cycle
-            </li>
-          </ol>
-        </Reveal>
+          {/* Right column — orbital lifecycle diagram */}
+          <Reveal className="lg:col-span-1 relative aspect-square w-full max-w-[560px] mx-auto">
+            <LifecycleDiagram />
+          </Reveal>
+        </div>
       </Container>
     </section>
   );
 }
 
-/* ───── Phase node — the technical-diagram box ─────────────── */
+/* ───── Lifecycle diagram — pure SVG ──────────────────────── */
 
-function PhaseNode({ phase }: { phase: Phase }) {
+function LifecycleDiagram() {
+  // Geometry
+  const cx = 300;
+  const cy = 300;
+  const ringRadii = [275, 245, 215]; // outermost first
+  const donutOuter = 180;
+  const donutInner = 110;
+  const coreRadius = 80;
+  const midDonutRadius = (donutOuter + donutInner) / 2;
+
+  // Floating icon positions on outer ring (315°, 45°, 135°, 225° in SVG coords)
+  const iconPositions = [
+    { angleDeg: -55, radius: ringRadii[0]!, icon: Search,    label: 'Discover' },
+    { angleDeg: 35,  radius: ringRadii[0]!, icon: PenTool,   label: 'Design' },
+    { angleDeg: 125, radius: ringRadii[0]!, icon: Send,      label: 'Deliver' },
+    { angleDeg: 215, radius: ringRadii[0]!, icon: RefreshCw, label: 'Sustain' },
+  ];
+
   return (
-    <div className="group relative h-full bg-[var(--color-bg)] border-[1.5px] border-[var(--color-brand-700)] rounded-[4px] p-5 lg:p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-12px_rgba(29,58,165,0.4)]">
-      {/* Top row: phase number + PHASE label */}
-      <div className="flex items-baseline justify-between">
-        <span className="font-display text-[36px] md:text-[40px] lg:text-[44px] font-semibold leading-[0.9] tracking-[-0.04em] text-[var(--color-brand-700)]">
-          {phase.index}
-        </span>
-        <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-fg-5)]">
-          Phase
-        </span>
-      </div>
+    <svg
+      viewBox="0 0 600 600"
+      className="w-full h-auto"
+      role="img"
+      aria-label="Engagement lifecycle: Discover, Design, Deliver, Sustain"
+    >
+      <defs>
+        {/* Donut gradient — brand-300 → brand-700 sweep */}
+        <linearGradient id="lc-donut" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%"  stopColor="var(--color-brand-300)" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="var(--color-brand-700)" stopOpacity="0.95" />
+        </linearGradient>
+        {/* Soft outer halo */}
+        <radialGradient id="lc-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="60%" stopColor="var(--color-brand-700)" stopOpacity="0" />
+          <stop offset="85%" stopColor="var(--color-brand-700)" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="var(--color-brand-700)" stopOpacity="0" />
+        </radialGradient>
+      </defs>
 
-      {/* Hairline divider */}
-      <span
-        aria-hidden="true"
-        className="block mt-3.5 h-px w-full bg-[var(--color-line-2)]"
-      />
+      {/* Soft halo behind everything */}
+      <circle cx={cx} cy={cy} r="290" fill="url(#lc-halo)" />
 
-      {/* Title */}
-      <h3 className="mt-3.5 font-display text-[18px] lg:text-[20px] font-semibold tracking-[-0.018em] text-[var(--color-fg)]">
-        {phase.title}
-      </h3>
+      {/* Concentric outer rings */}
+      {ringRadii.map((r, i) => (
+        <circle
+          key={r}
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill="none"
+          stroke="rgba(184,208,251,0.18)"
+          strokeWidth={i === 0 ? '0.75' : '0.5'}
+        />
+      ))}
 
-      {/* Items list — bullet rows */}
-      <ul className="mt-3 space-y-1.5">
-        {phase.items.map((item) => (
-          <li
-            key={item}
-            className="flex items-baseline gap-2 font-mono text-[10.5px] uppercase tracking-[0.1em] text-[var(--color-fg-3)]"
-          >
-            <span
-              aria-hidden="true"
-              className="block h-1 w-1 shrink-0 rounded-full bg-[var(--color-brand-700)] -translate-y-[1px]"
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+      {/* Donut ring with gradient */}
+      <circle cx={cx} cy={cy} r={donutOuter} fill="url(#lc-donut)" />
+      <circle cx={cx} cy={cy} r={donutInner} fill="var(--color-brand-950)" />
 
-/* ───── Feedback loop arc beneath the desktop diagram ─────── */
+      {/* Segment dividers — 4 thin lines through the donut at 0°, 90°, 180°, 270° */}
+      <g stroke="var(--color-brand-950)" strokeWidth="1.25">
+        {[0, 90, 180, 270].map((deg) => {
+          const rad = (deg * Math.PI) / 180;
+          const x1 = cx + donutInner * Math.cos(rad);
+          const y1 = cy + donutInner * Math.sin(rad);
+          const x2 = cx + donutOuter * Math.cos(rad);
+          const y2 = cy + donutOuter * Math.sin(rad);
+          return <line key={deg} x1={x1} y1={y1} x2={x2} y2={y2} />;
+        })}
+      </g>
 
-function FeedbackLoop() {
-  // Box centers in a 4-col grid: ~12.5% and ~87.5% from edges (gaps shift this slightly).
-  // Positioning the loop endpoints with calc() so they line up with the bullet boxes regardless of gap.
-  return (
-    <div aria-hidden="true" className="relative mt-3 lg:mt-4 h-14 lg:h-16 select-none">
-      {/* Vertical drop down from box 4's bottom-right area */}
-      <span
-        className="absolute top-0 w-px bg-[var(--color-brand-700)]/45"
-        style={{ left: 'calc(87.5% - 0px)', height: '50%' }}
-      />
-      {/* Horizontal sweep */}
-      <span
-        className="absolute h-px bg-[var(--color-brand-700)]/45"
-        style={{ left: 'calc(12.5% - 0px)', right: 'calc(12.5% - 0px)', top: '50%' }}
-      />
-      {/* Vertical up to box 1's bottom-left area */}
-      <span
-        className="absolute w-px bg-[var(--color-brand-700)]/45"
-        style={{ left: 'calc(12.5% - 0px)', top: 0, height: '50%' }}
-      />
-      {/* Up-arrow tip on the box-1 side */}
-      <span
-        className="absolute h-2 w-2 border-t-[1.5px] border-l-[1.5px] border-[var(--color-brand-700)] rotate-45"
-        style={{
-          left: 'calc(12.5% - 0px)',
-          top: '-4px',
-          transform: 'translateX(-50%) rotate(45deg)',
-        }}
-      />
-      {/* Centered label, sits on top of the horizontal rule */}
-      <span
-        className="absolute left-1/2 -translate-x-1/2 bg-[var(--color-canvas)] px-3 font-mono text-[10.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)]"
-        style={{ top: 'calc(50% - 9px)' }}
+      {/* Phase labels inside segments — straight horizontal text at 4 cardinal positions */}
+      <g
+        fill="white"
+        fontFamily="Inter Tight, system-ui, sans-serif"
+        fontSize="13"
+        fontWeight="700"
+        letterSpacing="2.6"
+        textAnchor="middle"
+        style={{ textTransform: 'uppercase' }}
       >
-        Refresh cycle
-      </span>
-    </div>
+        <text x={cx}                       y={cy - midDonutRadius + 4}>DISCOVER</text>
+        <text x={cx + midDonutRadius}      y={cy + 4}>DESIGN</text>
+        <text x={cx}                       y={cy + midDonutRadius + 4}>DELIVER</text>
+        <text x={cx - midDonutRadius}      y={cy + 4}>SUSTAIN</text>
+      </g>
+
+      {/* Inner core circle */}
+      <circle
+        cx={cx}
+        cy={cy}
+        r={coreRadius}
+        fill="var(--color-brand-950)"
+        stroke="var(--color-brand-700)"
+        strokeWidth="1"
+      />
+
+      {/* Inner core — Alphinix A-mark */}
+      <g transform={`translate(${cx - 24}, ${cy - 24})`}>
+        <svg viewBox="0 0 32 32" width="48" height="48" fill="none">
+          <path
+            d="M5 26 L16 5 L27 26 M10 19 H22"
+            stroke="var(--color-brand-200)"
+            strokeWidth="2.4"
+            strokeLinecap="square"
+            strokeLinejoin="miter"
+          />
+        </svg>
+      </g>
+
+      {/* Floating phase icon chips on the outer ring */}
+      {iconPositions.map(({ angleDeg, radius, icon: Icon, label }) => {
+        const rad = (angleDeg * Math.PI) / 180;
+        const x = cx + radius * Math.cos(rad) - 22;
+        const y = cy + radius * Math.sin(rad) - 22;
+        return (
+          <g key={label} transform={`translate(${x}, ${y})`}>
+            {/* Backdrop chip */}
+            <rect
+              width="44"
+              height="44"
+              rx="8"
+              fill="var(--color-brand-900)"
+              stroke="var(--color-brand-700)"
+              strokeWidth="1"
+            />
+            {/* Lucide icon embedded as nested svg */}
+            <svg x="11" y="11" width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <Icon
+                width="22"
+                height="22"
+                stroke="var(--color-brand-200)"
+                strokeWidth={1.75}
+              />
+            </svg>
+          </g>
+        );
+      })}
+    </svg>
   );
 }
