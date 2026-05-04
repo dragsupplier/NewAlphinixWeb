@@ -1,4 +1,4 @@
-import { Container } from '@/components/ui/Container';
+import { Hexagon } from 'lucide-react';
 
 const categories = [
   'Engineering colleges',
@@ -10,36 +10,60 @@ const categories = [
 
 export function TrustStrip() {
   return (
-    <section className="bg-[var(--color-canvas)] border-y border-[var(--color-line)]">
-      <Container className="py-10 md:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12 items-end">
-          <div className="lg:col-span-4">
-            <p className="kicker">Working with</p>
-            <p className="mt-3 font-display text-[20px] md:text-[24px] lg:text-[26px] font-semibold tracking-[-0.018em] leading-[1.18] text-[var(--color-fg)] text-balance">
-              Institutions and teams across India.
-            </p>
-          </div>
+    <section className="bg-[var(--color-canvas)] border-y border-[var(--color-line)] overflow-hidden">
+      {/* Top label bar */}
+      <div className="mx-auto max-w-7xl px-5 md:px-8 pt-8 md:pt-10">
+        <div className="flex items-baseline justify-between gap-4">
+          <p className="kicker">Working with</p>
+          <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-fg-5)] tabular-nums">
+            05 / 05
+          </p>
+        </div>
+      </div>
 
-          <ul className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-5">
-            {categories.map((c, i) => (
-              <li key={c} className="group flex items-baseline gap-3">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)] tabular-nums shrink-0">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="flex-1">
-                  <span className="block text-[15px] md:text-[15.5px] font-semibold tracking-[-0.012em] text-[var(--color-fg)] leading-[1.25]">
+      {/* Giant scrolling marquee */}
+      <div
+        className="relative py-8 md:py-10"
+        style={{
+          WebkitMaskImage:
+            'linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)',
+          maskImage:
+            'linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)',
+        }}
+      >
+        <div className="marquee-track marquee-medium flex items-center gap-10 md:gap-14">
+          {Array.from({ length: 4 }).map((_, k) => (
+            <span key={k} className="flex items-center gap-10 md:gap-14 shrink-0">
+              {categories.map((c) => (
+                <span key={`${k}-${c}`} className="flex items-center gap-10 md:gap-14 shrink-0">
+                  <span className="font-display text-[36px] md:text-[56px] lg:text-[68px] font-semibold leading-[0.95] tracking-[-0.028em] text-[var(--color-fg)] whitespace-nowrap">
                     {c}
                   </span>
-                  <span
+                  <Hexagon
                     aria-hidden="true"
-                    className="mt-2 block h-px w-8 origin-left bg-[var(--color-line-2)] transition-all duration-300 group-hover:w-full group-hover:bg-[var(--color-brand-700)]"
+                    className="h-3 w-3 md:h-3.5 md:w-3.5 shrink-0 text-[var(--color-brand-700)]"
+                    strokeWidth={1.5}
+                    fill="currentColor"
+                    fillOpacity={0.25}
                   />
                 </span>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </span>
+          ))}
         </div>
-      </Container>
+      </div>
+
+      {/* Bottom descriptor */}
+      <div className="mx-auto max-w-7xl px-5 md:px-8 pb-8 md:pb-10">
+        <div className="flex items-baseline justify-between gap-4 border-t border-[var(--color-line)] pt-5">
+          <p className="text-[14px] md:text-[15px] text-[var(--color-fg-3)] max-w-[60ch] text-pretty">
+            Institutions and teams across India — engineering, polytechnic, K-12, SMBs, and corporate hiring desks.
+          </p>
+          <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-fg-5)] tabular-nums shrink-0">
+            Pune, IN
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

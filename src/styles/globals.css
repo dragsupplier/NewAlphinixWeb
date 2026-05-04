@@ -226,10 +226,13 @@
     width: max-content;
     animation: marquee var(--marquee-duration, 70s) linear infinite;
   }
+  .marquee-reverse { animation-direction: reverse; }
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
+  .marquee-fast { --marquee-duration: 35s; }
+  .marquee-medium { --marquee-duration: 55s; }
 
   /* Diagonal mask wipe — used for tab content swap */
   @keyframes wipe-diag-in {
