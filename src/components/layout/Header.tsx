@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ChevronDown,
   Menu,
@@ -11,25 +11,20 @@ import {
   ShieldCheck,
   ArrowRight,
   ArrowUpRight,
-  Hexagon,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { cn } from '@/lib/utils';
 
-type BadgeKind = 'Live' | 'New' | 'Free';
-
 type MenuItem = {
   label: string;
   desc?: string;
   href: string;
-  badge?: BadgeKind;
 };
 
 type MenuGroup = {
   title: string;
   href: string;
-  accent?: boolean;
   items: MenuItem[];
 };
 
@@ -44,8 +39,7 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
     items: [
       {
         label: 'Industrial Training',
-        desc: 'Live cohorts for engineering students.',
-        badge: 'Live',
+        desc: 'Cohorts for engineering students.',
         href: '/students#training',
       },
       {
@@ -82,8 +76,7 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
       },
       {
         label: 'AI & Robotics',
-        desc: 'Hands-on programs aligned to NEP 2020.',
-        badge: 'New',
+        desc: 'Programs aligned to NEP 2020.',
         href: '/schools#ai-robotics',
       },
     ],
@@ -107,12 +100,10 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
   {
     title: 'For Hiring Teams',
     href: '/hiring',
-    accent: true,
     items: [
       {
         label: 'Pre-trained Interns',
-        desc: 'Bench of screened candidates ready to start.',
-        badge: 'New',
+        desc: 'Bench of screened candidates.',
         href: '/hiring#interns',
       },
       {
@@ -129,82 +120,47 @@ const RESOURCES_GROUPS: MenuGroup[] = [
     title: 'Read',
     href: '/blog',
     items: [
-      {
-        label: 'Field Notes',
-        desc: 'Quarterly notes from the practice.',
-        href: '/blog',
-      },
-      {
-        label: 'Case Studies',
-        desc: 'Selected engagements.',
-        href: '/case-studies',
-      },
+      { label: 'Field Notes', desc: 'Quarterly notes from the practice.', href: '/blog' },
+      { label: 'Case Studies', desc: 'Selected engagements.', href: '/case-studies' },
     ],
   },
   {
     title: 'Watch',
     href: '/webinars',
     items: [
-      {
-        label: 'Webinars',
-        desc: 'Upcoming live sessions.',
-        badge: 'Live',
-        href: '/webinars',
-      },
-      {
-        label: 'Workshops',
-        desc: 'Hands-on intensives.',
-        href: '/workshops',
-      },
+      { label: 'Webinars', desc: 'Upcoming live sessions.', href: '/webinars' },
+      { label: 'Workshops', desc: 'Hands-on intensives.', href: '/workshops' },
     ],
   },
   {
     title: 'Download',
     href: '/resources',
     items: [
-      {
-        label: 'Guides & Roadmaps',
-        desc: 'Free resources by segment.',
-        badge: 'Free',
-        href: '/resources',
-      },
-      {
-        label: 'Glossary',
-        desc: 'Industry terminology.',
-        href: '/glossary',
-      },
+      { label: 'Guides & Roadmaps', desc: 'Resources by segment.', href: '/resources' },
+      { label: 'Glossary', desc: 'Industry terminology.', href: '/glossary' },
     ],
   },
   {
     title: 'Subscribe',
     href: '/newsletter',
-    accent: true,
     items: [
-      {
-        label: 'Monthly Brief',
-        desc: 'One email a month, no fluff.',
-        href: '/newsletter',
-      },
-      {
-        label: 'RSS Feed',
-        desc: 'Latest field notes via RSS.',
-        href: '/rss.xml',
-      },
+      { label: 'Monthly Brief', desc: 'One email a month.', href: '/newsletter' },
+      { label: 'RSS Feed', desc: 'Latest field notes via RSS.', href: '/rss.xml' },
     ],
   },
 ];
 
 const PORTAL: PortalItem[] = [
-  { label: 'Student LMS',   desc: 'Courses, assessments, certificates.', href: '#', icon: GraduationCap },
-  { label: 'College ERP',   desc: 'Academic and placement operations.',   href: '#', icon: Building2 },
-  { label: 'Admin Console', desc: 'Internal pipeline and analytics.',     href: '#', icon: ShieldCheck },
+  { label: 'Student LMS', desc: 'Courses, assessments, certificates.', href: '#', icon: GraduationCap },
+  { label: 'College ERP', desc: 'Academic and placement operations.', href: '#', icon: Building2 },
+  { label: 'Admin Console', desc: 'Internal pipeline and analytics.', href: '#', icon: ShieldCheck },
 ];
 
 const SIMPLE_LINKS = [
   { label: 'Industries', href: '#audiences' },
-  { label: 'Approach',   href: '#approach' },
-  { label: 'About',      href: '/about' },
-  { label: 'Careers',    href: '/careers' },
+  { label: 'Approach', href: '#approach' },
+  { label: 'About', href: '/about' },
+  { label: 'Careers', href: '/careers' },
 ];
 
 /* ───── Header ───────────────────────────────────────────────── */
@@ -214,6 +170,34 @@ export function Header() {
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [utilityHidden, setUtilityHidden] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
+
+  // Schedule a delayed close so the cursor can travel between the
+  // trigger row and the popup without the popup snapping shut mid-flight.
+  const scheduleClose = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+    }
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpen(null);
+      closeTimerRef.current = null;
+    }, 200);
+  };
+
+  const cancelClose = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -234,14 +218,21 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(null);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        cancelClose();
+        setOpen(null);
+      }
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobile ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [mobile]);
 
   return (
@@ -291,22 +282,40 @@ export function Header() {
 
           <nav
             className="hidden items-center gap-0.5 lg:flex"
-            onMouseLeave={() => setOpen(null)}
+            onMouseLeave={scheduleClose}
+            onMouseEnter={cancelClose}
           >
             <DropdownTrigger
               label="Solutions"
               isOpen={open === 'solutions'}
-              onEnter={() => setOpen('solutions')}
-              onToggle={() => setOpen(open === 'solutions' ? null : 'solutions')}
+              onEnter={() => {
+                cancelClose();
+                setOpen('solutions');
+              }}
+              onToggle={() => {
+                cancelClose();
+                setOpen(open === 'solutions' ? null : 'solutions');
+              }}
             />
             <DropdownTrigger
               label="Resources"
               isOpen={open === 'resources'}
-              onEnter={() => setOpen('resources')}
-              onToggle={() => setOpen(open === 'resources' ? null : 'resources')}
+              onEnter={() => {
+                cancelClose();
+                setOpen('resources');
+              }}
+              onToggle={() => {
+                cancelClose();
+                setOpen(open === 'resources' ? null : 'resources');
+              }}
             />
             {SIMPLE_LINKS.map((l) => (
-              <SimpleLink key={l.label} label={l.label} href={l.href} onEnter={() => setOpen(null)} />
+              <SimpleLink
+                key={l.label}
+                label={l.label}
+                href={l.href}
+                onEnter={() => setOpen(null)}
+              />
             ))}
           </nav>
 
@@ -317,7 +326,10 @@ export function Header() {
               className="group inline-flex items-center gap-1.5 rounded-[6px] bg-[var(--color-brand-700)] px-4 py-2 text-[13.5px] font-semibold text-white shadow-[0_8px_24px_-10px_rgba(29,58,165,0.55)] transition-colors hover:bg-[var(--color-brand-800)]"
             >
               Request a proposal
-              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" strokeWidth={2.5} />
+              <ArrowRight
+                className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+                strokeWidth={2.5}
+              />
             </a>
           </div>
 
@@ -330,8 +342,13 @@ export function Header() {
           </button>
         </div>
 
-        {/* Mega menus — full-width dark panels */}
-        <MegaMenu visible={open === 'solutions'} onClose={() => setOpen(null)}>
+        {/* Mega menus — light panels matching the site */}
+        <MegaMenu
+          visible={open === 'solutions'}
+          onClose={() => setOpen(null)}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
+        >
           <MegaPanel
             groups={SOLUTIONS_GROUPS}
             footer={{
@@ -342,7 +359,12 @@ export function Header() {
           />
         </MegaMenu>
 
-        <MegaMenu visible={open === 'resources'} onClose={() => setOpen(null)}>
+        <MegaMenu
+          visible={open === 'resources'}
+          onClose={() => setOpen(null)}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
+        >
           <MegaPanel
             groups={RESOURCES_GROUPS}
             footer={{
@@ -363,8 +385,16 @@ export function Header() {
         )}
       >
         <div className="space-y-6 px-5 py-6">
-          <MobileGroupSection title="Solutions" groups={SOLUTIONS_GROUPS} onItemClick={() => setMobile(false)} />
-          <MobileGroupSection title="Resources" groups={RESOURCES_GROUPS} onItemClick={() => setMobile(false)} />
+          <MobileGroupSection
+            title="Solutions"
+            groups={SOLUTIONS_GROUPS}
+            onItemClick={() => setMobile(false)}
+          />
+          <MobileGroupSection
+            title="Resources"
+            groups={RESOURCES_GROUPS}
+            onItemClick={() => setMobile(false)}
+          />
 
           <div className="space-y-1.5">
             <p className="px-1 pb-1.5 text-[10.5px] font-mono font-semibold uppercase tracking-[0.16em] text-[var(--color-brand-700)]">
@@ -492,10 +522,14 @@ function SimpleLink({
 function MegaMenu({
   visible,
   onClose,
+  onMouseEnter,
+  onMouseLeave,
   children,
 }: {
   visible: boolean;
   onClose: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   children: React.ReactNode;
 }) {
   return (
@@ -511,7 +545,8 @@ function MegaMenu({
         onClick={onClose}
       />
       <div
-        onMouseLeave={onClose}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         className={cn(
           'absolute inset-x-0 top-full origin-top transition-[opacity,transform] duration-200',
           visible
@@ -551,46 +586,27 @@ function MegaPanel({
             key={g.title}
             className={cn(
               'py-9',
-              gi === 0
-                ? 'pr-7'
-                : gi === groups.length - 1
-                  ? 'pl-7'
-                  : 'px-7',
+              gi === 0 ? 'pr-7' : gi === groups.length - 1 ? 'pl-7' : 'px-7',
             )}
-            style={{ animationDelay: `${gi * 70}ms` }}
           >
-            <a href={g.href} className="group/header inline-flex items-center gap-2">
-              <span
-                className={cn(
-                  'font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] transition-colors',
-                  'text-[var(--color-brand-700)]',
-                  'group-hover/header:text-[var(--color-brand-800)]',
-                )}
-              >
+            <a href={g.href} className="group/header inline-flex">
+              <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--color-brand-700)] transition-colors group-hover/header:text-[var(--color-brand-800)]">
                 {g.title}
               </span>
-              {g.accent && (
-                <Hexagon
-                  className="h-3 w-3 text-[var(--color-brand-700)]"
-                  strokeWidth={1.75}
-                  fill="currentColor"
-                  fillOpacity={0.3}
-                />
-              )}
             </a>
 
-            <ul className="mt-6 space-y-5">
+            <ul className="mt-5 space-y-1">
               {g.items.map((it) => (
                 <li key={it.label}>
-                  <a href={it.href} className="group/item block">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[14.5px] font-semibold text-[var(--color-fg)] transition-colors group-hover/item:text-[var(--color-brand-700)]">
-                        {it.label}
-                      </span>
-                      {it.badge && <Badge type={it.badge} tone="light" />}
-                    </div>
+                  <a
+                    href={it.href}
+                    className="group/item block -mx-2 rounded-[6px] px-2 py-2 transition-colors hover:bg-[var(--color-canvas)]"
+                  >
+                    <span className="text-[14.5px] font-semibold text-[var(--color-fg)] transition-colors group-hover/item:text-[var(--color-brand-700)]">
+                      {it.label}
+                    </span>
                     {it.desc && (
-                      <p className="mt-1 text-[12.5px] leading-[1.45] text-[var(--color-fg-3)]">
+                      <p className="mt-0.5 text-[12.5px] leading-[1.45] text-[var(--color-fg-3)]">
                         {it.desc}
                       </p>
                     )}
@@ -603,11 +619,11 @@ function MegaPanel({
       </div>
 
       {footer && (
-        <div className="flex items-center justify-between border-t border-[var(--color-line)] py-4">
-          <p className="text-[12.5px] text-[var(--color-fg-3)] max-w-[44ch]">{footer.body}</p>
+        <div className="flex items-center justify-between gap-4 border-t border-[var(--color-line)] py-4">
+          <p className="max-w-[44ch] text-[12.5px] text-[var(--color-fg-3)]">{footer.body}</p>
           <a
             href={footer.href}
-            className="group inline-flex items-center gap-1.5 text-[12.5px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--color-fg)]"
+            className="group inline-flex items-center gap-1.5 text-[12.5px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--color-fg)] transition-colors hover:text-[var(--color-brand-700)]"
           >
             <span className="under-slide">{footer.cta}</span>
             <ArrowUpRight
@@ -621,53 +637,44 @@ function MegaPanel({
   );
 }
 
-/* ───── Badge ────────────────────────────────────────────────── */
-
-function Badge({ type, tone = 'dark' }: { type: BadgeKind; tone?: 'dark' | 'light' }) {
-  const cls =
-    tone === 'dark'
-      ? {
-          Live: 'bg-white/10 text-white',
-          New: 'bg-[var(--color-brand-200)] text-[var(--color-brand-900)]',
-          Free: 'bg-white/10 text-white',
-        }
-      : {
-          Live: 'bg-[var(--color-brand-700)] text-white',
-          New: 'bg-[var(--color-brand-100)] text-[var(--color-brand-700)]',
-          Free: 'bg-[var(--color-canvas-2)] text-[var(--color-fg-2)]',
-        };
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-1 rounded-[3px] px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.14em]',
-        cls[type],
-      )}
-    >
-      {type === 'Live' && (
-        <span
-          aria-hidden="true"
-          className={cn(
-            'block h-1 w-1 rounded-full pulse-dot',
-            tone === 'dark' ? 'bg-[var(--color-brand-300)]' : 'bg-white',
-          )}
-        />
-      )}
-      {type}
-    </span>
-  );
-}
-
 /* ───── Portal dropdown ──────────────────────────────────────── */
 
 function PortalDropdown({ items }: { items: PortalItem[] }) {
   const [open, setOpen] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
+
+  const scheduleClose = () => {
+    if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpen(false);
+      closeTimerRef.current = null;
+    }, 180);
+  };
+  const cancelClose = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
   return (
     <div
       className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={() => {
+        cancelClose();
+        setOpen(true);
+      }}
+      onMouseLeave={scheduleClose}
     >
       <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
         className={cn(
           'inline-flex items-center gap-1.5 rounded-[6px] px-3.5 py-2 text-[13.5px] font-medium ring-1 transition-colors',
           open
@@ -675,6 +682,7 @@ function PortalDropdown({ items }: { items: PortalItem[] }) {
             : 'text-[var(--color-fg-2)] ring-[var(--color-line)] hover:text-[var(--color-fg)] hover:ring-[var(--color-line-2)]',
         )}
         aria-expanded={open}
+        aria-haspopup="true"
       >
         Portal Login
         <ChevronDown
@@ -691,18 +699,15 @@ function PortalDropdown({ items }: { items: PortalItem[] }) {
         )}
       >
         <div className="overflow-hidden rounded-[6px] border border-[var(--color-line)] bg-[var(--color-bg)] shadow-xl">
-          <div className="flex items-center justify-between border-b border-[var(--color-line)] bg-[var(--color-canvas)] px-4 py-3">
+          <div className="border-b border-[var(--color-line)] bg-[var(--color-canvas)] px-4 py-3">
             <p className="kicker">Portal Login</p>
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-5)]">
-              {String(items.length).padStart(2, '0')} surfaces
-            </span>
           </div>
           <ul className="p-1.5">
-            {items.map((p, i) => (
+            {items.map((p) => (
               <li key={p.label}>
                 <a
                   href={p.href}
-                  className="group relative flex items-center gap-3 rounded-[4px] p-3 transition-colors hover:bg-[var(--color-canvas)]"
+                  className="group flex items-center gap-3 rounded-[4px] p-3 transition-colors hover:bg-[var(--color-canvas)]"
                 >
                   {p.icon ? (
                     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[6px] bg-[var(--color-canvas-2)] text-[var(--color-brand-700)] transition-colors group-hover:bg-[var(--color-brand-700)] group-hover:text-white">
@@ -713,13 +718,6 @@ function PortalDropdown({ items }: { items: PortalItem[] }) {
                     <span className="text-[13px] font-semibold text-[var(--color-fg)]">{p.label}</span>
                     <span className="mt-0.5 text-[12px] leading-snug text-[var(--color-fg-3)]">{p.desc}</span>
                   </span>
-                  <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-fg-5)]">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-y-3 left-1.5 w-0.5 origin-top scale-y-0 rounded-full bg-[var(--color-brand-700)] transition-transform duration-200 group-hover:scale-y-100"
-                  />
                 </a>
               </li>
             ))}
@@ -752,20 +750,9 @@ function MobileGroupSection({
             <a
               href={g.href}
               onClick={onItemClick}
-              className={cn(
-                'inline-flex items-center gap-1.5 px-1 text-[10.5px] font-mono font-semibold uppercase tracking-[0.16em]',
-                g.accent ? 'text-[var(--color-brand-700)]' : 'text-[var(--color-brand-700)]',
-              )}
+              className="inline-flex items-center px-1 text-[10.5px] font-mono font-semibold uppercase tracking-[0.16em] text-[var(--color-brand-700)]"
             >
               {g.title}
-              {g.accent && (
-                <Hexagon
-                  className="h-2.5 w-2.5 text-[var(--color-brand-700)]"
-                  strokeWidth={1.75}
-                  fill="currentColor"
-                  fillOpacity={0.4}
-                />
-              )}
             </a>
             {g.items.map((it) => (
               <a
@@ -774,10 +761,7 @@ function MobileGroupSection({
                 onClick={onItemClick}
                 className="flex flex-col gap-1 rounded-[6px] px-2 py-2.5 hover:bg-[var(--color-canvas)]"
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-[14px] font-semibold text-[var(--color-fg)]">{it.label}</span>
-                  {it.badge && <Badge type={it.badge} tone="light" />}
-                </div>
+                <span className="text-[14px] font-semibold text-[var(--color-fg)]">{it.label}</span>
                 {it.desc && <span className="text-[12.5px] text-[var(--color-fg-3)]">{it.desc}</span>}
               </a>
             ))}
