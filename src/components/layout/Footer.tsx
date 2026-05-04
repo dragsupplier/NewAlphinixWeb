@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { ButtonLink } from '@/components/ui/Button';
@@ -13,6 +14,7 @@ import {
   Instagram,
   Twitter,
   Youtube,
+  Hexagon,
 } from 'lucide-react';
 
 const companyLinks = [
@@ -303,17 +305,27 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Marquee credit strip */}
-      <div className="border-t border-white/10 overflow-hidden">
-        <div className="marquee-slow py-3 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/30">
-          {Array.from({ length: 8 }).map((_, i) => (
+      {/* Marquee credit strip — fades into the surface at both edges */}
+      <div className="relative border-t border-white/10 overflow-hidden">
+        <div
+          className="marquee-slow py-3.5 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/35"
+          style={{
+            WebkitMaskImage:
+              'linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)',
+            maskImage:
+              'linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)',
+          }}
+        >
+          {Array.from({ length: 6 }).map((_, i) => (
             <span key={i} className="inline-flex items-center gap-4 whitespace-nowrap">
-              Alphinix Technologies Private Limited
-              <span className="h-1 w-1 rounded-full bg-white/20" />
-              Pune · India
-              <span className="h-1 w-1 rounded-full bg-white/20" />
-              Est. {year}
-              <span className="h-1 w-1 rounded-full bg-white/20" />
+              <MarqueeGroup>Students &middot; Colleges &middot; Schools &middot; Businesses &middot; Hiring teams</MarqueeGroup>
+              <HexMark />
+              <MarqueeGroup>One practice &middot; five audiences</MarqueeGroup>
+              <HexMark />
+              <MarqueeGroup>Training &middot; Infrastructure &middot; Software &middot; Hiring</MarqueeGroup>
+              <HexMark />
+              <MarqueeGroup>Built from Pune &middot; serving India</MarqueeGroup>
+              <HexMark />
             </span>
           ))}
         </div>
@@ -329,6 +341,22 @@ export function Footer() {
         </span>
       </div>
     </footer>
+  );
+}
+
+function MarqueeGroup({ children }: { children: ReactNode }) {
+  return <span className="text-white/45">{children}</span>;
+}
+
+function HexMark() {
+  return (
+    <Hexagon
+      aria-hidden="true"
+      className="h-2.5 w-2.5 shrink-0 text-[var(--color-brand-300)]"
+      strokeWidth={1.5}
+      fill="currentColor"
+      fillOpacity={0.25}
+    />
   );
 }
 

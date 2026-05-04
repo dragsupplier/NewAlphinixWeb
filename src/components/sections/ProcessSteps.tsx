@@ -49,28 +49,66 @@ export function ProcessSteps() {
           </div>
         </div>
 
-        <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {steps.map((s, i) => (
-            <Reveal as="li" key={s.index} delay={i * 80}>
-              <div className="card glow-card h-full p-6 md:p-7">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-fg-5)]">
-                    Phase
+        {/* Desktop timeline */}
+        <div className="hidden md:block">
+          <ol className="grid grid-cols-4">
+            {steps.map((s, i) => (
+              <Reveal as="li" key={s.index} delay={i * 80} className="relative">
+                {/* Connector line to the next bullet */}
+                {i < steps.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-[5.5px] left-1.5 right-0 h-px bg-[var(--color-line-2)]"
+                  />
+                )}
+                {/* Node */}
+                <span
+                  aria-hidden="true"
+                  className="relative z-10 block h-3 w-3 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-bg)]"
+                />
+                {/* Content */}
+                <div className="mt-7 pr-8">
+                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] font-semibold text-[var(--color-brand-700)]">
+                    Phase {s.index}
                   </span>
-                  <span className="font-display text-[26px] font-medium tracking-[-0.025em] text-[var(--color-brand-700)] print-in">
-                    {s.index}
-                  </span>
+                  <h3 className="mt-3 font-display text-[22px] lg:text-[24px] font-semibold leading-[1.15] tracking-[-0.018em] text-[var(--color-fg)]">
+                    {s.title}
+                  </h3>
+                  <p className="mt-3 max-w-[34ch] text-[14px] lg:text-[14.5px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
+                    {s.body}
+                  </p>
                 </div>
-                <h3 className="mt-4 font-display text-[22px] md:text-[24px] font-semibold tracking-[-0.018em] text-[var(--color-fg)]">
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+
+        {/* Mobile timeline (vertical) */}
+        <div className="md:hidden relative">
+          <span
+            aria-hidden="true"
+            className="absolute left-1.5 top-2 bottom-3 w-px bg-[var(--color-line-2)]"
+          />
+          <ol className="space-y-8 pl-8">
+            {steps.map((s, i) => (
+              <Reveal as="li" key={s.index} delay={i * 60} className="relative">
+                <span
+                  aria-hidden="true"
+                  className="absolute -left-[26px] top-1 block h-3 w-3 rounded-full bg-[var(--color-brand-700)] ring-4 ring-[var(--color-bg)]"
+                />
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] font-semibold text-[var(--color-brand-700)]">
+                  Phase {s.index}
+                </span>
+                <h3 className="mt-2 font-display text-[20px] font-semibold leading-[1.15] tracking-[-0.018em] text-[var(--color-fg)]">
                   {s.title}
                 </h3>
-                <p className="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-fg-3)] text-pretty">
+                <p className="mt-2 text-[14px] leading-[1.6] text-[var(--color-fg-3)] text-pretty">
                   {s.body}
                 </p>
-              </div>
-            </Reveal>
-          ))}
-        </ol>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
       </Container>
     </section>
   );
