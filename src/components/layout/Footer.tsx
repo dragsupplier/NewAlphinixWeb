@@ -5,6 +5,7 @@ import { ButtonLink } from '@/components/ui/Button';
 import { segments } from '@/data/segments';
 import { portalLinks } from '@/data/nav';
 import {
+  ArrowUp,
   ArrowUpRight,
   Mail,
   Phone,
@@ -277,59 +278,38 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Bottom utility row */}
+      {/* Bottom utility row — copyright · sitemap · back-to-top */}
       <Container>
-        <div className="border-t border-white/10 py-5">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-[11.5px] text-white/55">
-            <p>© {year} Alphinix Technologies Private Limited. All rights reserved.</p>
-            <div className="flex items-center gap-5 font-mono uppercase tracking-[0.14em] text-[10.5px]">
-              <a href="/sitemap.html" className="hover:text-white transition-colors">
+        <div className="border-t border-white/10 py-6 md:py-7">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <p className="text-[11.5px] text-white/55">
+              © {year} Alphinix Technologies Private Limited. All rights reserved.
+            </p>
+            <div className="flex items-center gap-5">
+              <a
+                href="/sitemap.html"
+                className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55 hover:text-white transition-colors"
+              >
                 Sitemap
               </a>
-              <span aria-label="Locale">EN · IN</span>
+              {/* Professional back-to-top: pill button with circular arrow chip */}
               <button
                 type="button"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="group inline-flex items-center gap-1 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] py-1.5 pl-2 pr-3.5 transition-colors hover:border-white/35 hover:bg-white/[0.06]"
+                aria-label="Back to top"
               >
-                Back to top
-                <ArrowUpRight
-                  className="h-3 w-3 -rotate-45 transition-transform group-hover:-translate-y-0.5"
-                  strokeWidth={2}
-                />
+                <span className="grid h-6 w-6 place-items-center rounded-full bg-white/10 text-white transition-all duration-200 group-hover:-translate-y-0.5 group-hover:bg-[var(--color-brand-300)] group-hover:text-[var(--color-fg)]">
+                  <ArrowUp className="h-3 w-3" strokeWidth={2.5} />
+                </span>
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/65 group-hover:text-white">
+                  Back to top
+                </span>
               </button>
             </div>
           </div>
         </div>
       </Container>
-
-      {/* Stats dashboard — replaces the marquee with institutional metrics */}
-      <div className="border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-5 md:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-white/10">
-            <FooterStat
-              label="Audiences"
-              value="05"
-              sub="Distinct segments"
-            />
-            <FooterStat
-              label="Service lines"
-              value="04"
-              sub="Training · Infra · Software · Hiring"
-            />
-            <FooterStat
-              label="Operating from"
-              value="Pune"
-              sub="Maharashtra, India"
-            />
-            <FooterStat
-              label="Operating since"
-              value={String(year)}
-              sub="Built for institutions"
-            />
-          </div>
-        </div>
-      </div>
 
       {/* Giant outlined wordmark — sits behind everything, drifts slowly */}
       <div
@@ -341,28 +321,6 @@ export function Footer() {
         </span>
       </div>
     </footer>
-  );
-}
-
-function FooterStat({
-  label,
-  value,
-  sub,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-}) {
-  return (
-    <div className="px-5 md:px-7 py-7 md:py-9 first:pl-0 last:pr-0">
-      <p className="kicker kicker-on-dark">{label}</p>
-      <p className="mt-3 font-display text-[36px] md:text-[44px] lg:text-[52px] font-semibold leading-[0.95] tracking-[-0.025em] text-white">
-        {value}
-      </p>
-      <p className="mt-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
-        {sub}
-      </p>
-    </div>
   );
 }
 
