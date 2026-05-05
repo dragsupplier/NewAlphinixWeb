@@ -1,6 +1,5 @@
 import { Container } from '@/components/ui/Container';
 import { Wordmark } from '@/components/ui/Wordmark';
-import { ButtonLink } from '@/components/ui/Button';
 import { segments } from '@/data/segments';
 import { portalLinks } from '@/data/nav';
 import {
@@ -55,45 +54,10 @@ const socials = [
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const totalServices = segments.reduce((n, s) => n + s.services.length, 0);
 
   return (
     <footer className="bg-[var(--color-brand-950)] text-white">
-      {/* Band 1 — Pre-footer CTA */}
-      <Container>
-        <div className="border-b border-white/10 py-16 md:py-20 lg:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-16 items-end">
-            <div className="lg:col-span-7">
-              <p className="kicker kicker-on-dark">Let&apos;s build something</p>
-              <h3 className="mt-4 font-display text-[28px] md:text-[40px] lg:text-[48px] font-semibold leading-[1.06] tracking-[-0.022em] text-balance">
-                One conversation. One named owner.{' '}
-                <span className="text-[var(--color-brand-200)]">A scoped plan within a week.</span>
-              </h3>
-            </div>
-            <div className="lg:col-span-5">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:justify-end">
-                <ButtonLink
-                  href="/contact"
-                  size="lg"
-                  trailingArrow
-                  className="!bg-white !text-[var(--color-brand-950)] hover:!bg-white/90"
-                >
-                  Schedule a call
-                </ButtonLink>
-                <ButtonLink
-                  href="/services"
-                  size="lg"
-                  className="!bg-transparent !text-white !ring-1 !ring-inset !ring-white/30 hover:!ring-white/60"
-                >
-                  See services
-                </ButtonLink>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container>
-
-      {/* Band 2 — Brand block (left) + Service directory (right) */}
+      {/* Band 1 — Brand block (left) + Service directory (right) */}
       <Container>
         <div className="border-b border-white/10 py-16 md:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-16">
@@ -153,23 +117,6 @@ export function Footer() {
 
             {/* Service directory */}
             <div className="lg:col-span-8 lg:pl-10 lg:border-l lg:border-white/10">
-              <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-                <div>
-                  <p className="kicker kicker-on-dark">Service directory</p>
-                  <p className="mt-2 font-display text-[20px] md:text-[22px] font-semibold tracking-[-0.018em]">
-                    Five segments.{' '}
-                    <span className="text-white/55">{totalServices} services.</span>
-                  </p>
-                </div>
-                <a
-                  href="/services"
-                  className="group inline-flex items-center gap-1.5 text-[12.5px] font-mono uppercase tracking-[0.14em] text-white/85 hover:text-white transition-colors self-start"
-                >
-                  <span className="under-slide">Full directory</span>
-                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.25} />
-                </a>
-              </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-8">
                 {segments.map((s) => (
                   <div key={s.slug}>
