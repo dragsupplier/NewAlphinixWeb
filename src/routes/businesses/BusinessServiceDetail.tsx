@@ -188,7 +188,10 @@ export function BusinessServiceDetail({ slug }: { slug: string }) {
             </div>
 
             {/* Horizontal phase strip on lg, vertical on mobile */}
-            <ol className="hidden lg:grid lg:grid-cols-6 lg:gap-0 lg:auto-rows-fr">
+            <ol
+              className="hidden lg:grid lg:gap-0 lg:auto-rows-fr"
+              style={{ gridTemplateColumns: `repeat(${detail.phases.length}, minmax(0, 1fr))` }}
+            >
               {detail.phases.map((p, i) => (
                 <Reveal
                   as="li"
@@ -201,7 +204,6 @@ export function BusinessServiceDetail({ slug }: { slug: string }) {
                       : 'border-t-[var(--color-line-2)]',
                     i > 0 && 'border-l border-[var(--color-line)]',
                   )}
-                  style={{ gridColumn: detail.phases.length === 4 ? `span ${6 / detail.phases.length}` : undefined }}
                 >
                   <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] font-semibold text-[var(--color-brand-700)] tabular-nums">
                     Phase {String(i + 1).padStart(2, '0')}
