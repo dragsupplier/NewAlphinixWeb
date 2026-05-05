@@ -57,13 +57,13 @@ const SOLUTIONS_GROUPS: MenuGroup[] = [
       {
         label: 'Industrial Training',
         desc: 'Cohorts for engineering students.',
-        href: '/students#training',
+        href: '/students/industrial-training',
         icon: GraduationCap,
       },
       {
         label: 'Placement Prep',
         desc: 'Aptitude, technicals, mock interviews.',
-        href: '/students#placement-prep',
+        href: '/students/placement-prep',
         icon: Target,
       },
     ],

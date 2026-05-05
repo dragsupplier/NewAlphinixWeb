@@ -9,6 +9,10 @@ import { Stub } from '@/routes/Stub';
 import { StudentsHub } from '@/routes/students/StudentsHub';
 import { StudentApply } from '@/routes/students/StudentApply';
 import { StudentServiceDetail } from '@/routes/students/StudentServiceDetail';
+import { StudentCohorts } from '@/routes/students/StudentCohorts';
+import { StudentMentors } from '@/routes/students/StudentMentors';
+import { StudentOutcomes } from '@/routes/students/StudentOutcomes';
+import { StudentFees } from '@/routes/students/StudentFees';
 import { studentServices } from '@/data/studentServices';
 
 const rootRoute = createRootRoute({
@@ -33,6 +37,30 @@ const studentsApplyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/students/apply',
   component: StudentApply,
+});
+
+const studentsCohortsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/students/cohorts',
+  component: StudentCohorts,
+});
+
+const studentsMentorsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/students/mentors',
+  component: StudentMentors,
+});
+
+const studentsOutcomesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/students/outcomes',
+  component: StudentOutcomes,
+});
+
+const studentsFeesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/students/fees',
+  component: StudentFees,
 });
 
 // One static route per service so the URL is friendly: /students/<slug>
@@ -92,6 +120,10 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   studentsHubRoute,
   studentsApplyRoute,
+  studentsCohortsRoute,
+  studentsMentorsRoute,
+  studentsOutcomesRoute,
+  studentsFeesRoute,
   ...studentServiceRoutes,
   ...stubRoutes,
   notFoundRoute,

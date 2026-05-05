@@ -5,6 +5,7 @@ import {
   StudentServicesGrid,
   StudentJourney,
   StudentOutcomes,
+  StudentResourcesRail,
   StudentFaq,
   StudentCtaBand,
   StudentPageShell,
@@ -56,6 +57,7 @@ export function StudentsHub() {
         <div id="programmes" />
         <StudentServicesGrid />
         <StudentJourney />
+        <StudentResourcesRail />
         <StudentOutcomes />
         <StudentFaq faqs={HUB_FAQS} />
         <StudentCtaBand

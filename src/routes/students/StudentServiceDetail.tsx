@@ -12,6 +12,7 @@ import {
   StudentCtaBand,
   StudentPageShell,
 } from '@/components/sections/student/StudentSections';
+import { ServiceSignature } from '@/components/sections/student/ServiceSignatures';
 
 export function StudentServiceDetail({ slug }: { slug: string }) {
   const service = findStudentService(slug);
@@ -44,6 +45,9 @@ export function StudentServiceDetail({ slug }: { slug: string }) {
         />
 
         <CurriculumList modules={service.modules} />
+
+        {/* Service-specific signature section — different per slug */}
+        <ServiceSignature slug={service.slug} />
 
         <ProgrammeOutcomes outcomes={service.outcomes} />
 
