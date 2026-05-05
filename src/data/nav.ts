@@ -1,11 +1,9 @@
 export type NavLink = { label: string; href: string };
 
 export const portalLinks: NavLink[] = [
-  { label: 'Learner Portal', href: '#' },
-  { label: 'Campus Console', href: '#' },
-  { label: 'Educator Hub', href: '#' },
-  { label: 'Client Workspace', href: '#' },
-  { label: 'Recruiter Hub', href: '#' },
+  { label: 'Student LMS', href: '#' },
+  { label: 'College ERP', href: '#' },
+  { label: 'Admin Panel', href: '#' },
 ];
 
 export const companyLinks: NavLink[] = [

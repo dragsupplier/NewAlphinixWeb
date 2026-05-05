@@ -5,7 +5,6 @@ import {
   StudentServicesGrid,
   StudentJourney,
   StudentOutcomes,
-  StudentResourcesRail,
   StudentFaq,
   StudentCtaBand,
   StudentPageShell,
@@ -44,7 +43,7 @@ export function StudentsHub() {
           title="From classroom to a confirmed offer."
           highlight="One platform for the journey."
           body="Seven programmes that take engineering, polytechnic, BCA, MCA and BSc students from where they are today into the work they want — through industrial training, internships, placement preparation, and the credentials hiring teams ask for."
-          primaryCta={{ label: 'Apply now', href: '/students/apply' }}
+          primaryCta={{ label: 'Apply now', href: '/contact' }}
           secondaryCta={{ label: 'Read all programmes', href: '#programmes' }}
           meta={[
             { label: 'Cohorts', value: 'Year-round' },
@@ -57,13 +56,12 @@ export function StudentsHub() {
         <div id="programmes" />
         <StudentServicesGrid />
         <StudentJourney />
-        <StudentResourcesRail />
         <StudentOutcomes />
         <StudentFaq faqs={HUB_FAQS} />
         <StudentCtaBand
           title="Find the right programme for where you are."
           body="Tell us your year of study, your current programme, and what you are preparing for. We respond with the right route — whether that is a cohort, an internship match, or a placement-preparation track."
-          primary={{ label: 'Apply now', href: '/students/apply' }}
+          primary={{ label: 'Apply now', href: '/contact' }}
           secondary={{ label: 'Talk to us', href: '/contact' }}
         />
       </StudentPageShell>

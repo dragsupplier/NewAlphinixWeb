@@ -7,16 +7,14 @@ import {
 import { Home } from '@/routes/Home';
 import { Stub } from '@/routes/Stub';
 import { StudentsHub } from '@/routes/students/StudentsHub';
-import { StudentApply } from '@/routes/students/StudentApply';
 import { StudentServiceDetail } from '@/routes/students/StudentServiceDetail';
-import { StudentCohorts } from '@/routes/students/StudentCohorts';
-import { StudentMentors } from '@/routes/students/StudentMentors';
-import { StudentOutcomes } from '@/routes/students/StudentOutcomes';
-import { StudentFees } from '@/routes/students/StudentFees';
 import { CollegesHub } from '@/routes/colleges/CollegesHub';
 import { SchoolsHub } from '@/routes/schools/SchoolsHub';
 import { BusinessesHub } from '@/routes/businesses/BusinessesHub';
 import { HiringHub } from '@/routes/hiring/HiringHub';
+import { LegalPage } from '@/routes/legal/LegalPage';
+import { ThankYou } from '@/routes/ThankYou';
+import { legalPages } from '@/data/legalContent';
 import { studentServices } from '@/data/studentServices';
 import { collegeServices, schoolServices, businessServices, hiringServices } from '@/data/segmentServices';
 
@@ -36,36 +34,6 @@ const studentsHubRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/students',
   component: StudentsHub,
-});
-
-const studentsApplyRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/apply',
-  component: StudentApply,
-});
-
-const studentsCohortsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/cohorts',
-  component: StudentCohorts,
-});
-
-const studentsMentorsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/mentors',
-  component: StudentMentors,
-});
-
-const studentsOutcomesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/outcomes',
-  component: StudentOutcomes,
-});
-
-const studentsFeesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/fees',
-  component: StudentFees,
 });
 
 // One static route per service so the URL is friendly: /students/<slug>
@@ -133,7 +101,25 @@ const hiringServiceStubs = hiringServices.map((s) =>
   }),
 );
 
-/* ───── Other stubs (kept until those sections are built) ─── */
+/* ───── Legal pages (shared LegalPage component) ─────────── */
+
+const legalRoutes = Object.values(legalPages).map((p) =>
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: `/${p.slug}`,
+    component: () => <LegalPage page={p} />,
+  }),
+);
+
+/* ───── Utility — thank-you ──────────────────────────────── */
+
+const thankYouRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/thank-you',
+  component: ThankYou,
+});
+
+/* ───── Stubs (kept until those sections are built) ──────── */
 
 const stubRoute = (path: string, kicker: string, title: string) =>
   createRoute({
@@ -148,23 +134,9 @@ const stubRoutes = [
   stubRoute('/blog', 'Blog', 'Blog'),
   stubRoute('/case-studies', 'Case studies', 'Case studies'),
   stubRoute('/webinars', 'Webinars', 'Webinars'),
-  stubRoute('/workshops', 'Workshops', 'Workshops'),
   stubRoute('/resources', 'Resources', 'Resources'),
-  stubRoute('/glossary', 'Glossary', 'Glossary'),
-  stubRoute('/newsletter', 'Newsletter', 'Newsletter'),
   stubRoute('/careers', 'Careers', 'Careers'),
   stubRoute('/contact', 'Contact', 'Contact Alphinix'),
-  stubRoute('/help', 'Support', 'Help centre'),
-  stubRoute('/status', 'Support', 'System status'),
-  stubRoute('/security', 'Support', 'Security'),
-  stubRoute('/accessibility', 'Support', 'Accessibility'),
-  stubRoute('/press', 'Press', 'Press kit'),
-  stubRoute('/privacy-policy', 'Legal', 'Privacy policy'),
-  stubRoute('/terms-of-service', 'Legal', 'Terms of service'),
-  stubRoute('/cookie-policy', 'Legal', 'Cookie policy'),
-  stubRoute('/refund-policy', 'Legal', 'Refund policy'),
-  stubRoute('/disclaimer', 'Legal', 'Disclaimer'),
-  stubRoute('/grievance', 'Legal', 'Grievance redressal'),
 ];
 
 const notFoundRoute = createRoute({
@@ -176,11 +148,6 @@ const notFoundRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   studentsHubRoute,
-  studentsApplyRoute,
-  studentsCohortsRoute,
-  studentsMentorsRoute,
-  studentsOutcomesRoute,
-  studentsFeesRoute,
   ...studentServiceRoutes,
   collegesHubRoute,
   schoolsHubRoute,
@@ -190,6 +157,8 @@ const routeTree = rootRoute.addChildren([
   ...schoolServiceStubs,
   ...businessServiceStubs,
   ...hiringServiceStubs,
+  ...legalRoutes,
+  thankYouRoute,
   ...stubRoutes,
   notFoundRoute,
 ]);

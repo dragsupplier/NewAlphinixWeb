@@ -29,7 +29,7 @@ export function StudentServiceDetail({ slug }: { slug: string }) {
           title={service.name + '.'}
           highlight={service.tagline}
           body={service.summary}
-          primaryCta={{ label: 'Apply now', href: '/students/apply' }}
+          primaryCta={{ label: 'Apply now', href: '/contact' }}
           secondaryCta={{ label: 'Back to all programmes', href: '/students#programmes' }}
           meta={[
             { label: 'Duration', value: service.duration },
@@ -62,7 +62,7 @@ export function StudentServiceDetail({ slug }: { slug: string }) {
         <StudentCtaBand
           title={`Ready to apply for ${service.name.toLowerCase()}?`}
           body="The application form takes under three minutes. We route you to the right cohort, share dates and fees, and confirm a slot if you are eligible."
-          primary={{ label: 'Apply for this programme', href: '/students/apply' }}
+          primary={{ label: 'Apply for this programme', href: '/contact' }}
           secondary={{ label: 'Talk to us', href: '/contact' }}
         />
       </StudentPageShell>
