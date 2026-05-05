@@ -13,7 +13,12 @@ import { StudentCohorts } from '@/routes/students/StudentCohorts';
 import { StudentMentors } from '@/routes/students/StudentMentors';
 import { StudentOutcomes } from '@/routes/students/StudentOutcomes';
 import { StudentFees } from '@/routes/students/StudentFees';
+import { CollegesHub } from '@/routes/colleges/CollegesHub';
+import { SchoolsHub } from '@/routes/schools/SchoolsHub';
+import { BusinessesHub } from '@/routes/businesses/BusinessesHub';
+import { HiringHub } from '@/routes/hiring/HiringHub';
 import { studentServices } from '@/data/studentServices';
+import { collegeServices, schoolServices, businessServices, hiringServices } from '@/data/segmentServices';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -72,6 +77,62 @@ const studentServiceRoutes = studentServices.map((s) =>
   }),
 );
 
+/* ───── Colleges / Schools / Businesses / Hiring hubs ─────── */
+
+const collegesHubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/colleges',
+  component: CollegesHub,
+});
+
+const schoolsHubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/schools',
+  component: SchoolsHub,
+});
+
+const businessesHubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/businesses',
+  component: BusinessesHub,
+});
+
+const hiringHubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/hiring',
+  component: HiringHub,
+});
+
+/* Sub-service stubs (keep nav functional until detail pages ship) */
+const collegeServiceStubs = collegeServices.map((s) =>
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: `/colleges/${s.slug}`,
+    component: () => <Stub kicker={`Colleges · ${s.kicker}`} title={s.name} />,
+  }),
+);
+const schoolServiceStubs = schoolServices.map((s) =>
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: `/schools/${s.slug}`,
+    component: () => <Stub kicker={`Schools · ${s.kicker}`} title={s.name} />,
+  }),
+);
+const businessServiceStubs = businessServices.map((s) =>
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: `/businesses/${s.slug}`,
+    component: () => <Stub kicker={`Businesses · ${s.kicker}`} title={s.name} />,
+  }),
+);
+const hiringServiceStubs = hiringServices.map((s) =>
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: `/hiring/${s.slug}`,
+    component: () => <Stub kicker={`Hiring · ${s.kicker}`} title={s.name} />,
+  }),
+);
+
 /* ───── Other stubs (kept until those sections are built) ─── */
 
 const stubRoute = (path: string, kicker: string, title: string) =>
@@ -84,10 +145,6 @@ const stubRoute = (path: string, kicker: string, title: string) =>
 const stubRoutes = [
   stubRoute('/about', 'About', 'About Alphinix'),
   stubRoute('/services', 'Services', 'Services directory'),
-  stubRoute('/colleges', 'Colleges', 'Colleges'),
-  stubRoute('/schools', 'Schools', 'Schools'),
-  stubRoute('/businesses', 'Businesses', 'Businesses'),
-  stubRoute('/hiring', 'Hiring', 'Hiring'),
   stubRoute('/blog', 'Blog', 'Blog'),
   stubRoute('/case-studies', 'Case studies', 'Case studies'),
   stubRoute('/webinars', 'Webinars', 'Webinars'),
@@ -125,6 +182,14 @@ const routeTree = rootRoute.addChildren([
   studentsOutcomesRoute,
   studentsFeesRoute,
   ...studentServiceRoutes,
+  collegesHubRoute,
+  schoolsHubRoute,
+  businessesHubRoute,
+  hiringHubRoute,
+  ...collegeServiceStubs,
+  ...schoolServiceStubs,
+  ...businessServiceStubs,
+  ...hiringServiceStubs,
   ...stubRoutes,
   notFoundRoute,
 ]);
