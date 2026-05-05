@@ -100,7 +100,7 @@ function CohortCalendar() {
                         return (
                           <div
                             key={idx}
-                            className={`col-span-${span} ${fill} rounded-[4px] px-3 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] font-semibold`}
+                            className={`${fill} rounded-[4px] px-3 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] font-semibold`}
                             style={{ gridColumn: `span ${span} / span ${span}` }}
                           >
                             <span className="block truncate">{c.label}</span>
