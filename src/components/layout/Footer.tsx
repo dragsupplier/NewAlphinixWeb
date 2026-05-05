@@ -17,9 +17,8 @@ import {
 
 const companyLinks = [
   { label: 'About', href: '/about' },
-  { label: 'Our practice', href: '/about#practice' },
+  { label: 'Services', href: '/services' },
   { label: 'Careers', href: '/careers' },
-  { label: 'Press kit', href: '/press' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -30,18 +29,12 @@ const resourceLinks = [
   { label: 'Resources', href: '/resources' },
 ];
 
-const supportLinks = [
-  { label: 'Help centre', href: '/help' },
-  { label: 'Status', href: '/status' },
-  { label: 'Security', href: '/security' },
-  { label: 'Accessibility', href: '/accessibility' },
-];
-
 const legalLinks = [
   { label: 'Privacy', href: '/privacy-policy' },
   { label: 'Terms', href: '/terms-of-service' },
   { label: 'Cookies', href: '/cookie-policy' },
   { label: 'Refund', href: '/refund-policy' },
+  { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Grievance', href: '/grievance' },
 ];
 
@@ -151,11 +144,10 @@ export function Footer() {
       {/* Band 3 — Nav columns */}
       <Container>
         <div className="border-b border-white/10 py-12 md:py-14">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-10">
             <FooterCol heading="Company" links={companyLinks} />
             <FooterCol heading="Resources" links={resourceLinks} />
             <FooterCol heading="Portals" links={portalLinks} external />
-            <FooterCol heading="Support" links={supportLinks} />
           </div>
         </div>
       </Container>
@@ -214,14 +206,6 @@ export function Footer() {
                   </a>
                 </li>
               ))}
-              <li>
-                <a
-                  href="/sitemap.html"
-                  className="text-white/65 hover:text-white transition-colors"
-                >
-                  Sitemap
-                </a>
-              </li>
             </ul>
             <button
               type="button"

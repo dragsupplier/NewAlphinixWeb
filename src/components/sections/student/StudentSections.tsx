@@ -9,10 +9,6 @@ import {
   CalendarClock,
   MonitorPlay,
   ClipboardList,
-  CalendarDays,
-  Users,
-  TrendingUp,
-  Wallet,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
@@ -255,89 +251,6 @@ export function StudentJourney() {
               </li>
             ))}
           </ol>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-/* ───── Resources rail — links to the four sub-pages ─────── */
-
-const RESOURCE_LINKS = [
-  {
-    href: '/students/cohorts',
-    label: 'Upcoming cohorts',
-    body: 'Year-round schedule across all seven programmes — pick the one that fits your calendar.',
-    icon: CalendarDays,
-  },
-  {
-    href: '/students/mentors',
-    label: 'Mentor network',
-    body: 'Engineering, product, data, and people-leadership mentors matched to the question, not by tier.',
-    icon: Users,
-  },
-  {
-    href: '/students/outcomes',
-    label: 'Career routes',
-    body: 'Where students go after the programme — role types, industries, cities, and qualitative stories.',
-    icon: TrendingUp,
-  },
-  {
-    href: '/students/fees',
-    label: 'Fees & scholarships',
-    body: 'Per-programme fee structure, EMI options, and the need-based scholarship process.',
-    icon: Wallet,
-  },
-];
-
-export function StudentResourcesRail() {
-  return (
-    <section className="bg-[var(--color-bg)] section-y">
-      <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-12 mb-10 md:mb-12 items-end">
-          <div className="lg:col-span-7">
-            <p className="kicker">Find the rest</p>
-            <h2 className="mt-3 font-display text-[28px] md:text-[36px] lg:text-[42px] font-semibold leading-[1.06] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
-              Four pages that explain what running a programme actually looks like.
-            </h2>
-          </div>
-          <div className="lg:col-span-5">
-            <p className="text-[14px] leading-[1.65] text-[var(--color-fg-3)]">
-              Cohort calendar, mentor profiles, career routes, and fees — all in one place. Open whichever
-              one answers the question you arrived with.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-          {RESOURCE_LINKS.map((r, i) => (
-            <Reveal key={r.href} delay={i * 60}>
-              <a
-                href={r.href}
-                className="group/r flex h-full flex-col bg-[var(--color-canvas)] border border-[var(--color-line)] rounded-[10px] p-6 md:p-7 transition-all hover:border-[var(--color-brand-700)]/35 hover:bg-[var(--color-bg)] hover:-translate-y-0.5"
-              >
-                <div className="flex items-start justify-between">
-                  <span className="grid h-10 w-10 place-items-center rounded-[6px] bg-[var(--color-bg)] text-[var(--color-brand-700)] ring-1 ring-[var(--color-line)] transition-colors group-hover/r:bg-[var(--color-brand-700)] group-hover/r:text-white group-hover/r:ring-[var(--color-brand-700)]">
-                    <r.icon className="h-4 w-4" strokeWidth={1.75} />
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-fg-5)] tabular-nums">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <h3 className="mt-5 font-display text-[18px] md:text-[19px] font-semibold tracking-[-0.018em] text-[var(--color-fg)] leading-[1.25]">
-                  {r.label}
-                </h3>
-                <p className="mt-2 text-[13px] leading-[1.55] text-[var(--color-fg-3)]">{r.body}</p>
-                <span className="mt-auto pt-5 inline-flex items-center gap-1 text-[12.5px] font-mono uppercase tracking-[0.14em] font-semibold text-[var(--color-brand-700)] border-t border-[var(--color-line)] mt-5 pt-4">
-                  <span className="under-slide">Open</span>
-                  <ArrowUpRight
-                    className="h-3.5 w-3.5 transition-all group-hover/r:translate-x-0.5 group-hover/r:-translate-y-0.5"
-                    strokeWidth={2.25}
-                  />
-                </span>
-              </a>
-            </Reveal>
-          ))}
         </div>
       </Container>
     </section>

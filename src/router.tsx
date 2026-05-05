@@ -6,17 +6,27 @@ import {
 } from '@tanstack/react-router';
 import { Home } from '@/routes/Home';
 import { Stub } from '@/routes/Stub';
+import { About } from '@/routes/About';
+import { Services } from '@/routes/Services';
+import { Contact } from '@/routes/Contact';
+import { Blog } from '@/routes/Blog';
+import { Careers } from '@/routes/Careers';
+import { Webinars } from '@/routes/Webinars';
+import { Resources } from '@/routes/Resources';
+import { CaseStudies } from '@/routes/CaseStudies';
 import { StudentsHub } from '@/routes/students/StudentsHub';
-import { StudentApply } from '@/routes/students/StudentApply';
 import { StudentServiceDetail } from '@/routes/students/StudentServiceDetail';
-import { StudentCohorts } from '@/routes/students/StudentCohorts';
-import { StudentMentors } from '@/routes/students/StudentMentors';
-import { StudentOutcomes } from '@/routes/students/StudentOutcomes';
-import { StudentFees } from '@/routes/students/StudentFees';
 import { CollegesHub } from '@/routes/colleges/CollegesHub';
+import { CollegeServiceDetail } from '@/routes/colleges/CollegeServiceDetail';
 import { SchoolsHub } from '@/routes/schools/SchoolsHub';
+import { SchoolServiceDetail } from '@/routes/schools/SchoolServiceDetail';
 import { BusinessesHub } from '@/routes/businesses/BusinessesHub';
+import { BusinessServiceDetail } from '@/routes/businesses/BusinessServiceDetail';
 import { HiringHub } from '@/routes/hiring/HiringHub';
+import { HiringServiceDetail } from '@/routes/hiring/HiringServiceDetail';
+import { LegalPage } from '@/routes/legal/LegalPage';
+import { ThankYou } from '@/routes/ThankYou';
+import { legalPages } from '@/data/legalContent';
 import { studentServices } from '@/data/studentServices';
 import { collegeServices, schoolServices, businessServices, hiringServices } from '@/data/segmentServices';
 
@@ -30,6 +40,58 @@ const indexRoute = createRoute({
   component: Home,
 });
 
+/* ───── Core pages ───────────────────────────────────────── */
+
+const aboutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/about',
+  component: About,
+});
+
+const servicesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/services',
+  component: Services,
+});
+
+const contactRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/contact',
+  component: Contact,
+});
+
+/* ───── Content pages ────────────────────────────────────── */
+
+const blogRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/blog',
+  component: Blog,
+});
+
+const careersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/careers',
+  component: Careers,
+});
+
+const webinarsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/webinars',
+  component: Webinars,
+});
+
+const resourcesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/resources',
+  component: Resources,
+});
+
+const caseStudiesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/case-studies',
+  component: CaseStudies,
+});
+
 /* ───── Students section ─────────────────────────────────── */
 
 const studentsHubRoute = createRoute({
@@ -38,37 +100,6 @@ const studentsHubRoute = createRoute({
   component: StudentsHub,
 });
 
-const studentsApplyRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/apply',
-  component: StudentApply,
-});
-
-const studentsCohortsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/cohorts',
-  component: StudentCohorts,
-});
-
-const studentsMentorsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/mentors',
-  component: StudentMentors,
-});
-
-const studentsOutcomesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/outcomes',
-  component: StudentOutcomes,
-});
-
-const studentsFeesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/students/fees',
-  component: StudentFees,
-});
-
-// One static route per service so the URL is friendly: /students/<slug>
 const studentServiceRoutes = studentServices.map((s) =>
   createRoute({
     getParentRoute: () => rootRoute,
@@ -77,7 +108,7 @@ const studentServiceRoutes = studentServices.map((s) =>
   }),
 );
 
-/* ───── Colleges / Schools / Businesses / Hiring hubs ─────── */
+/* ───── Segment hubs ─────────────────────────────────────── */
 
 const collegesHubRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -103,69 +134,54 @@ const hiringHubRoute = createRoute({
   component: HiringHub,
 });
 
-/* Sub-service stubs (keep nav functional until detail pages ship) */
-const collegeServiceStubs = collegeServices.map((s) =>
+/* ───── Segment sub-service detail pages ────────────────── */
+
+const collegeServiceRoutes = collegeServices.map((s) =>
   createRoute({
     getParentRoute: () => rootRoute,
     path: `/colleges/${s.slug}`,
-    component: () => <Stub kicker={`Colleges · ${s.kicker}`} title={s.name} />,
+    component: () => <CollegeServiceDetail slug={s.slug} />,
   }),
 );
-const schoolServiceStubs = schoolServices.map((s) =>
+const schoolServiceRoutes = schoolServices.map((s) =>
   createRoute({
     getParentRoute: () => rootRoute,
     path: `/schools/${s.slug}`,
-    component: () => <Stub kicker={`Schools · ${s.kicker}`} title={s.name} />,
+    component: () => <SchoolServiceDetail slug={s.slug} />,
   }),
 );
-const businessServiceStubs = businessServices.map((s) =>
+const businessServiceRoutes = businessServices.map((s) =>
   createRoute({
     getParentRoute: () => rootRoute,
     path: `/businesses/${s.slug}`,
-    component: () => <Stub kicker={`Businesses · ${s.kicker}`} title={s.name} />,
+    component: () => <BusinessServiceDetail slug={s.slug} />,
   }),
 );
-const hiringServiceStubs = hiringServices.map((s) =>
+const hiringServiceRoutes = hiringServices.map((s) =>
   createRoute({
     getParentRoute: () => rootRoute,
     path: `/hiring/${s.slug}`,
-    component: () => <Stub kicker={`Hiring · ${s.kicker}`} title={s.name} />,
+    component: () => <HiringServiceDetail slug={s.slug} />,
   }),
 );
 
-/* ───── Other stubs (kept until those sections are built) ─── */
+/* ───── Legal pages (shared LegalPage component) ─────────── */
 
-const stubRoute = (path: string, kicker: string, title: string) =>
+const legalRoutes = Object.values(legalPages).map((p) =>
   createRoute({
     getParentRoute: () => rootRoute,
-    path,
-    component: () => <Stub kicker={kicker} title={title} />,
-  });
+    path: `/${p.slug}`,
+    component: () => <LegalPage page={p} />,
+  }),
+);
 
-const stubRoutes = [
-  stubRoute('/about', 'About', 'About Alphinix'),
-  stubRoute('/services', 'Services', 'Services directory'),
-  stubRoute('/blog', 'Blog', 'Blog'),
-  stubRoute('/case-studies', 'Case studies', 'Case studies'),
-  stubRoute('/webinars', 'Webinars', 'Webinars'),
-  stubRoute('/workshops', 'Workshops', 'Workshops'),
-  stubRoute('/resources', 'Resources', 'Resources'),
-  stubRoute('/glossary', 'Glossary', 'Glossary'),
-  stubRoute('/newsletter', 'Newsletter', 'Newsletter'),
-  stubRoute('/careers', 'Careers', 'Careers'),
-  stubRoute('/contact', 'Contact', 'Contact Alphinix'),
-  stubRoute('/help', 'Support', 'Help centre'),
-  stubRoute('/status', 'Support', 'System status'),
-  stubRoute('/security', 'Support', 'Security'),
-  stubRoute('/accessibility', 'Support', 'Accessibility'),
-  stubRoute('/press', 'Press', 'Press kit'),
-  stubRoute('/privacy-policy', 'Legal', 'Privacy policy'),
-  stubRoute('/terms-of-service', 'Legal', 'Terms of service'),
-  stubRoute('/cookie-policy', 'Legal', 'Cookie policy'),
-  stubRoute('/refund-policy', 'Legal', 'Refund policy'),
-  stubRoute('/disclaimer', 'Legal', 'Disclaimer'),
-  stubRoute('/grievance', 'Legal', 'Grievance redressal'),
-];
+/* ───── Utility ──────────────────────────────────────────── */
+
+const thankYouRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/thank-you',
+  component: ThankYou,
+});
 
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -175,22 +191,33 @@ const notFoundRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
+
+  aboutRoute,
+  servicesRoute,
+  contactRoute,
+
+  blogRoute,
+  careersRoute,
+  webinarsRoute,
+  resourcesRoute,
+  caseStudiesRoute,
+
   studentsHubRoute,
-  studentsApplyRoute,
-  studentsCohortsRoute,
-  studentsMentorsRoute,
-  studentsOutcomesRoute,
-  studentsFeesRoute,
   ...studentServiceRoutes,
+
   collegesHubRoute,
   schoolsHubRoute,
   businessesHubRoute,
   hiringHubRoute,
-  ...collegeServiceStubs,
-  ...schoolServiceStubs,
-  ...businessServiceStubs,
-  ...hiringServiceStubs,
-  ...stubRoutes,
+
+  ...collegeServiceRoutes,
+  ...schoolServiceRoutes,
+  ...businessServiceRoutes,
+  ...hiringServiceRoutes,
+
+  ...legalRoutes,
+  thankYouRoute,
+
   notFoundRoute,
 ]);
 

@@ -22,11 +22,8 @@ import {
   FileText,
   BookOpen,
   Video,
-  Wrench,
   Map,
-  List,
-  Rss,
-  School,
+  Settings2,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Wordmark';
@@ -156,7 +153,6 @@ const RESOURCES_GROUPS: MenuGroup[] = [
     href: '/webinars',
     items: [
       { label: 'Webinars', desc: 'Upcoming live sessions.', href: '/webinars', icon: Video },
-      { label: 'Workshops', desc: 'Hands-on intensives.', href: '/workshops', icon: Wrench },
     ],
   },
   {
@@ -164,30 +160,18 @@ const RESOURCES_GROUPS: MenuGroup[] = [
     href: '/resources',
     items: [
       { label: 'Guides & Roadmaps', desc: 'Resources by segment.', href: '/resources', icon: Map },
-      { label: 'Glossary', desc: 'Industry terminology.', href: '/glossary', icon: List },
-    ],
-  },
-  {
-    title: 'Subscribe',
-    href: '/newsletter',
-    items: [
-      { label: 'Monthly Brief', desc: 'One email a month.', href: '/newsletter', icon: Mail },
-      { label: 'RSS Feed', desc: 'Latest field notes via RSS.', href: '/rss.xml', icon: Rss },
     ],
   },
 ];
 
 const PORTAL: PortalItem[] = [
-  { label: 'Learner Portal',   desc: 'For students enrolled in programs.',       href: '#', icon: GraduationCap },
-  { label: 'Campus Console',   desc: 'For colleges and polytechnic institutes.', href: '#', icon: Building2 },
-  { label: 'Educator Hub',     desc: 'For school principals and teachers.',      href: '#', icon: School },
-  { label: 'Client Workspace', desc: 'For business engagements.',                href: '#', icon: Briefcase },
-  { label: 'Recruiter Hub',    desc: 'For hiring managers and RPO teams.',       href: '#', icon: Users },
+  { label: 'Student LMS',  desc: 'For learners enrolled in programmes.',     href: '#', icon: GraduationCap },
+  { label: 'College ERP',  desc: 'For partner colleges and institutes.',     href: '#', icon: Building2 },
+  { label: 'Admin Panel',  desc: 'For Alphinix operations and reviewers.',   href: '#', icon: Settings2 },
 ];
 
 const SIMPLE_LINKS = [
-  { label: 'Industries', href: '#audiences' },
-  { label: 'Approach', href: '#approach' },
+  { label: 'Services', href: '/services' },
   { label: 'About', href: '/about' },
   { label: 'Careers', href: '/careers' },
 ];
