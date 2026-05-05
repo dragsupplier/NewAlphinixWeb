@@ -23,11 +23,11 @@ export function ContactBand() {
                       {s.index}
                     </span>
                     <div className="col-span-8">
-                      <span className="under-slide font-display text-[17px] md:text-[18px] font-semibold tracking-[-0.018em] text-[var(--color-fg)]">
-                        {s.name}
-                      </span>
-                      <p className="mt-1 text-[13px] leading-[1.55] text-[var(--color-fg-3)] line-clamp-1">
+                      <span className="under-slide font-display text-[16px] md:text-[17px] font-semibold leading-[1.25] tracking-[-0.018em] text-[var(--color-fg)]">
                         {s.outcome}
+                      </span>
+                      <p className="mt-1 font-mono text-[10.5px] uppercase tracking-[0.16em] font-semibold text-[var(--color-brand-700)]">
+                        {s.name}
                       </p>
                     </div>
                     <ArrowUpRight

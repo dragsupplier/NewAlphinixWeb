@@ -27,17 +27,17 @@ export function AudienceTabs() {
     <section id="audiences" className="section-y bg-[var(--color-bg)]">
       <Container>
         {/* Section opener */}
-        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12 mb-10 md:mb-14">
+        <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-16 items-end mb-10 md:mb-14">
           <div className="lg:col-span-7">
             <p className="kicker">Audiences</p>
-            <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.022em] text-[var(--color-fg)] text-balance">
+            <h2 className="mt-4 font-display text-[34px] md:text-[44px] lg:text-[52px] font-semibold leading-[1.04] tracking-[-0.024em] text-[var(--color-fg)] text-balance">
               Five doors to the same platform.
             </h2>
           </div>
-          <div className="lg:col-span-5 lg:self-end">
-            <p className="text-[15px] md:text-[16px] leading-[1.65] text-[var(--color-fg-3)] text-pretty">
-              Alphinix is organised by who you are, not by what we sell. Pick the audience you belong to —
-              the platform, the team, and the deliverables shift accordingly.
+          <div className="lg:col-span-5">
+            <p className="max-w-[44ch] text-[14.5px] md:text-[15px] leading-[1.7] text-[var(--color-fg-3)] text-pretty">
+              Alphinix is organised by who you are, not by what we sell. Pick the audience you belong
+              to — the platform, the team, and the deliverables shift accordingly.
             </p>
           </div>
         </div>
