@@ -63,18 +63,17 @@ export function Footer() {
     <footer className="relative overflow-hidden bg-[var(--color-fg)] text-white">
       {/* Pre-footer CTA strip */}
       <Container>
-        <div className="border-b border-white/10 py-14 md:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-x-12 items-end">
-            <div className="lg:col-span-8">
+        <div className="border-b border-white/10 py-16 md:py-20 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-16 items-end">
+            <div className="lg:col-span-7">
               <p className="kicker kicker-on-dark">Let&apos;s build something</p>
-              <h3 className="mt-4 font-display text-[30px] md:text-[42px] lg:text-[52px] font-semibold leading-[1.04] tracking-[-0.022em] text-balance">
-                One conversation. One named owner.
-                <br />
+              <h3 className="mt-4 font-display text-[28px] md:text-[40px] lg:text-[48px] font-semibold leading-[1.06] tracking-[-0.022em] text-balance">
+                One conversation. One named owner.{' '}
                 <span className="text-[var(--color-brand-200)]">A scoped plan within a week.</span>
               </h3>
             </div>
-            <div className="lg:col-span-4 lg:flex lg:justify-end">
-              <div className="flex flex-wrap items-center gap-3">
+            <div className="lg:col-span-5">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:justify-end">
                 <ButtonLink
                   href="/contact"
                   size="lg"

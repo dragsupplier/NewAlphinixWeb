@@ -137,8 +137,8 @@ function LifecycleDiagram() {
       <circle cx={cx} cy={cy} r={donutOuter} fill="url(#lc-donut)" />
       <circle cx={cx} cy={cy} r={donutInner} fill="var(--color-brand-950)" />
 
-      {/* Segment dividers — 4 thin lines through the donut at 0°, 90°, 180°, 270° */}
-      <g stroke="var(--color-brand-950)" strokeWidth="1.25">
+      {/* Segment dividers — thin lines through the donut at 0°, 90°, 180°, 270° */}
+      <g stroke="var(--color-brand-950)" strokeWidth="1.5" strokeLinecap="round">
         {[0, 90, 180, 270].map((deg) => {
           const rad = (deg * Math.PI) / 180;
           const x1 = cx + donutInner * Math.cos(rad);
@@ -149,20 +149,45 @@ function LifecycleDiagram() {
         })}
       </g>
 
-      {/* Phase labels inside segments — straight horizontal text at 4 cardinal positions */}
+      {/* Tiny brand-200 dot markers at each segment boundary on the outer edge */}
+      <g fill="var(--color-brand-200)">
+        {[0, 90, 180, 270].map((deg) => {
+          const rad = (deg * Math.PI) / 180;
+          const x = cx + donutOuter * Math.cos(rad);
+          const y = cy + donutOuter * Math.sin(rad);
+          return <circle key={deg} cx={x} cy={y} r="2.5" />;
+        })}
+      </g>
+
+      {/* Phase labels — 12px Inter Tight semibold, letter-spacing 0.16em */}
       <g
         fill="white"
         fontFamily="Inter Tight, system-ui, sans-serif"
-        fontSize="13"
-        fontWeight="700"
-        letterSpacing="2.6"
+        fontSize="12"
+        fontWeight="600"
+        letterSpacing="2"
         textAnchor="middle"
         style={{ textTransform: 'uppercase' }}
       >
-        <text x={cx}                       y={cy - midDonutRadius + 4}>DISCOVER</text>
-        <text x={cx + midDonutRadius}      y={cy + 4}>DESIGN</text>
-        <text x={cx}                       y={cy + midDonutRadius + 4}>DELIVER</text>
-        <text x={cx - midDonutRadius}      y={cy + 4}>SUSTAIN</text>
+        <text x={cx}                       y={cy - midDonutRadius + 4}>Discover</text>
+        <text x={cx + midDonutRadius}      y={cy + 4}>Design</text>
+        <text x={cx}                       y={cy + midDonutRadius + 4}>Deliver</text>
+        <text x={cx - midDonutRadius}      y={cy + 4}>Sustain</text>
+      </g>
+
+      {/* Tiny phase indices below each label */}
+      <g
+        fill="rgba(255,255,255,0.55)"
+        fontFamily="JetBrains Mono, monospace"
+        fontSize="9"
+        fontWeight="600"
+        letterSpacing="1.2"
+        textAnchor="middle"
+      >
+        <text x={cx}                       y={cy - midDonutRadius + 18}>01</text>
+        <text x={cx + midDonutRadius}      y={cy + 18}>02</text>
+        <text x={cx}                       y={cy + midDonutRadius + 18}>03</text>
+        <text x={cx - midDonutRadius}      y={cy + 18}>04</text>
       </g>
 
       {/* Inner core circle */}
