@@ -26,9 +26,7 @@ export function ContactBand() {
                       <span className="under-slide font-display text-[16px] md:text-[17px] font-semibold leading-[1.25] tracking-[-0.018em] text-[var(--color-fg)]">
                         {s.outcome}
                       </span>
-                      <p className="mt-1 font-mono text-[10.5px] uppercase tracking-[0.16em] font-semibold text-[var(--color-brand-700)]">
-                        {s.name}
-                      </p>
+                      <p className="kicker mt-1.5">{s.name}</p>
                     </div>
                     <ArrowUpRight
                       className="col-span-2 ml-auto h-4 w-4 text-[var(--color-fg-5)] transition-all group-hover:text-[var(--color-brand-700)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
